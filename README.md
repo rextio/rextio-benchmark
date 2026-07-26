@@ -202,16 +202,30 @@ measurement/evidence commits, GitHub URL, and an output directory explicitly.
 | Core executable | Closed direct-native call graph, Rust backend, `fallback=error` | Compares complete Python and Rust processes. |
 | NumPy fusion (`numpy-mixed-fusion`) | `phase=0` path: `(left + right) * (left - right)` | Headline fusion claim; requires fusion rule + `__rxtnp_echain_` proof. |
 | NumPy phase1 diagnostic | `phase=1` path: `(left - right) / (right + 2.0)` | Full-report only; **not** a fusion claim; never a README headline row. |
+| NumPy F64_1D boundary diagnostic | Read-only rank-1 float64 input, one add, fresh direct-filled NumPy-owned output | Exact semantic validation; boundary/allocation diagnostic only; no speedup presumed. |
 | NumPy dot | Large rank-1 `numpy.dot` | Negative control; BLAS already owns the hot kernel. |
 | NetworkX | Typed adapter Dijkstra on a deterministic weighted graph | No unsupported raw NetworkX spelling is compiled. |
 | pandas | Exact numeric/boolean `Series.map` UDF pipeline | A manually vectorized pandas/NumPy rewrite may be faster. |
 | Torch CPU | Bounded rank-1/rank-2 float32 MLP and scalar loop control | Inference only; no training or unsupported device/dtype. |
+| Torch CPU small-batch pre/post diagnostic | Batch 1, width 32, four scalar-controlled rounds, softmax and int64 argmax | Exact labels; diagnostic only; Python/tensor boundary overhead is intentionally large relative to the small kernels. |
 | TensorFlow CPU | Default rank-2 transpose of non-square weight, then eager matmul/activation/classification | Requires transpose rule proof; no `tf.function`; no result is presumed. |
+| TensorFlow CPU small-batch pre/post diagnostic | Batch 1, width 32, four scalar-controlled rounds, softmax and int64 argmax | Exact labels; eager diagnostic only; Python/tensor boundary overhead is intentionally large relative to the small kernels. |
 
 Each case is an independent Rextio project under `cases/`. Core, NumPy,
 NetworkX, and pandas use `profiles/base`; Torch and TensorFlow use isolated
 locked profiles so their ABI and runtime requirements cannot contaminate each
 other.
+
+The three new diagnostics belong to the separate unmeasured policy
+`candidate-boundary-prepost-0.1.1`; they do not alter the six frozen headline
+rows. Activation is deliberately fail-closed through
+`profiles/next-candidate.toml`. Core 0.1.7 is pinned there to
+`b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97` and TensorFlow 0.1.3 to
+`1fdb2e1cd91d058a056db76c2e0a15d52c855053`; NumPy and Torch 0.1.3 remain
+`PENDING_INTEGRATION_SHA` until their integration merges exist. Build and
+benchmark commands refuse to start this policy until every revision is a full
+commit and the affected CPU profile manifests select those exact Git sources.
+No chronological-first run has been started or selected.
 
 ## Measurement contract
 

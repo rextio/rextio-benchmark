@@ -33,6 +33,15 @@ commit-pinned candidate builds**, not PyPI 0.1.3 releases.
   (measurement commit `afd73d76107f9b7f352c8f5bb8a0ed382051f8bc`; NumPy rev
   `7316c47393a86f1c701049b878d01e8d8f561cdb`; TensorFlow rev
   `346ca58148ed2563d4c7547dd8443d60cd4f905b`).
+- Add a separate, unmeasured diagnostic definition for the NumPy `F64_1D`
+  borrowed-input/direct Python-owned-output boundary plus Torch and TensorFlow
+  CPU batch-1 preprocessing/postprocessing-heavy scoring paths. All three are
+  non-headline and use exact semantic output validation.
+- Add fail-closed integration-target and provenance surfaces for Core 0.1.7,
+  NumPy/Torch/TensorFlow 0.1.3. Core is pinned to
+  `b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97` and TensorFlow to
+  `1fdb2e1cd91d058a056db76c2e0a15d52c855053`; NumPy and Torch remain explicit
+  pending placeholders until their integration merge commits exist.
 
 ### Changed
 
@@ -56,6 +65,9 @@ commit-pinned candidate builds**, not PyPI 0.1.3 releases.
 - Document measured-candidate status and the published candidate figures in
   README and PUBLICATION while retaining full 0.1.0 historical wording and
   numbers.
+- Register the measured candidate cohort as a byte-frozen historical nine-case
+  set before expanding the live manifests, so both published cohorts continue
+  to verify without rewriting any evidence.
 
 ### Measured candidate results (no cherry-picking)
 
