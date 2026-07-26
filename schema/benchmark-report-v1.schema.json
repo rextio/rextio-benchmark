@@ -71,6 +71,8 @@
       "required": [
         "manifest_path",
         "manifest_sha256",
+        "report_markdown_path",
+        "report_markdown_sha256",
         "file_count",
         "object_count",
         "logical_bytes",
@@ -79,6 +81,11 @@
       "properties": {
         "manifest_path": {"type": "string"},
         "manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "report_markdown_path": {"type": "string"},
+        "report_markdown_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
         "file_count": {"type": "integer", "minimum": 1},
         "object_count": {"type": "integer", "minimum": 1},
         "logical_bytes": {"type": "integer", "minimum": 1},

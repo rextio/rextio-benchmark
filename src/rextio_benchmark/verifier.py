@@ -16,6 +16,7 @@ from .models import BenchmarkCase, load_cases, paired_orders
 from .output_table import validate_output_table
 from .portability import require_portable
 from .processes import THREAD_ENVIRONMENT
+from .report import render_markdown
 from .statistics import paired_bootstrap_interval, paired_speedups, summarize
 from .verification import (
     GateError,
@@ -222,6 +223,8 @@ def _load_canonical_bundle(
         "run_commit",
         "source_report_path",
         "canonical_report_path",
+        "report_markdown_path",
+        "report_markdown_sha256",
         "file_count",
         "object_count",
         "logical_bytes",
@@ -255,6 +258,7 @@ def _load_canonical_bundle(
         report_path.resolve() == bundle_root / "report.json",
         "canonical report is outside its bundle",
     )
+    _verify_canonical_markdown(report, manifest, bundle_root, repository_root)
     resolve_logical_path(manifest["source_report_path"], repository_root)
     if version == 2:
         cohort = manifest["cohort"]
@@ -370,6 +374,34 @@ def _load_canonical_bundle(
         _require(manifest[key] == value, f"manifest {key} differs")
         _require(metadata[key] == value, f"report bundle {key} differs")
     return result
+
+
+def _verify_canonical_markdown(
+    report: dict[str, Any],
+    manifest: dict[str, Any],
+    bundle_root: Path,
+    repository_root: Path,
+) -> None:
+    metadata = report["canonical_bundle"]
+    for key in ("report_markdown_path", "report_markdown_sha256"):
+        _require(metadata[key] == manifest[key], f"canonical Markdown {key} differs")
+    markdown_path = resolve_logical_path(
+        manifest["report_markdown_path"],
+        repository_root,
+    )
+    _require(
+        markdown_path == bundle_root / "report.md",
+        "canonical Markdown is outside its bundle",
+    )
+    _require(markdown_path.is_file(), "canonical Markdown is missing")
+    _require(
+        sha256_file(markdown_path) == manifest["report_markdown_sha256"],
+        "canonical Markdown digest changed",
+    )
+    _require(
+        markdown_path.read_bytes() == render_markdown(report).encode("utf-8"),
+        "canonical Markdown differs from independently rendered report",
+    )
 
 
 def _verify_lane(

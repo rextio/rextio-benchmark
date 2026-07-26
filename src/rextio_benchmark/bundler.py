@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from .cohort import cohort_id, validate_cohort
+from .report import render_markdown
 from .verification import GateError, logical_path, resolve_logical_path, sha256_file
 from .verifier import _run_commit_available, _worktree_clean, verify_report
 
@@ -77,6 +78,7 @@ def bundle_report(
     final_prefix = Path("results") / "canonical" / bundle_name
     manifest_path = final_prefix / "manifest.json"
     canonical_report_path = final_prefix / "report.json"
+    report_markdown_path = final_prefix / "report.md"
     source_report_path = logical_path(report_path, repository_root)
 
     logical_bytes = 0
@@ -139,19 +141,29 @@ def bundle_report(
             "run_commit": run_commit,
             "source_report_path": source_report_path,
             "canonical_report_path": canonical_report_path.as_posix(),
+            "report_markdown_path": report_markdown_path.as_posix(),
             "file_count": file_count,
             "object_count": len(object_sizes),
             "logical_bytes": logical_bytes,
             "stored_bytes": stored_bytes,
             "cases": manifest_cases,
         }
+        canonical_report = json.loads(json.dumps(report))
+        staged_markdown = staging / "report.md"
+        staged_markdown.write_text(
+            render_markdown(canonical_report),
+            encoding="utf-8",
+        )
+        report_markdown_sha256 = sha256_file(staged_markdown)
+        manifest["report_markdown_sha256"] = report_markdown_sha256
         staged_manifest = staging / "manifest.json"
         _write_json(staged_manifest, manifest)
         manifest_sha256 = sha256_file(staged_manifest)
-        canonical_report = json.loads(json.dumps(report))
         canonical_report["canonical_bundle"] = {
             "manifest_path": manifest_path.as_posix(),
             "manifest_sha256": manifest_sha256,
+            "report_markdown_path": report_markdown_path.as_posix(),
+            "report_markdown_sha256": report_markdown_sha256,
             "file_count": file_count,
             "object_count": len(object_sizes),
             "logical_bytes": logical_bytes,

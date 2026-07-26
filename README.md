@@ -86,11 +86,14 @@ PYTHONPATH=src profiles/base/.venv/bin/python -m rextio_benchmark cohort \
 The command verifies all three before writing, rejects sliding windows and
 unstable headline rows, reports deviation for every case, selects the first
 report, copies all raw reports and `run-output` evidence into one
-`cohort-<sha256>` directory, and writes a hash-bound stability summary. It may
-run from a clean descendant policy commit: inputs remain verified from the
-measurement commit and current output bytes must retain their recorded
-digests. Dirty or unrelated checkouts fail closed. After committing that
-bundle, render the five localized Core README blocks with
+`cohort-<sha256>` directory, and writes a hash-bound stability summary plus a
+human-readable `report.md`. Both the manifest and canonical JSON bind that
+Markdown by repository-relative path and SHA-256, and verification
+independently re-renders and byte-compares it. Bundling may run from a clean
+descendant policy commit: inputs remain verified from the measurement commit
+and current output bytes must retain their recorded digests. Dirty or
+unrelated checkouts fail closed. After committing that bundle, render the five
+localized Core README blocks with
 `rextio_benchmark readme-blocks`; pass the canonical report, full
 measurement/evidence commits, GitHub URL, and an output directory explicitly.
 

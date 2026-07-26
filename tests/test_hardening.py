@@ -7,10 +7,12 @@ from pathlib import Path
 
 import pytest
 
+from rextio_benchmark import verifier as verifier_module
 from rextio_benchmark.bundler import bundle_report
 from rextio_benchmark.models import BenchmarkCase, paired_orders
 from rextio_benchmark.output_table import OutputTable
 from rextio_benchmark.processes import THREAD_ENVIRONMENT, measure_command_samples
+from rextio_benchmark.report import render_markdown
 from rextio_benchmark.statistics import (
     paired_bootstrap_interval,
     paired_speedups,
@@ -487,12 +489,17 @@ def test_bundle_report_writes_role_keyed_manifest(
     source_report = tmp_path / "results/local/report.json"
     source_report.parent.mkdir(parents=True)
     report = {
+        "mode": "publish",
+        "generated_at": "2026-07-26T00:00:00+00:00",
         "repository": {"commit": commit, "dirty": False},
         "publishable": True,
+        "system": {"platform": "fixture"},
+        "eligibility": {"blockers": []},
         "cases": [
             {
                 "id": "fixture",
                 "eligible": True,
+                "paired": None,
                 "gate": {
                     "evidence": {
                         "check_report": {
@@ -529,7 +536,66 @@ def test_bundle_report_writes_role_keyed_manifest(
         canonical["canonical_bundle"]["manifest_path"]
         == "results/canonical/fixture/manifest.json"
     )
+    markdown = canonical_report.with_suffix(".md")
+    assert markdown.read_text(encoding="utf-8") == render_markdown(canonical)
+    assert manifest["report_markdown_path"] == "results/canonical/fixture/report.md"
+    assert manifest["report_markdown_sha256"] == sha256_file(markdown)
+    assert (
+        canonical["canonical_bundle"]["report_markdown_sha256"]
+        == manifest["report_markdown_sha256"]
+    )
     assert summary["stored_bytes"] == output.stat().st_size
+
+
+def test_canonical_markdown_verification_rejects_tamper_and_rerender_drift(
+    tmp_path: Path,
+) -> None:
+    bundle_root = tmp_path / "results/canonical/fixture"
+    bundle_root.mkdir(parents=True)
+    report = {
+        "mode": "publish",
+        "generated_at": "2026-07-26T00:00:00+00:00",
+        "publishable": True,
+        "system": {"platform": "fixture"},
+        "eligibility": {"blockers": []},
+        "cases": [],
+        "canonical_bundle": {
+            "report_markdown_path": "results/canonical/fixture/report.md",
+            "report_markdown_sha256": "",
+        },
+    }
+    markdown = bundle_root / "report.md"
+    markdown.write_text(render_markdown(report), encoding="utf-8")
+    digest = sha256_file(markdown)
+    report["canonical_bundle"]["report_markdown_sha256"] = digest
+    manifest = {
+        "report_markdown_path": "results/canonical/fixture/report.md",
+        "report_markdown_sha256": digest,
+    }
+    verifier_module._verify_canonical_markdown(
+        report,
+        manifest,
+        bundle_root,
+        tmp_path,
+    )
+    markdown.write_text("tampered\n", encoding="utf-8")
+    with pytest.raises(GateError, match="digest"):
+        verifier_module._verify_canonical_markdown(
+            report,
+            manifest,
+            bundle_root,
+            tmp_path,
+        )
+    forged_digest = sha256_file(markdown)
+    manifest["report_markdown_sha256"] = forged_digest
+    report["canonical_bundle"]["report_markdown_sha256"] = forged_digest
+    with pytest.raises(GateError, match="rendered"):
+        verifier_module._verify_canonical_markdown(
+            report,
+            manifest,
+            bundle_root,
+            tmp_path,
+        )
 
 
 def test_bundle_report_rejects_dirty_descendant(

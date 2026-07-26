@@ -177,11 +177,15 @@ def test_bundle_cohort_copies_all_reports_and_hashes_summary(
         assert name == expected_name
         destination = root / "results/canonical" / name
         destination.mkdir(parents=True)
+        markdown = destination / "report.md"
+        markdown.write_text("fixture markdown\n", encoding="utf-8")
         manifest = {
             "schema_version": 1,
             "run_commit": "a" * 40,
             "source_report_path": "results/local/0.json",
             "canonical_report_path": f"results/canonical/{name}/report.json",
+            "report_markdown_path": f"results/canonical/{name}/report.md",
+            "report_markdown_sha256": sha256_file(markdown),
             "file_count": 1,
             "object_count": 1,
             "logical_bytes": 1,
@@ -193,6 +197,8 @@ def test_bundle_cohort_copies_all_reports_and_hashes_summary(
         canonical["canonical_bundle"] = {
             "manifest_path": f"results/canonical/{name}/manifest.json",
             "manifest_sha256": "0" * 64,
+            "report_markdown_path": f"results/canonical/{name}/report.md",
+            "report_markdown_sha256": sha256_file(markdown),
             "file_count": 1,
             "object_count": 1,
             "logical_bytes": 1,
@@ -207,6 +213,7 @@ def test_bundle_cohort_copies_all_reports_and_hashes_summary(
     assert len(list((canonical.parent / "reports").glob("*.json"))) == 3
     document = json.loads(manifest.read_text(encoding="utf-8"))
     assert document["cohort"]["selected_report_index"] == 0
+    assert sha256_file(canonical.with_suffix(".md")) == document["report_markdown_sha256"]
     assert sha256_file(stability) == document["cohort"]["stability_summary_sha256"]
     for bundled_json in canonical.parent.rglob("*.json"):
         content = bundled_json.read_text(encoding="utf-8")

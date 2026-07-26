@@ -67,7 +67,9 @@ three attempts before bundling. When running stages manually, run
 order. It verifies the full cohort while the measurement worktree is clean,
 then writes one `cohort-<sha256>` directory containing the selected report, all
 three byte-exact raw reports, content-addressed evidence objects, and a
-manifest-bound `stability.json`.
+manifest-bound `stability.json`. It also writes `report.md`; both the manifest
+and canonical JSON bind its repository-relative path and SHA-256, and
+verification independently re-renders and byte-compares it.
 
 The report records the clean **measurement commit** that produced it. Adding
 the report to `results/canonical/` necessarily creates a later **evidence
