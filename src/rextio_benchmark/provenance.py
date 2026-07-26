@@ -73,6 +73,13 @@ def package_vcs_provenance(
 
 
 def report_package_versions(report: Mapping[str, Any]) -> dict[str, str]:
+    """Return versions of frozen candidate plugin distributions across cases.
+
+    Only names in ``CANDIDATE_PLUGIN_PINS`` (``rextio-numpy``,
+    ``rextio-tensorflow``) are collected and conflict-checked. Unrelated
+    profile-isolated dependencies such as ``numpy`` or ``networkx`` may
+    legitimately differ across cases and are ignored here.
+    """
     versions: dict[str, str] = {}
     for case in report.get("cases") or []:
         if not isinstance(case, Mapping):
@@ -82,6 +89,8 @@ def report_package_versions(report: Mapping[str, Any]) -> dict[str, str]:
             continue
         for name, version in packages.items():
             if not isinstance(name, str) or not isinstance(version, str):
+                continue
+            if name not in CANDIDATE_PLUGIN_PINS:
                 continue
             prior = versions.get(name)
             if prior is not None and prior != version:
@@ -101,6 +110,33 @@ def candidate_plugins_in_versions(versions: Mapping[str, str]) -> dict[str, dict
                 "rev": pin["rev"],
             }
     return present
+
+
+def full_candidate_plugin_pins() -> dict[str, dict[str, str]]:
+    """Return the complete frozen candidate pin set (numpy + tensorflow 0.1.3)."""
+    return {
+        name: {
+            "version": pin["version"],
+            "git_url": pin["git_url"],
+            "rev": pin["rev"],
+        }
+        for name, pin in CANDIDATE_PLUGIN_PINS.items()
+    }
+
+
+def requires_full_candidate_binding(report: Mapping[str, Any]) -> bool:
+    """True when a non-released report must carry the full candidate binding.
+
+    Publish-mode, publishable, or canonical-bundle reports on the 0.1.1 line must
+    not silently downgrade or omit either candidate plugin. Authentic released
+    frozen reports are exempted by the caller via ``is_released_frozen_report``.
+    Quick non-publishable non-canonical diagnostics may omit binding.
+    """
+    if report.get("mode") == "publish":
+        return True
+    if report.get("publishable") is True:
+        return True
+    return report.get("canonical_bundle") is not None
 
 
 def _report_case_packages(report: Mapping[str, Any]) -> dict[str, dict[str, str]] | None:

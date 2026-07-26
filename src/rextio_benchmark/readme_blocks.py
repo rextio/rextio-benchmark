@@ -163,33 +163,49 @@ def generate_blocks(
     host = report["system"]["host"]
     machine = " / ".join(dict.fromkeys((host["model"], host["cpu_brand"])))
     date = report["generated_at"][:10]
-    versions = {
+    # Display list: last-wins is fine for labels of non-candidate rextio packages.
+    # Candidate presence/conflicts use report_package_versions (fail closed).
+    display_versions = {
         name: version
         for case in report["cases"]
         for name, version in case["packages"].items()
         if name == "rextio" or name.startswith("rextio-")
     }
     # Candidate@REV labels and caveats come only from verified bound policy/provenance.
-    # Version strings alone never imply candidacy (fail closed if versions claim pins
-    # without binding).
+    # Non-released publishable/canonical reports require the full frozen candidate set;
+    # authentic released frozen reports stay unlabeled. Version strings alone never
+    # imply candidacy.
     from .provenance import (
         bound_candidate_pins_from_report,
         candidate_plugins_in_versions,
+        full_candidate_plugin_pins,
+        is_released_frozen_report,
+        report_package_versions,
     )
 
-    present = candidate_plugins_in_versions(versions)
-    if present and (report.get("policy") is None or report.get("package_provenance") is None):
-        raise GateError(
-            "README blocks for candidate versions require bound policy and package_provenance"
-        )
-    bound_pins = bound_candidate_pins_from_report(report)
-    # Fail closed both ways: candidate versions without pins, and pins without
-    # matching package versions (including present={} with nonempty bound pins).
-    if set(bound_pins) != set(present):
-        raise GateError(
-            "README candidate policy pins do not match report package versions"
-        )
-    version_text = _format_versions(versions, bound_pins)
+    candidate_versions = report_package_versions(report)
+    if is_released_frozen_report(report):
+        bound_pins: dict[str, dict[str, str]] = {}
+    else:
+        present = candidate_plugins_in_versions(candidate_versions)
+        expected = full_candidate_plugin_pins()
+        if set(present) != set(expected):
+            raise GateError(
+                "README blocks for non-released reports require the full frozen "
+                "candidate plugin set "
+                f"(expected {sorted(expected)}, found {sorted(present)})"
+            )
+        if report.get("policy") is None or report.get("package_provenance") is None:
+            raise GateError(
+                "README blocks for candidate versions require bound policy and "
+                "package_provenance"
+            )
+        bound_pins = bound_candidate_pins_from_report(report)
+        if set(bound_pins) != set(expected) or set(bound_pins) != set(present):
+            raise GateError(
+                "README candidate policy pins do not match the full frozen candidate set"
+            )
+    version_text = _format_versions(display_versions, bound_pins)
     uses_candidates = bool(bound_pins)
     outputs = {}
     for filename, locale in LOCALES.items():

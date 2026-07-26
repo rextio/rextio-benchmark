@@ -19,9 +19,11 @@ from .processes import THREAD_ENVIRONMENT
 from .provenance import (
     bound_candidate_pins_from_report,
     candidate_plugins_in_versions,
+    full_candidate_plugin_pins,
     is_released_frozen_report,
     lock_or_manifest_binds_pin,
     report_package_versions,
+    requires_full_candidate_binding,
 )
 from .report import render_markdown
 from .statistics import paired_bootstrap_interval, paired_speedups, summarize
@@ -579,34 +581,12 @@ def _verify_environment(
         )
 
 
-def _verify_candidate_policy_and_provenance(
+def _verify_profile_bindings_for_pins(
     report: dict[str, Any],
     repository_root: Path,
+    bound: dict[str, dict[str, str]],
 ) -> None:
-    """Fail closed for candidate reports; leave released 0.1.0 untouched."""
-    if is_released_frozen_report(report):
-        return
-    versions = report_package_versions(report)
-    present = candidate_plugins_in_versions(versions)
-    policy = report.get("policy")
-    provenance = report.get("package_provenance")
-    if not present and policy is None and provenance is None:
-        return
-    if not present:
-        raise GateError("candidate policy/provenance present without candidate package versions")
-    if policy is None or provenance is None:
-        raise GateError(
-            "current candidate report requires policy and package_provenance bindings"
-        )
-    bound = bound_candidate_pins_from_report(report)
-    if set(bound) != set(present):
-        raise GateError("candidate policy pins do not match report package versions")
-    for name, pin in bound.items():
-        if versions.get(name) != pin["version"]:
-            raise GateError(f"{name}: packages version does not match policy pin")
-    # Cross-check hashed profile locks/manifests (run-inputs) bind the same source.
-    # Each candidate pin must be bound by at least one profile lock and one
-    # profile manifest from cases that declare that package version.
+    """Each candidate pin must bind via that package's own profile lock + manifest."""
     for name, pin in bound.items():
         lock_bound = False
         manifest_bound = False
@@ -648,6 +628,62 @@ def _verify_candidate_policy_and_provenance(
             manifest_bound,
             f"no profile_manifest binds {name} to policy revision {pin['rev']}",
         )
+
+
+def _verify_candidate_policy_and_provenance(
+    report: dict[str, Any],
+    repository_root: Path,
+) -> None:
+    """Fail closed for 0.1.1 candidate reports; leave released 0.1.0 untouched."""
+    if is_released_frozen_report(report):
+        return
+    versions = report_package_versions(report)
+    present = candidate_plugins_in_versions(versions)
+    policy = report.get("policy")
+    provenance = report.get("package_provenance")
+    expected = full_candidate_plugin_pins()
+
+    if requires_full_candidate_binding(report):
+        # Publish / publishable / canonical non-released reports must carry the
+        # complete frozen candidate set — not a downgraded or omitted subset.
+        if set(present) != set(expected):
+            raise GateError(
+                "non-released publishable/canonical report requires the full "
+                "frozen candidate plugin set "
+                f"(expected {sorted(expected)}, found {sorted(present)})"
+            )
+        if policy is None or provenance is None:
+            raise GateError(
+                "current candidate report requires policy and package_provenance bindings"
+            )
+        bound = bound_candidate_pins_from_report(report)
+        if set(bound) != set(expected):
+            raise GateError(
+                "candidate policy pins must equal the full frozen candidate plugin set"
+            )
+        for name, pin in bound.items():
+            if versions.get(name) != pin["version"]:
+                raise GateError(f"{name}: packages version does not match policy pin")
+        _verify_profile_bindings_for_pins(report, repository_root, bound)
+        return
+
+    # Quick non-publishable non-canonical diagnostics: optional binding, but
+    # any partial claim must stay exactly consistent.
+    if not present and policy is None and provenance is None:
+        return
+    if not present:
+        raise GateError("candidate policy/provenance present without candidate package versions")
+    if policy is None or provenance is None:
+        raise GateError(
+            "current candidate report requires policy and package_provenance bindings"
+        )
+    bound = bound_candidate_pins_from_report(report)
+    if set(bound) != set(present):
+        raise GateError("candidate policy pins do not match report package versions")
+    for name, pin in bound.items():
+        if versions.get(name) != pin["version"]:
+            raise GateError(f"{name}: packages version does not match policy pin")
+    _verify_profile_bindings_for_pins(report, repository_root, bound)
 
 
 def _replay_generated_expectations(

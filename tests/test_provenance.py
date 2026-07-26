@@ -23,6 +23,7 @@ from rextio_benchmark.provenance import (
     candidate_plugins_in_versions,
     is_released_frozen_report,
     lock_or_manifest_binds_pin,
+    report_package_versions,
 )
 from rextio_benchmark.readme_blocks import generate_blocks
 from rextio_benchmark.verification import GateError
@@ -392,6 +393,67 @@ def test_released_exemption_rejects_wrong_missing_extra_cases_and_versions() -> 
     assert actual == RELEASED_CPU_0_1_0_CASE_PACKAGES
 
 
+def test_report_package_versions_allows_heterogeneous_unrelated_deps() -> None:
+    """Isolated profiles may ship different numpy/networkx; only candidate plugins conflict."""
+    report = {
+        "cases": [
+            {
+                "id": "numpy-mixed-fusion",
+                "packages": {
+                    "numpy": "2.3.5",
+                    "networkx": "3.5",
+                    "rextio": "0.1.6",
+                    "rextio-numpy": "0.1.3",
+                },
+            },
+            {
+                "id": "tensorflow-cpu-eager-chain",
+                "packages": {
+                    "numpy": "2.4.6",
+                    "networkx": "3.6.1",
+                    "rextio": "0.1.6",
+                    "rextio-tensorflow": "0.1.3",
+                },
+            },
+            {
+                "id": "torch-cpu-deep-mlp",
+                "packages": {
+                    "numpy": "2.4.6",
+                    "networkx": "3.6.1",
+                    "rextio": "0.1.6",
+                    "rextio-torch": "0.1.2",
+                },
+            },
+        ]
+    }
+    versions = report_package_versions(report)
+    assert versions == {
+        "rextio-numpy": "0.1.3",
+        "rextio-tensorflow": "0.1.3",
+    }
+    assert set(candidate_plugins_in_versions(versions)) == {
+        "rextio-numpy",
+        "rextio-tensorflow",
+    }
+
+
+def test_report_package_versions_rejects_candidate_plugin_conflict() -> None:
+    report = {
+        "cases": [
+            {
+                "id": "numpy-mixed-fusion",
+                "packages": {"rextio-numpy": "0.1.3", "numpy": "2.3.5"},
+            },
+            {
+                "id": "numpy-blas-dot-negative-control",
+                "packages": {"rextio-numpy": "0.1.2", "numpy": "2.3.5"},
+            },
+        ]
+    }
+    with pytest.raises(GateError, match="package version conflict for rextio-numpy"):
+        report_package_versions(report)
+
+
 def test_assemble_fails_without_direct_url_provenance() -> None:
     versions = {"rextio-numpy": "0.1.3"}
     with pytest.raises(GateError, match="lacks installed direct_url"):
@@ -541,6 +603,24 @@ def test_readme_fails_for_candidate_versions_without_binding() -> None:
         )
 
 
+def test_readme_rejects_cross_case_candidate_plugin_version_conflict() -> None:
+    """Last-wins display must not hide conflicting rextio-numpy across cases."""
+    report = _minimal_report(with_binding=True)
+    for case in report["cases"]:
+        if case["id"] == "numpy-mixed-fusion":
+            case["packages"] = {**case["packages"], "rextio-numpy": "0.1.3"}
+        elif "rextio-numpy" in case["packages"]:
+            case["packages"] = {**case["packages"], "rextio-numpy": "0.1.2"}
+    with pytest.raises(GateError, match="package version conflict for rextio-numpy"):
+        generate_blocks(
+            report,
+            report_logical_path="results/canonical/cohort/report.json",
+            measurement_commit="a" * 40,
+            evidence_commit="b" * 40,
+            github_url="https://github.com/rextio/rextio-benchmark",
+        )
+
+
 def test_readme_fails_for_tampered_binding() -> None:
     report = _minimal_report(with_binding=True)
     report["package_provenance"]["rextio-numpy"]["commit_id"] = "0" * 40
@@ -555,7 +635,7 @@ def test_readme_fails_for_tampered_binding() -> None:
 
 
 def test_readme_rejects_released_versions_plus_candidate_policy() -> None:
-    """present={} with nonempty bound pins must fail closed."""
+    """Downgraded package versions with leftover candidate policy fail closed."""
     report = _minimal_report(with_binding=True)
     for case in report["cases"]:
         packages = dict(case["packages"])
@@ -564,7 +644,7 @@ def test_readme_rejects_released_versions_plus_candidate_policy() -> None:
         if packages.get("rextio-tensorflow") == "0.1.3":
             packages["rextio-tensorflow"] = "0.1.2"
         case["packages"] = packages
-    with pytest.raises(GateError, match="do not match report package versions"):
+    with pytest.raises(GateError, match="full frozen candidate plugin set"):
         generate_blocks(
             report,
             report_logical_path="results/canonical/cohort/report.json",
@@ -581,7 +661,7 @@ def test_readme_rejects_partial_candidate_set_mismatch() -> None:
         packages = dict(case["packages"])
         packages.pop("rextio-tensorflow", None)
         case["packages"] = packages
-    with pytest.raises(GateError, match="do not match report package versions"):
+    with pytest.raises(GateError, match="full frozen candidate plugin set"):
         generate_blocks(
             report,
             report_logical_path="results/canonical/cohort/report.json",
@@ -591,24 +671,83 @@ def test_readme_rejects_partial_candidate_set_mismatch() -> None:
         )
 
 
-def test_released_versions_do_not_emit_candidate_labels() -> None:
-    report = _minimal_report(with_binding=False)
-    for case in report["cases"]:
+def test_readme_and_verify_reject_downgrade_or_omitted_candidate_subset() -> None:
+    """Publishable/canonical non-released reports cannot omit or downgrade either pin."""
+    # Full downgrade of both candidate packages, no binding.
+    downgraded = _minimal_report(with_binding=False)
+    for case in downgraded["cases"]:
         packages = dict(case["packages"])
         if packages.get("rextio-numpy") == "0.1.3":
             packages["rextio-numpy"] = "0.1.2"
         if packages.get("rextio-tensorflow") == "0.1.3":
             packages["rextio-tensorflow"] = "0.1.2"
         case["packages"] = packages
+    with pytest.raises(GateError, match="full frozen candidate plugin set"):
+        _verify_candidate_policy_and_provenance(downgraded, ROOT)
+    with pytest.raises(GateError, match="full frozen candidate plugin set"):
+        generate_blocks(
+            downgraded,
+            report_logical_path="results/canonical/cohort/report.json",
+            measurement_commit="a" * 40,
+            evidence_commit="b" * 40,
+            github_url="https://github.com/rextio/rextio-benchmark",
+        )
+
+    # Omit tensorflow only (subset spoof) with binding stripped.
+    omit_tf = _minimal_report(with_binding=False)
+    for case in omit_tf["cases"]:
+        packages = dict(case["packages"])
+        packages.pop("rextio-tensorflow", None)
+        case["packages"] = packages
+    with pytest.raises(GateError, match="full frozen candidate plugin set"):
+        _verify_candidate_policy_and_provenance(omit_tf, ROOT)
+    with pytest.raises(GateError, match="full frozen candidate plugin set"):
+        generate_blocks(
+            omit_tf,
+            report_logical_path="results/canonical/cohort/report.json",
+            measurement_commit="a" * 40,
+            evidence_commit="b" * 40,
+            github_url="https://github.com/rextio/rextio-benchmark",
+        )
+
+    # Partial binding removed after full versions: delete package_provenance for one pin.
+    partial_binding = _minimal_report(with_binding=True)
+    del partial_binding["package_provenance"]["rextio-tensorflow"]
+    del partial_binding["policy"]["candidate_plugins"]["rextio-tensorflow"]
+    with pytest.raises(GateError, match="full frozen candidate"):
+        _verify_candidate_policy_and_provenance(partial_binding, ROOT)
+
+
+def test_authentic_released_frozen_readme_has_no_candidate_labels() -> None:
+    real = json.loads(
+        (ROOT / RELEASED_CANONICAL_COHORT_DIR / "report.json").read_text(encoding="utf-8")
+    )
     blocks = generate_blocks(
-        report,
-        report_logical_path="results/canonical/cohort/report.json",
-        measurement_commit="a" * 40,
-        evidence_commit="b" * 40,
+        real,
+        report_logical_path=f"{RELEASED_CANONICAL_COHORT_DIR}/report.json",
+        measurement_commit=real["repository"]["commit"],
+        evidence_commit=FROZEN_CANONICAL_COHORTS[RELEASED_COHORT_ID]["evidence_commit"],
         github_url="https://github.com/rextio/rextio-benchmark",
     )
     assert "candidate@" not in blocks["README.md"]
-    assert "unreleased" not in blocks["README.md"].lower()
+    assert "0.1.3" not in blocks["README.md"] or "rextio-numpy 0.1.2" in blocks["README.md"]
+    assert is_released_frozen_report(real) is True
+    _verify_candidate_policy_and_provenance(real, ROOT)
+
+
+def test_quick_non_publishable_may_omit_candidate_binding() -> None:
+    report = {
+        "mode": "quick",
+        "publishable": False,
+        "repository": {"commit": "a" * 40, "dirty": True},
+        "cases": [
+            {
+                "id": "numpy-mixed-fusion",
+                "packages": {"rextio": "0.1.6", "rextio-numpy": "0.1.2"},
+            }
+        ],
+    }
+    _verify_candidate_policy_and_provenance(report, ROOT)
 
 
 def test_bundled_semantic_replay_uses_resolved_paths_not_live(

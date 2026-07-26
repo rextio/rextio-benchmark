@@ -10,7 +10,8 @@ from typing import Any
 from .case_runner import MODE_SETTINGS, run_executable_case, run_module_case
 from .models import load_cases, profile_python
 from .portability import portable_value, require_portable
-from .provenance import assemble_candidate_policy_binding
+from .provenance import assemble_candidate_policy_binding, report_package_versions
+from .verification import GateError
 
 
 def _command_text(command: list[str], cwd: Path) -> str | None:
@@ -96,20 +97,22 @@ def run_suite(repository_root: Path, mode: str) -> tuple[dict[str, Any], Path]:
             }
         cases.append(result)
 
-    versions: dict[str, str] = {}
     merged_provenance: dict[str, dict[str, str]] = {}
     for case in cases:
-        for name, version in (case.get("packages") or {}).items():
-            prior = versions.get(name)
-            if prior is not None and prior != version:
-                raise RuntimeError(f"package version conflict for {name}: {prior} vs {version}")
-            versions[name] = version
         # Measurement-only capture: strip so case schema stays version-string packages.
+        # Per-case packages remain untouched (may differ across isolated profiles).
         for name, record in (case.pop("package_provenance", None) or {}).items():
             prior_record = merged_provenance.get(name)
             if prior_record is not None and prior_record != record:
                 raise RuntimeError(f"package provenance conflict for {name}")
             merged_provenance[name] = record
+
+    # Candidate-plugin versions only: fail closed on rextio-numpy / rextio-tensorflow
+    # conflicts; ignore legitimate numpy/networkx profile isolation differences.
+    try:
+        candidate_versions = report_package_versions({"cases": cases})
+    except GateError as error:
+        raise RuntimeError(str(error)) from error
 
     blockers = []
     if mode == "quick":
@@ -127,7 +130,7 @@ def run_suite(repository_root: Path, mode: str) -> tuple[dict[str, Any], Path]:
     package_provenance = None
     try:
         policy, package_provenance = assemble_candidate_policy_binding(
-            versions,
+            candidate_versions,
             merged_provenance,
         )
     except Exception as error:
