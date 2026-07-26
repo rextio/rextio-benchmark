@@ -1,13 +1,13 @@
 # rextio-benchmark
 
 `rextio-benchmark` is an auditable CPU-first showcase for the Rextio ecosystem.
-Package version **0.1.1 (Unreleased)** defines the pre-measurement candidate
-plugin cohort while preserving the complete **0.1.0** release history and the
-published Mac CPU evidence. It compares the exact original Python source with
-the generated fallback package and the same generated package forced onto its
-verified native route. It never invents or pre-populates benchmark numbers,
-discards slower results, or implies that Rust makes BLAS, libtorch, TensorFlow,
-or CUDA kernels intrinsically faster.
+Package version **0.1.1 (Unreleased)** publishes the measured unreleased
+plugin **0.1.3** candidate Mac CPU cohort while preserving the complete
+**0.1.0** release history and its frozen published evidence. It compares the
+exact original Python source with the generated fallback package and the same
+generated package forced onto its verified native route. It never invents or
+pre-populates benchmark numbers, discards slower results, or implies that Rust
+makes BLAS, libtorch, TensorFlow, or CUDA kernels intrinsically faster.
 
 ## Requirements
 
@@ -35,8 +35,95 @@ candidate pin. See [CHANGELOG.md](CHANGELOG.md) and
 > fastest-run selection. All six pre-frozen README rows met the threshold, so
 > the publication gate now applies to those headline rows while Core executable,
 > NumPy `dot`, and the phase1 non-fused diagnostic remain fully published
-> diagnostics. Existing 0.1.0 canonical figures stay historical until a
-> candidate three-run cohort is measured.
+> diagnostics. The released **0.1.0** canonical figures remain historical; the
+> measured **0.1.3** candidate cohort below is an additional qualified
+> publication under package **0.1.1 (Unreleased)**, not a replacement of 0.1.0.
+
+## Verified CPU benchmark snapshots
+
+These are workload-specific results, not library-wide performance claims.
+Ratios below 1× mean Rextio was slower on that workload; values near 1× indicate
+parity, not a material speedup. Neutral and slower headline rows are retained
+with no cherry-picking.
+
+### Unreleased plugin 0.1.3 candidate (measured)
+
+Three-run chronological-first cohort
+[`cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a`](results/canonical/cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a/)
+on **Mac16,11 / Apple M4 Pro**, **2026-07-26**, CPython **3.11.9**, measured
+from clean commit
+[`afd73d76107f9b7f352c8f5bb8a0ed382051f8bc`](https://github.com/rextio/rextio-benchmark/commit/afd73d76107f9b7f352c8f5bb8a0ed382051f8bc).
+Policy id remains `candidate-plugin-0.1.3-pre-measurement` (frozen name) with
+measured-candidate publication status. Plugins:
+
+- `rextio-numpy==0.1.3` candidate@`7316c47393a8` (Git rev
+  `7316c47393a86f1c701049b878d01e8d8f561cdb`) — **not** a PyPI 0.1.3 release
+- `rextio-tensorflow==0.1.3` candidate@`346ca58148ed` (Git rev
+  `346ca58148ed2563d4c7547dd8443d60cd4f905b`) — **not** a PyPI 0.1.3 release
+- released pins otherwise: `rextio==0.1.6`, `rextio-networkx==0.1.1`,
+  `rextio-pandas==0.1.2`, `rextio-torch==0.1.2`
+
+**Three-run medians** (headline rows; maximum relative deviation from the
+three-run median; 10% stability gate):
+
+| Domain | 3-run median speedup | Max deviation |
+| --- | ---: | ---: |
+| Core hybrid | 57.392× | 0.46% |
+| NumPy mixed fusion | 0.289× | 4.38% |
+| NetworkX Dijkstra | 3.694× | 4.71% |
+| pandas Series.map | 66.091× | 1.39% |
+| PyTorch CPU deep MLP | 1.014× | 0.81% |
+| TensorFlow CPU eager chain | 0.994× | 0.39% |
+
+All six headline rows passed the 10% stability veto.
+
+**Chronological-first canonical report** (selected first of three; not chosen
+by speedup):
+
+| Domain | Python source | Rextio native | Speedup |
+| --- | ---: | ---: | ---: |
+| Core hybrid | 7.989583 ms | 0.140795 ms | 57.392× |
+| NumPy mixed fusion | 0.052636 ms | 0.174234 ms | 0.302× |
+| NetworkX Dijkstra | 53.579948 ms | 13.893143 ms | 3.868× |
+| pandas Series.map | 179.848385 ms | 2.790601 ms | 65.172× |
+| PyTorch CPU deep MLP | 0.390064 ms | 0.384463 ms | 1.014× |
+| TensorFlow CPU eager chain | 0.650397 ms | 0.653509 ms | 0.997× |
+
+**Published diagnostics** (full report only; never README headline substitutes),
+from the same chronological-first report: Core executable **16.658×**, NumPy
+phase1 non-fused branch **0.514×** (not a fusion claim), NumPy `dot` BLAS
+negative control **0.241×**.
+
+[Canonical report](results/canonical/cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a/report.md)
+· [stability summary](results/canonical/cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a/stability.json)
+· [PUBLICATION.md](PUBLICATION.md)
+
+### Released 0.1.0 (historical, frozen)
+
+The first public Mac CPU cohort remains byte-immutable at
+[`cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8`](results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/),
+measured from clean commit
+[`ff7f4fea34199d850bed0446a8a223ef730ddf17`](https://github.com/rextio/rextio-benchmark/commit/ff7f4fea34199d850bed0446a8a223ef730ddf17)
+and published in evidence commit
+[`e62a3f8fb1637f52288873fb077ba4efba0ead59`](https://github.com/rextio/rextio-benchmark/commit/e62a3f8fb1637f52288873fb077ba4efba0ead59).
+Released pins only (`rextio-numpy==0.1.2`, `rextio-tensorflow==0.1.2`, and the
+same other released package line). Headline stability met the 10% gate; the
+NumPy BLAS negative control varied by about 23% and remains a published
+non-headline diagnostic.
+
+Chronological-first report (historical wording/figures retained):
+
+| Domain | Python source | Rextio native | Speedup |
+| --- | ---: | ---: | ---: |
+| Core hybrid | 7.915661 ms | 0.138143 ms | 57.712× |
+| NumPy mixed fusion | 0.041840 ms | 0.086150 ms | 0.485× |
+| NetworkX Dijkstra | 50.581281 ms | 13.472185 ms | 3.751× |
+| pandas Series.map | 179.454594 ms | 2.719183 ms | 66.002× |
+| PyTorch CPU deep MLP | 0.388957 ms | 0.383640 ms | 1.014× |
+| TensorFlow CPU eager chain | 0.727017 ms | 0.738452 ms | 0.984× |
+
+Do not rewrite, re-hash, or re-measure that directory. Candidate figures above
+do not replace these released 0.1.0 numbers.
 
 ## Run the CPU suite
 

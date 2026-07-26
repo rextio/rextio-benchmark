@@ -45,17 +45,25 @@ Its complete case set is the released 0.1.0 set (without
 that frozen complete set so historical reports stay verifiable after later
 diagnostic expansion. Do not rewrite, re-hash, or re-measure that directory.
 
-## Candidate plugin 0.1.3 pre-measurement cohort (second frozen policy)
+## Candidate plugin 0.1.3 cohort (second frozen policy; measured)
 
-A second cohort policy is frozen **before** any candidate three-run measurement:
+A second cohort policy was frozen **before** any candidate three-run
+measurement under policy id `candidate-plugin-0.1.3-pre-measurement` (that id
+is the immutable policy name bound into reports; it is not rewritten after
+measurement). The qualifying three-run candidate cohort has since been
+measured and is published as a **measured candidate** under package
+**0.1.1 (Unreleased)**. The released **0.1.0** cohort and figures remain
+historical and are not replaced.
 
 | Field | Value |
 | --- | --- |
-| Policy id | `candidate-plugin-0.1.3-pre-measurement` |
+| Policy id | `candidate-plugin-0.1.3-pre-measurement` (frozen name) |
 | Policy version | `1` (same schema; no report schema bump) |
-| Status | pre-measurement (no published candidate numbers yet) |
+| Status | measured candidate (qualified three-run cohort published) |
+| Published cohort | `cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a` |
+| Measurement commit | `afd73d76107f9b7f352c8f5bb8a0ed382051f8bc` |
 | Selection | chronological-first, exactly three publish reports |
-| Headline stability | 10% on the six frozen README rows only |
+| Headline stability | 10% on the six frozen README rows only (**passed**) |
 | Complete cases | released 0.1.0 set **plus** `numpy-mixed-nonfused-phase1` |
 | `rextio-numpy` | version `0.1.3` from Git rev `7316c47393a86f1c701049b878d01e8d8f561cdb` |
 | `rextio-tensorflow` | version `0.1.3` from Git rev `346ca58148ed2563d4c7547dd8443d60cd4f905b` |
@@ -75,8 +83,36 @@ Headline proof before timing:
   weight with default rank-2 transpose.
 - `numpy-mixed-nonfused-phase1` must not be described as fusion.
 
-Until a candidate three-run cohort is measured, committed, and verified, do not
-publish candidate performance numbers or replace the historical README figures.
+### Measured candidate headline results (no cherry-picking)
+
+Three-run medians and maximum relative deviations (all six rows within 10%):
+
+| Domain | 3-run median | Max deviation |
+| --- | ---: | ---: |
+| Core hybrid | 57.392× | 0.46% |
+| NumPy mixed fusion | 0.289× | 4.38% |
+| NetworkX Dijkstra | 3.694× | 4.71% |
+| pandas Series.map | 66.091× | 1.39% |
+| PyTorch CPU deep MLP | 1.014× | 0.81% |
+| TensorFlow CPU eager chain | 0.994× | 0.39% |
+
+Chronological-first canonical report timings (selected first report):
+
+| Domain | Source → native | Speedup |
+| --- | ---: | ---: |
+| Core hybrid | 7.989583 ms → 0.140795 ms | 57.392× |
+| NumPy mixed fusion | 0.052636 ms → 0.174234 ms | 0.302× |
+| NetworkX Dijkstra | 53.579948 ms → 13.893143 ms | 3.868× |
+| pandas Series.map | 179.848385 ms → 2.790601 ms | 65.172× |
+| PyTorch CPU deep MLP | 0.390064 ms → 0.384463 ms | 1.014× |
+| TensorFlow CPU eager chain | 0.650397 ms → 0.653509 ms | 0.997× |
+
+Published diagnostics from that first report: Core executable **16.658×**,
+NumPy phase1 non-fused **0.514×** (not a fusion claim), NumPy `dot` negative
+control **0.241×**. Bundle path:
+`results/canonical/cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a/`.
+Do not rewrite, re-hash, re-measure, rename, or delete that directory. Do not
+replace the frozen released 0.1.0 figures with these candidate numbers.
 
 ## Qualifying cohort
 
@@ -137,8 +173,9 @@ measurement commit must remain its ancestor; run-inputs are verified from that
 commit's Git blobs. For canonical bundles, run-output roles are resolved from
 content-addressed bundled objects even when mutable live ignored `.rextio`
 paths exist and differ. Dirty or unrelated checkouts are rejected for new
-publication; quality CI uses full-history checkout and re-verifies the frozen
-released canonical report. Candidate verification additionally re-runs
+publication; quality CI uses full-history checkout and re-verifies both the
+frozen released 0.1.0 canonical report and the measured candidate plugin 0.1.3
+canonical report. Candidate verification additionally re-runs
 `generated_expectations` against the resolved bundled portable `check.json`
 and generated Rust source (not live files). Those expectations are not applied
 retroactively to the released 0.1.0 cohort.

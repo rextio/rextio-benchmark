@@ -5,14 +5,17 @@ Changelog and Semantic Versioning conventions.
 
 ## [0.1.1] — Unreleased
 
-Pre-measurement candidate-cohort definition for the unreleased plugin 0.1.3
-line. This cut is **not** a new published performance claim and does **not**
-replace the released 0.1.0 Mac CPU cohort.
+Measured publication of the unreleased plugin **0.1.3** candidate Mac CPU
+cohort under package **0.1.1 (Unreleased)**. This cut does **not** replace the
+released **0.1.0** complete-case cohort or its historical figures.
+`rextio-numpy==0.1.3` and `rextio-tensorflow==0.1.3` remain **unreleased
+commit-pinned candidate builds**, not PyPI 0.1.3 releases.
 
 ### Added
 
-- Define a second frozen, pre-measurement **candidate plugin 0.1.3** cohort
-  policy alongside the released 0.1.0 complete-case set.
+- Define a second frozen **candidate plugin 0.1.3** cohort policy alongside the
+  released 0.1.0 complete-case set (policy id
+  `candidate-plugin-0.1.3-pre-measurement`; immutable name bound into reports).
 - Pin `rextio-numpy==0.1.3` and `rextio-tensorflow==0.1.3` from exact Git
   revisions (not PyPI 0.1.3 releases) in the affected uv profiles.
 - Add diagnostic case `numpy-mixed-nonfused-phase1` (`phase=1`) for the
@@ -25,6 +28,11 @@ replace the released 0.1.0 Mac CPU cohort.
   `tf.transpose` on a non-square weight before the existing bounded loop and
   classification.
 - CI push/PR triggers now include the `0.1.1` integration branch.
+- Publish the measured three-run candidate cohort
+  `cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a`
+  (measurement commit `afd73d76107f9b7f352c8f5bb8a0ed382051f8bc`; NumPy rev
+  `7316c47393a86f1c701049b878d01e8d8f561cdb`; TensorFlow rev
+  `346ca58148ed2563d4c7547dd8443d60cd4f905b`).
 
 ### Changed
 
@@ -41,18 +49,38 @@ replace the released 0.1.0 Mac CPU cohort.
 - Canonical verification treats bundled run-output evidence as authoritative
   over live ignored `.rextio` paths; candidate reports bind policy id
   `candidate-plugin-0.1.3-pre-measurement` plus exact PEP 610 / lock pins;
-  quality CI uses full-history checkout and verifies the frozen released
-  canonical report; candidate verification re-runs generated expectations
-  against bundled check/source evidence.
+  quality CI uses full-history checkout and verifies **both** the frozen
+  released canonical report and the measured candidate canonical report;
+  candidate verification re-runs generated expectations against bundled
+  check/source evidence.
+- Document measured-candidate status and the published candidate figures in
+  README and PUBLICATION while retaining full 0.1.0 historical wording and
+  numbers.
+
+### Measured candidate results (no cherry-picking)
+
+Three-run medians / maximum deviations (10% headline stability **passed**):
+Core **57.392×** (0.46%), NumPy fusion **0.289×** (4.38%), NetworkX
+**3.694×** (4.71%), pandas **66.091×** (1.39%), Torch **1.014×** (0.81%),
+TensorFlow **0.994×** (0.39%).
+
+Chronological-first canonical report: Core 7.989583 ms → 0.140795 ms
+(57.392×), NumPy 0.052636 ms → 0.174234 ms (0.302×), NetworkX 53.579948 ms →
+13.893143 ms (3.868×), pandas 179.848385 ms → 2.790601 ms (65.172×), Torch
+0.390064 ms → 0.384463 ms (1.014×), TensorFlow 0.650397 ms → 0.653509 ms
+(0.997×). Diagnostics: Core executable **16.658×**, NumPy phase1 **0.514×**
+(not a fusion claim), NumPy `dot` negative control **0.241×**.
 
 ### Non-claims
 
-- No new three-run candidate cohort is measured or published in this cut.
-- Existing published 0.1.0 figures remain historical; this work invents no
-  replacement numbers.
+- This is **not** a new PyPI release of `rextio-numpy` 0.1.3 or
+  `rextio-tensorflow` 0.1.3; pins are exact unreleased Git revisions only.
+- Existing published **0.1.0** figures remain historical and are not replaced
+  by the candidate cohort.
 - Phase-1 is never described as a fusion claim.
-- Candidate Git pins are not PyPI `rextio-numpy` 0.1.3 or `rextio-tensorflow`
-  0.1.3 releases.
+- Unfavorable and parity headline rows (NumPy fusion slowdown; Torch/TensorFlow
+  near 1×) are retained deliberately; no sliding window or fastest-run
+  selection.
 
 ## [0.1.0] — 2026-07-26
 
