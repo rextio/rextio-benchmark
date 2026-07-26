@@ -310,6 +310,69 @@ def test_generated_expectations_require_plugin_rule_and_rust_substring(
         enforce_generated_expectations(case, check, generated_rust_source=rust)
 
 
+def test_rust_function_expectation_binds_nested_numpy_return_conversion(
+    tmp_path: Path,
+) -> None:
+    from rextio_benchmark.verification import enforce_generated_expectations
+
+    nested = "__rxtnp_release_f64_1d(__rxtnp_add1_as(py, &values, 0.25)?)?"
+    rust = tmp_path / "lib.rs"
+    rust.write_text(
+        "fn numpy_case__workload__boundary_direct_sink() {\n"
+        f"    return Ok({nested});\n"
+        "}\n",
+        encoding="utf-8",
+    )
+    check = {
+        "modules": [
+            {
+                "functions": [
+                    {
+                        "qualname": "numpy_case.workload.boundary_direct_sink",
+                        "route": "native-plugin:rextio-numpy",
+                        "native_status": "accepted",
+                    }
+                ]
+            }
+        ]
+    }
+    case = BenchmarkCase(
+        benchmark_id="numpy-f64-1d-boundary-direct-sink",
+        project="numpy",
+        profile="base",
+        project_root=tmp_path,
+        adapter_path=tmp_path / "benchmark_case.py",
+        kind="python-module",
+        module="numpy_case.workload",
+        function="boundary_direct_sink",
+        qualname="numpy_case.workload.boundary_direct_sink",
+        expected_route="native-plugin:rextio-numpy",
+        tolerance={"absolute": 0.0, "relative": 0.0},
+        raw={
+            "generated_expectations": {
+                "rust_functions": [
+                    {
+                        "name": "numpy_case__workload__boundary_direct_sink",
+                        "required_substrings": [nested],
+                    }
+                ]
+            }
+        },
+    )
+    enforce_generated_expectations(case, check, generated_rust_source=rust)
+
+    rust.write_text(
+        "fn numpy_case__workload__boundary_direct_sink() {\n"
+        "    let value = __rxtnp_add1_as(py, &values, 0.25)?;\n"
+        "    return Ok(value);\n"
+        "}\n"
+        "fn unrelated() { __rxtnp_release_f64_1d(value); }\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(GateError, match="lacks '__rxtnp_release_f64_1d"):
+        enforce_generated_expectations(case, check, generated_rust_source=rust)
+
+
 def test_gate_build_enforces_generated_expectations_on_portable_check(
     tmp_path: Path,
 ) -> None:

@@ -210,6 +210,24 @@ def test_new_diagnostic_manifests_use_exact_validation_without_headline_changes(
         assert case_id not in HEADLINE_CASE_IDS
         assert record["generated_expectations"]
 
+    numpy_document = json.loads(
+        (ROOT / "cases/numpy/benchmark.json").read_text(encoding="utf-8")
+    )
+    numpy_record = next(
+        item
+        for item in numpy_document["benchmarks"]
+        if item["id"] == "numpy-f64-1d-boundary-direct-sink"
+    )
+    target = next(
+        expectation
+        for expectation in numpy_record["generated_expectations"]["rust_functions"]
+        if expectation["name"] == "numpy_case__workload__boundary_direct_sink"
+    )
+    assert target["required_substrings"] == [
+        "__rxtnp_release_f64_1d(__rxtnp_add1_as(py, &values, 0.25)?)?"
+    ]
+    assert "ordered_substrings" not in target
+
 
 def test_numpy_boundary_diagnostic_uses_readonly_f64_input() -> None:
     adapter_path = ROOT / "cases/numpy/benchmark_case.py"

@@ -26,12 +26,7 @@
           {
             "name": "numpy_case__workload__boundary_direct_sink",
             "required_substrings": [
-              "__rxtnp_add1_as(py, &values, 0.25)?",
-              "__rxtnp_release_f64_1d("
-            ],
-            "ordered_substrings": [
-              "__rxtnp_add1_as(py, &values, 0.25)?",
-              "__rxtnp_release_f64_1d("
+              "__rxtnp_release_f64_1d(__rxtnp_add1_as(py, &values, 0.25)?)?"
             ]
           },
           {
