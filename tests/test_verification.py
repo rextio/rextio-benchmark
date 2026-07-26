@@ -68,6 +68,7 @@ def test_build_gate_requires_exact_route_and_built_artifact(tmp_path: Path) -> N
         project / "rextio.toml",
         tmp_path / "profiles/base/pyproject.toml",
         tmp_path / "profiles/base/uv.lock",
+        tmp_path / "profiles/next-candidate.toml",
         tmp_path / "scripts/bootstrap.sh",
         tmp_path / "scripts/build.sh",
         tmp_path / "scripts/benchmark.sh",
@@ -88,6 +89,7 @@ def test_build_gate_requires_exact_route_and_built_artifact(tmp_path: Path) -> N
         "build_runner.py",
         "canonical.py",
         "case_runner.py",
+        "integration_targets.py",
         "models.py",
         "output_table.py",
         "portability.py",
@@ -156,6 +158,7 @@ def test_build_gate_requires_exact_route_and_built_artifact(tmp_path: Path) -> N
         "build_runner.py",
         "canonical.py",
         "case_runner.py",
+        "integration_targets.py",
         "models.py",
         "output_table.py",
         "portability.py",
@@ -169,6 +172,7 @@ def test_build_gate_requires_exact_route_and_built_artifact(tmp_path: Path) -> N
     assert expected_harness == verification.MEASUREMENT_HARNESS_FILES
     expected_inputs = {
         "repository_manifest": "pyproject.toml",
+        "integration_target_config": "profiles/next-candidate.toml",
         "report_schema": "schema/benchmark-report-v1.schema.json",
         "publication_policy": "PUBLICATION.md",
         "benchmark_script": "scripts/benchmark.sh",
@@ -196,7 +200,14 @@ def test_generated_expectations_require_plugin_rule_and_rust_substring(
 
     rust = tmp_path / "lib.rs"
     rust.write_text(
-        "fn body() { let _ = __rxtnp_echain_demo(&a, &b); }\n",
+        "fn body() { let _ = __rxtnp_echain_demo(&a, &b); }\n"
+        "fn target() {\n"
+        "    let converted = extract(input);\n"
+        "    let guard = enter();\n"
+        "    let value = direct_fill(converted);\n"
+        "    drop(guard);\n"
+        "}\n"
+        "fn helper() { direct_fill_sink(); }\n",
         encoding="utf-8",
     )
     check = {
@@ -239,6 +250,25 @@ def test_generated_expectations_require_plugin_rule_and_rust_substring(
                     }
                 ],
                 "generated_rust_source_substrings": ["__rxtnp_echain_"],
+                "rust_functions": [
+                    {
+                        "name": "target",
+                        "required_substrings": ["let guard = enter();", "direct_fill("],
+                        "forbidden_substrings": ["nested_guard()"],
+                        "substring_counts": {"enter()": 1},
+                        "ordered_substrings": [
+                            "extract(input)",
+                            "let guard = enter();",
+                            "direct_fill(converted)",
+                            "drop(guard)",
+                        ],
+                    },
+                    {
+                        "name": "helper",
+                        "required_substrings": ["direct_fill_sink()"],
+                        "forbidden_substrings": ["enter()"],
+                    },
+                ],
             }
         },
     )
@@ -263,6 +293,20 @@ def test_generated_expectations_require_plugin_rule_and_rust_substring(
 
     rust.write_text("fn body() { /* no helper */ }\n", encoding="utf-8")
     with pytest.raises(GateError, match="generated Rust source lacks"):
+        enforce_generated_expectations(case, check, generated_rust_source=rust)
+
+    rust.write_text(
+        "fn body() { let _ = __rxtnp_echain_demo(&a, &b); }\n"
+        "fn target() {\n"
+        "    let guard = enter();\n"
+        "    let value = direct_fill(input);\n"
+        "    let nested = enter();\n"
+        "    drop(guard);\n"
+        "}\n"
+        "fn helper() { let nested = enter(); direct_fill_sink(); }\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(GateError, match="expected 1 occurrences"):
         enforce_generated_expectations(case, check, generated_rust_source=rust)
 
 
@@ -292,6 +336,7 @@ def test_gate_build_enforces_generated_expectations_on_portable_check(
         project / "rextio.toml",
         tmp_path / "profiles/base/pyproject.toml",
         tmp_path / "profiles/base/uv.lock",
+        tmp_path / "profiles/next-candidate.toml",
         tmp_path / "scripts/bootstrap.sh",
         tmp_path / "scripts/build.sh",
         tmp_path / "scripts/benchmark.sh",
@@ -317,6 +362,7 @@ def test_gate_build_enforces_generated_expectations_on_portable_check(
         "build_runner.py",
         "canonical.py",
         "case_runner.py",
+        "integration_targets.py",
         "models.py",
         "output_table.py",
         "portability.py",

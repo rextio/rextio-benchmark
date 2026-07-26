@@ -21,6 +21,29 @@
           "numpy::PyReadonlyArray1<'py, f64>",
           "__rxtnp_f64_1d_output",
           "__rxtnp_release_f64_1d"
+        ],
+        "rust_functions": [
+          {
+            "name": "numpy_case__workload__boundary_direct_sink",
+            "required_substrings": [
+              "__rxtnp_add1_as(py, &values, 0.25)?",
+              "__rxtnp_release_f64_1d("
+            ],
+            "ordered_substrings": [
+              "__rxtnp_add1_as(py, &values, 0.25)?",
+              "__rxtnp_release_f64_1d("
+            ]
+          },
+          {
+            "name": "__rxtnp_add1_as",
+            "required_substrings": [
+              "__rxtnp_f64_1d_output(py,"
+            ],
+            "forbidden_substrings": [
+              ".to_owned()",
+              "Array1::from"
+            ]
+          }
         ]
       }
     },
