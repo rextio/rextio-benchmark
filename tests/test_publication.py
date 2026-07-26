@@ -291,9 +291,19 @@ def test_readme_blocks_keep_row_order_links_and_slow_values() -> None:
         "README.zh-hans.md",
         "README.zh-hant.md",
     ]
+    version_labels = {
+        "README.md": "Versions:",
+        "README.ko.md": "버전:",
+        "README.ja.md": "バージョン:",
+        "README.zh-hans.md": "版本:",
+        "README.zh-hant.md": "版本:",
+    }
+    for filename, block in blocks.items():
+        assert version_labels[filename] in block
     for block in blocks.values():
         positions = [block.index(label) for label, _ in HEADLINE_ROWS]
         assert positions == sorted(positions)
+        assert "pandas Series.map" in block
         assert "0.750×" in block
         assert "/blob/" + "b" * 40 in block
         assert "/report.md)" in block

@@ -7,12 +7,12 @@ from typing import Any
 from .verification import GateError
 
 HEADLINE_ROWS = (
-    ("Core", "core-hybrid"),
-    ("NumPy", "numpy-mixed-fusion"),
-    ("NetworkX", "networkx-dijkstra"),
-    ("pandas", "pandas-series-map"),
-    ("PyTorch CPU", "torch-cpu-deep-mlp"),
-    ("TensorFlow CPU", "tensorflow-cpu-eager-chain"),
+    ("Core hybrid", "core-hybrid"),
+    ("NumPy mixed fusion", "numpy-mixed-fusion"),
+    ("NetworkX Dijkstra", "networkx-dijkstra"),
+    ("pandas Series.map", "pandas-series-map"),
+    ("PyTorch CPU deep MLP", "torch-cpu-deep-mlp"),
+    ("TensorFlow CPU eager chain", "tensorflow-cpu-eager-chain"),
 )
 LOCALES = {
     "README.md": {
@@ -21,6 +21,7 @@ LOCALES = {
         "versions": "Versions",
         "columns": ("Domain", "Python source", "Rextio native", "Speedup (source ÷ native)"),
         "caveat": (
+            "These are workload-specific results, not library-wide performance claims. "
             "Build, import, first-call, and worker-process startup are excluded from "
             "these steady-state rows. The Core executable is separate because process "
             "startup is included. NumPy `dot` remains a BLAS-owned negative control; a "
@@ -32,24 +33,28 @@ LOCALES = {
     },
     "README.ko.md": {
         "heading": "검증된 CPU 벤치마크 스냅샷",
-        "intro": "동일한 Python 소스와 결정적 입력",
+        "intro": "동일한 Python 소스와 결정론적 입력",
         "versions": "버전",
         "columns": ("영역", "Python 소스", "Rextio native", "속도비 (소스 ÷ native)"),
         "caveat": (
+            "각 수치는 해당 workload의 결과이며 라이브러리 전체 성능을 뜻하지 않습니다. "
             "빌드, import, 첫 호출, worker 프로세스 시작 시간은 이 steady-state "
             "행에서 제외됩니다. Core 실행 파일은 프로세스 시작을 포함하므로 별도 "
             "보고됩니다. NumPy `dot`은 BLAS negative control이며 수동 벡터화한 "
             "pandas/NumPy 재작성은 더 빠를 수 있습니다. 1× 미만은 Rextio가 더 "
-            "느렸다는 뜻이며, 1× 부근 값은 유의미한 가속이 아닌 동등 성능입니다."
+            "느렸다는 뜻이며, 1× 부근의 값은 실질적인 속도 향상이 아니라 성능이 "
+            "대체로 동등하다는 뜻입니다."
         ),
         "links": ("정식 보고서", "측정 커밋", "증거 커밋"),
     },
     "README.ja.md": {
         "heading": "検証済み CPU ベンチマーク",
-        "intro": "同一の Python ソースと決定的入力",
+        "intro": "同一の Python ソースと決定論的な入力",
         "versions": "バージョン",
         "columns": ("領域", "Python ソース", "Rextio native", "高速化 (source ÷ native)"),
         "caveat": (
+            "各数値は個別 workload の結果であり、ライブラリ全体の性能を示すものでは"
+            "ありません。"
             "build、import、初回呼び出し、worker 起動時間は steady-state 行から除外"
             "します。Core 実行ファイルはプロセス起動を含むため別掲です。NumPy "
             "`dot` は BLAS negative control で、手動ベクトル化 pandas/NumPy "
@@ -64,12 +69,13 @@ LOCALES = {
         "versions": "版本",
         "columns": ("领域", "Python 源码", "Rextio native", "加速比 (source ÷ native)"),
         "caveat": (
+            "这些数值仅代表对应 workload，并非对整个库的性能声明。"
             "这些 steady-state 行不含构建、import、首次调用和 worker 进程启动。"
             "Core 可执行文件因包含进程启动而单独报告。NumPy `dot` 保留为 BLAS "
             "negative control；手工向量化的 pandas/NumPy 重写可能更快。低于 "
             "1× 表示 Rextio 更慢；接近 1× 表示性能相当，而非实质性加速。"
         ),
-        "links": ("规范报告", "测量提交", "证据提交"),
+        "links": ("正式报告", "测量提交", "证据提交"),
     },
     "README.zh-hant.md": {
         "heading": "已驗證的 CPU 基準快照",
@@ -77,12 +83,13 @@ LOCALES = {
         "versions": "版本",
         "columns": ("領域", "Python 原始碼", "Rextio native", "加速比 (source ÷ native)"),
         "caveat": (
+            "這些數值僅代表對應 workload，並非對整個函式庫的效能聲明。"
             "這些 steady-state 行不含建置、import、首次呼叫和 worker 行程啟動。"
             "Core 執行檔因包含行程啟動而單獨報告。NumPy `dot` 保留為 BLAS "
             "negative control；手動向量化的 pandas/NumPy 重寫可能更快。低於 "
             "1× 表示 Rextio 較慢；接近 1× 表示效能相當，而非實質性加速。"
         ),
-        "links": ("規範報告", "測量提交", "證據提交"),
+        "links": ("正式報告", "測量提交", "證據提交"),
     },
 }
 _COMMIT = re.compile(r"^[0-9a-f]{40}$")
