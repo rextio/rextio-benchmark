@@ -722,7 +722,11 @@ def _verify_next_integration_policy_and_provenance(
     repository_root: Path,
     known: dict[str, BenchmarkCase],
 ) -> None:
-    """Bind the 12-case policy to run-commit config, profiles, and PEP 610."""
+    """Bind the 12-case policy to run-commit config, profiles, and PEP 610.
+
+    Failed cases may lack gate/package evidence in a non-publishable report.
+    Publishable and canonical reports require exact evidence for every case.
+    """
     policy = report.get("policy")
     provenance = report.get("package_provenance")
     required = requires_full_candidate_binding(report) or any(
@@ -732,6 +736,9 @@ def _verify_next_integration_policy_and_provenance(
     )
     if not required and policy is None and provenance is None:
         return
+    strict_evidence = (
+        report.get("publishable") is True or report.get("canonical_bundle") is not None
+    )
     if not isinstance(policy, dict) or policy.get("policy_id") != TARGET_POLICY_ID:
         raise GateError("next publishability requires next candidate policy and provenance")
     bound = bound_candidate_pins_from_report(report)
@@ -751,7 +758,9 @@ def _verify_next_integration_policy_and_provenance(
         gate = case_report.get("gate")
         evidence = gate.get("evidence") if isinstance(gate, dict) else None
         if not isinstance(evidence, dict):
-            raise GateError(f"{case_report['id']}: next candidate report lacks gate evidence")
+            if strict_evidence:
+                raise GateError(f"{case_report['id']}: next candidate report lacks gate evidence")
+            continue
         candidate_blob = _required_run_input_blob(
             report,
             evidence.get("integration_target_config"),
@@ -766,6 +775,18 @@ def _verify_next_integration_policy_and_provenance(
             expected_path=harness_path,
             repository_root=repository_root,
         )
+        profile = known[case_report["id"]].profile
+        for role, filename in (
+            ("profile_manifest", "pyproject.toml"),
+            ("profile_lock", "uv.lock"),
+        ):
+            _required_run_input_blob(
+                report,
+                evidence.get(role),
+                role=role,
+                expected_path=f"profiles/{profile}/{filename}",
+                repository_root=repository_root,
+            )
         if config_blob is None:
             config_blob = candidate_blob
         elif config_blob != candidate_blob:
@@ -789,22 +810,30 @@ def _verify_next_integration_policy_and_provenance(
                 and by_id[case_id].get("packages", {}).get(target.name) == target.version
             ]
             if not matching:
-                raise GateError(f"{target.name}: no {profile} case binds next candidate version")
+                if strict_evidence:
+                    raise GateError(
+                        f"{target.name}: no {profile} case binds next candidate version"
+                    )
+                continue
             lock_bound = False
             manifest_bound = False
             for case_report in matching:
-                evidence = case_report["gate"]["evidence"]
+                gate = case_report.get("gate")
+                evidence = gate.get("evidence") if isinstance(gate, dict) else None
+                if not isinstance(evidence, dict):
+                    raise GateError(
+                        f"{case_report['id']}: next candidate report lacks gate evidence"
+                    )
                 for role in ("profile_lock", "profile_manifest"):
                     record = evidence.get(role)
-                    if not isinstance(record, dict) or record.get("kind") != "run-input":
-                        continue
-                    blob = _git_blob(
-                        repository_root,
-                        report["repository"]["commit"],
-                        str(record.get("path", "")),
+                    filename = "uv.lock" if role == "profile_lock" else "pyproject.toml"
+                    blob = _required_run_input_blob(
+                        report,
+                        record,
+                        role=role,
+                        expected_path=f"profiles/{profile}/{filename}",
+                        repository_root=repository_root,
                     )
-                    if blob is None or hashlib.sha256(blob).hexdigest() != record.get("sha256"):
-                        continue
                     if lock_or_manifest_binds_pin(
                         blob.decode("utf-8"),
                         target.name,

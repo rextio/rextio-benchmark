@@ -155,6 +155,42 @@ def test_next_policy_verifier_requires_run_commit_config_and_harness(
     )
     _verify_next_integration_policy_and_provenance(report, ROOT, known)
 
+    first_case = cases[0]
+    profile = known[first_case["id"]].profile
+    for role, filename in (
+        ("profile_manifest", "pyproject.toml"),
+        ("profile_lock", "uv.lock"),
+    ):
+        expected_path = f"profiles/{profile}/{filename}"
+        substitute_path = f"substitute/{filename}"
+        blobs[substitute_path] = blobs[expected_path]
+        original = first_case["gate"]["evidence"][role]
+        first_case["gate"]["evidence"][role] = record(substitute_path)
+        with pytest.raises(GateError, match=rf"{role} evidence binding differs"):
+            _verify_next_integration_policy_and_provenance(report, ROOT, known)
+        first_case["gate"]["evidence"][role] = original
+
+    original_gate = first_case["gate"]
+    original_packages = first_case["packages"]
+    first_case["gate"] = None
+    first_case["packages"] = {}
+    first_case["eligible"] = False
+    report["mode"] = "publish"
+    report["publishable"] = False
+    _verify_next_integration_policy_and_provenance(report, ROOT, known)
+
+    report["publishable"] = True
+    with pytest.raises(GateError, match="lacks gate evidence"):
+        _verify_next_integration_policy_and_provenance(report, ROOT, known)
+    report["publishable"] = False
+    report["canonical_bundle"] = {}
+    with pytest.raises(GateError, match="lacks gate evidence"):
+        _verify_next_integration_policy_and_provenance(report, ROOT, known)
+    report.pop("canonical_bundle")
+    first_case["gate"] = original_gate
+    first_case["packages"] = original_packages
+    first_case.pop("eligible")
+
     del cases[0]["gate"]["evidence"]["integration_target_config"]
     with pytest.raises(GateError, match="integration_target_config"):
         _verify_next_integration_policy_and_provenance(report, ROOT, known)

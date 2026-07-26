@@ -634,7 +634,9 @@ def test_readme_labels_all_four_next_candidate_packages_in_every_locale() -> Non
     )
     for block in blocks.values():
         assert "rextio 0.1.7 candidate@b8b8ed11f6b7" in block
+        assert "rextio-numpy 0.1.3 candidate@cf461e677578" in block
         assert "rextio-torch 0.1.3 candidate@1e92b24b154c" in block
+        assert "rextio-tensorflow 0.1.3 candidate@1fdb2e1cd91d" in block
         assert "Core 0.1.7" in block
         assert "rextio-torch 0.1.3" in block
 

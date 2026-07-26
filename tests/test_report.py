@@ -5,6 +5,12 @@ from types import SimpleNamespace
 import jsonschema
 import pytest
 
+from rextio_benchmark.integration_targets import (
+    TARGET_CONFIG_PATH,
+    TARGET_POLICY_ID,
+    integration_target_pins,
+    parse_integration_targets,
+)
 from rextio_benchmark.models import load_cases
 from rextio_benchmark.report import render_markdown, run_suite
 from rextio_benchmark.verification import GateError
@@ -228,6 +234,98 @@ def test_run_suite_fails_closed_on_candidate_plugin_version_conflict(
     )
     with pytest.raises(RuntimeError, match="package version conflict for rextio-numpy"):
         run_suite(tmp_path, "quick")
+
+
+def test_run_suite_retains_next_policy_when_one_case_fails(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    cases = [
+        SimpleNamespace(
+            benchmark_id="numpy-f64-1d-boundary-direct-sink",
+            kind="python-module",
+            profile="base",
+            project="numpy",
+            raw={"description": "success", "context": None, "negative_control": False},
+        ),
+        SimpleNamespace(
+            benchmark_id="core-hybrid",
+            kind="python-module",
+            profile="base",
+            project="core-hybrid",
+            raw={"description": "failure", "context": None, "negative_control": False},
+        ),
+    ]
+    targets = parse_integration_targets(
+        (ROOT / TARGET_CONFIG_PATH).read_text(encoding="utf-8")
+    )
+    pins = integration_target_pins(targets)
+    provenance = {
+        name: {
+            "version": pin["version"],
+            "url": pin["git_url"],
+            "vcs": "git",
+            "commit_id": pin["rev"],
+        }
+        for name, pin in pins.items()
+    }
+    success = _blocked_case_result(
+        "numpy-f64-1d-boundary-direct-sink",
+        {name: pin["version"] for name, pin in pins.items()},
+        package_provenance=provenance,
+    )
+    success.update({"gate": {"evidence": {}}, "eligible": True, "blockers": []})
+
+    monkeypatch.setattr("rextio_benchmark.report.load_cases", lambda root: cases)
+    monkeypatch.setattr(
+        "rextio_benchmark.report.profile_python",
+        lambda root, profile: tmp_path / "python",
+    )
+    (tmp_path / "python").write_text("", encoding="utf-8")
+
+    def run_case(root: Path, python: Path, case: SimpleNamespace, mode: str) -> dict:
+        if case.benchmark_id == "core-hybrid":
+            raise RuntimeError("intentional partial failure")
+        return success
+
+    monkeypatch.setattr("rextio_benchmark.report.run_module_case", run_case)
+    monkeypatch.setattr(
+        "rextio_benchmark.report._repository_state",
+        lambda root: {"commit": "a" * 40, "dirty": True},
+    )
+    monkeypatch.setattr("rextio_benchmark.report._toolchain", lambda: {})
+    monkeypatch.setattr(
+        "rextio_benchmark.report._host_identity",
+        lambda: {"model": "fixture", "cpu_brand": "fixture"},
+    )
+    monkeypatch.setattr("rextio_benchmark.report._build_receipt", lambda root: None)
+    monkeypatch.setattr(
+        "rextio_benchmark.report.require_integration_targets_ready",
+        lambda root: targets,
+    )
+    monkeypatch.setattr(
+        "rextio_benchmark.report.integration_policy_binding",
+        lambda root: {
+            "policy_id": TARGET_POLICY_ID,
+            "policy_version": 1,
+            "status": "pre-measurement",
+            "candidate_packages": pins,
+        },
+    )
+    monkeypatch.setattr(
+        "rextio_benchmark.report.validate_integration_provenance",
+        lambda root, captured: captured,
+    )
+    (tmp_path / "results" / "local").mkdir(parents=True)
+
+    report, path = run_suite(tmp_path, "publish")
+    assert path.is_file()
+    assert report["publishable"] is False
+    assert report["policy"]["policy_id"] == TARGET_POLICY_ID
+    assert report["package_provenance"] == provenance
+    failed = next(case for case in report["cases"] if case["id"] == "core-hybrid")
+    assert failed["gate"] is None
+    assert failed["packages"] == {}
 
 
 def test_schema_rejects_unknown_version(tmp_path: Path) -> None:
