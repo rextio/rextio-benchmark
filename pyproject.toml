@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rextio-benchmark"
+version = "0.1.0"
+description = "Auditable source/fallback/native benchmarks for released Rextio packages"
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+license = "MIT"
+dependencies = [
+  "jsonschema==4.25.1",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest==9.1.1",
+  "ruff==0.15.22",
+]
+
+[project.scripts]
+rextio-benchmark = "rextio_benchmark.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rextio_benchmark"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["src", "tests", "cases"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["SIM108"]

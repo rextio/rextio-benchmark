@@ -1,0 +1,17 @@
+{
+  "project": "networkx",
+  "profile": "base",
+  "benchmarks": [
+    {
+      "id": "networkx-dijkstra",
+      "kind": "python-module",
+      "module": "networkx_case.workload",
+      "function": "dijkstra",
+      "qualname": "networkx_case.workload.dijkstra",
+      "expected_route": "native-plugin:rextio-networkx",
+      "tolerance": {"absolute": 1e-9, "relative": 1e-12},
+      "description": "Typed adapter Dijkstra over a deterministic weighted graph."
+    }
+  ]
+}
+

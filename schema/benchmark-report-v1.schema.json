@@ -1,0 +1,436 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/rextio/rextio-benchmark/schema/benchmark-report-v1.schema.json",
+  "title": "Rextio benchmark report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "generated_at",
+    "mode",
+    "publishable",
+    "eligibility",
+    "repository",
+    "system",
+    "configuration",
+    "build",
+    "cases"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "mode": {"enum": ["quick", "publish"]},
+    "publishable": {"type": "boolean"},
+    "eligibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "blockers"],
+      "properties": {
+        "status": {"enum": ["eligible", "blocked"]},
+        "blockers": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commit", "dirty"],
+      "properties": {
+        "commit": {"type": ["string", "null"]},
+        "dirty": {"type": "boolean"}
+      }
+    },
+    "system": {
+      "type": "object",
+      "properties": {
+        "host": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["model", "cpu_brand"],
+          "properties": {
+            "model": {"type": "string", "minLength": 1},
+            "cpu_brand": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "configuration": {
+      "type": "object",
+      "required": ["warmups", "samples", "minimum_sample_ns", "pairs", "bootstrap_resamples"],
+      "properties": {
+        "warmups": {"type": "integer", "minimum": 0},
+        "samples": {"type": "integer", "minimum": 1},
+        "minimum_sample_ns": {"type": "integer", "minimum": 1},
+        "pairs": {"type": "integer", "minimum": 1},
+        "bootstrap_resamples": {"type": "integer", "minimum": 100}
+      }
+    },
+    "build": {"type": ["object", "null"]},
+    "canonical_bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "manifest_path",
+        "manifest_sha256",
+        "file_count",
+        "object_count",
+        "logical_bytes",
+        "stored_bytes"
+      ],
+      "properties": {
+        "manifest_path": {"type": "string"},
+        "manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "file_count": {"type": "integer", "minimum": 1},
+        "object_count": {"type": "integer", "minimum": 1},
+        "logical_bytes": {"type": "integer", "minimum": 1},
+        "stored_bytes": {"type": "integer", "minimum": 1},
+        "cohort_id": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "report_count": {"const": 3},
+        "stability_summary_path": {"type": "string"},
+        "stability_summary_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/case"}
+    }
+  },
+  "$defs": {
+    "number": {"type": "number"},
+    "activeModuleProvenance": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["file", "root", "kind"],
+        "properties": {
+          "file": {"type": "string"},
+          "root": {"type": "string"},
+          "kind": {"enum": ["installed", "generated-runtime"]}
+        }
+      }
+    },
+    "stats": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["count", "median_ns", "mean_ns", "mad_ns", "p95_ns"],
+      "properties": {
+        "count": {"type": "integer", "minimum": 1},
+        "median_ns": {"$ref": "#/$defs/number"},
+        "mean_ns": {"$ref": "#/$defs/number"},
+        "mad_ns": {"$ref": "#/$defs/number"},
+        "p95_ns": {"$ref": "#/$defs/number"}
+      }
+    },
+    "lane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "steady_state",
+        "raw_samples_ns",
+        "import_ns",
+        "first_call_ns",
+        "batch_sizes",
+        "batch_elapsed_ns",
+        "module_files",
+        "pids",
+        "observations"
+      ],
+      "properties": {
+        "steady_state": {"$ref": "#/$defs/stats"},
+        "raw_samples_ns": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "number", "exclusiveMinimum": 0}
+        },
+        "import_ns": {"type": "array", "items": {"type": "number", "minimum": 0}},
+        "first_call_ns": {"type": "array", "items": {"type": "number", "minimum": 0}},
+        "batch_sizes": {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 1}
+        },
+        "batch_elapsed_ns": {
+          "type": "array",
+          "items": {"type": "number", "minimum": 1}
+        },
+        "module_files": {"type": "array", "items": {"type": "string"}},
+        "pids": {"type": "array", "items": {"type": "integer", "minimum": 1}},
+        "observations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/observation"}
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pair_index",
+        "samples_ns",
+        "normalized_output_ref",
+        "import_ns",
+        "first_call_ns",
+        "batch_sizes",
+        "batch_elapsed_ns",
+        "module_path",
+        "pid"
+      ],
+      "properties": {
+        "pair_index": {"type": ["integer", "null"], "minimum": 0},
+        "samples_ns": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"type": "number", "exclusiveMinimum": 0}
+        },
+        "normalized_output_ref": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "import_ns": {"type": ["integer", "null"], "minimum": 0},
+        "first_call_ns": {"type": ["integer", "null"], "minimum": 0},
+        "batch_sizes": {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 1}
+        },
+        "batch_elapsed_ns": {
+          "type": "array",
+          "items": {"type": "number", "minimum": 1}
+        },
+        "module_path": {"type": "string"},
+        "pid": {"type": ["integer", "null"], "minimum": 1}
+      }
+    },
+    "gate": {
+      "type": "object",
+      "required": [
+        "route",
+        "native_status",
+        "native_build_status",
+        "artifact",
+        "artifact_role",
+        "artifact_declaration",
+        "evidence"
+      ],
+      "properties": {
+        "route": {"type": "string"},
+        "native_status": {"const": "accepted"},
+        "native_build_status": {"const": "built"},
+        "artifact": {"type": "string"},
+        "artifact_role": {"type": "string"},
+        "artifact_declaration": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "declared_path", "runtime_path"],
+          "properties": {
+            "kind": {"enum": ["native-extension", "executable"]},
+            "declared_path": {"type": "string"},
+            "runtime_path": {"type": "string"}
+          }
+        },
+        "evidence": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256", "kind"],
+            "properties": {
+              "path": {"type": "string"},
+              "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+              "kind": {"enum": ["run-input", "run-output"]}
+            }
+          }
+        }
+      }
+    },
+    "paired": {
+      "type": "object",
+      "required": [
+        "orders",
+        "source_medians_ns",
+        "native_medians_ns",
+        "speedups",
+        "median_speedup",
+        "bootstrap_95",
+        "observations"
+      ],
+      "properties": {
+        "orders": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "prefixItems": [
+              {"enum": ["python-source", "rextio-native"]},
+              {"enum": ["python-source", "rextio-native"]}
+            ],
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "source_medians_ns": {"type": "array", "items": {"type": "number"}},
+        "native_medians_ns": {"type": "array", "items": {"type": "number"}},
+        "speedups": {"type": "array", "items": {"type": "number"}},
+        "median_speedup": {"type": "number"},
+        "bootstrap_95": {
+          "type": "array",
+          "prefixItems": [{"type": "number"}, {"type": "number"}],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "observations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "index",
+              "order",
+              "source_observation",
+              "native_observation"
+            ],
+            "properties": {
+              "index": {"type": "integer", "minimum": 0},
+              "order": {
+                "type": "array",
+                "items": {"enum": ["python-source", "rextio-native"]},
+                "minItems": 2,
+                "maxItems": 2
+              },
+              "source_observation": {"type": "integer", "minimum": 0},
+              "native_observation": {"type": "integer", "minimum": 0}
+            }
+          }
+        }
+      }
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "project",
+        "description",
+        "context",
+        "negative_control",
+        "kind",
+        "output_table",
+        "timing_contract",
+        "gate",
+        "correctness",
+        "lanes",
+        "paired",
+        "eligible",
+        "blockers",
+        "packages",
+        "python",
+        "environment"
+      ],
+      "properties": {
+        "id": {"type": "string"},
+        "project": {"type": "string"},
+        "description": {"type": "string"},
+        "context": {"type": ["string", "null"]},
+        "negative_control": {"type": "boolean"},
+        "kind": {"enum": ["python-module", "executable"]},
+        "output_table": {
+          "type": "object",
+          "propertyNames": {"pattern": "^[0-9a-f]{64}$"},
+          "additionalProperties": {}
+        },
+        "timing_contract": {
+          "type": ["object", "null"],
+          "properties": {
+            "unit": {"enum": ["function-call", "fresh-process"]},
+            "process_model": {"type": "string"},
+            "minimum_sample_ns": {"type": "integer", "minimum": 1},
+            "includes_process_startup": {"type": "boolean"}
+          }
+        },
+        "gate": {"oneOf": [{"$ref": "#/$defs/gate"}, {"type": "null"}]},
+        "correctness": {
+          "type": "object",
+          "required": ["status"],
+          "properties": {
+            "status": {"enum": ["passed", "blocked"]},
+            "tolerance": {"type": "object"},
+            "evidence": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["reference_output_ref", "fallback_output_ref"],
+              "properties": {
+                "reference_output_ref": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                },
+                "fallback_output_ref": {
+                  "type": ["string", "null"],
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              }
+            }
+          }
+        },
+        "lanes": {
+          "type": "object",
+          "additionalProperties": {"$ref": "#/$defs/lane"}
+        },
+        "paired": {"oneOf": [{"$ref": "#/$defs/paired"}, {"type": "null"}]},
+        "eligible": {"type": "boolean"},
+        "blockers": {"type": "array", "items": {"type": "string"}},
+        "packages": {"type": "object", "additionalProperties": {"type": "string"}},
+        "python": {"type": ["string", "null"]},
+        "environment": {
+          "type": "object",
+          "anyOf": [
+            {"maxProperties": 0},
+            {
+              "required": [
+                "OMP_NUM_THREADS",
+                "MKL_NUM_THREADS",
+                "OPENBLAS_NUM_THREADS",
+                "VECLIB_MAXIMUM_THREADS",
+                "NUMEXPR_NUM_THREADS",
+                "TF_NUM_INTRAOP_THREADS",
+                "TF_NUM_INTEROP_THREADS",
+                "effective_threads",
+                "module_provenance",
+                "active_module_provenance",
+                "profile_prefix"
+              ]
+            }
+          ],
+          "properties": {
+            "effective_threads": {"type": "object"},
+            "module_provenance": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["file", "site_packages"],
+                "properties": {
+                  "file": {"type": "string"},
+                  "site_packages": {"type": "string"}
+                }
+              }
+            },
+            "active_module_provenance": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "python-source": {"$ref": "#/$defs/activeModuleProvenance"},
+                "rextio-fallback": {"$ref": "#/$defs/activeModuleProvenance"},
+                "rextio-native": {"$ref": "#/$defs/activeModuleProvenance"}
+              }
+            },
+            "profile_prefix": {"type": "string"}
+          }
+        }
+      }
+    }
+  }
+}

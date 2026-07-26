@@ -1,0 +1,8 @@
+[rust]
+build_tool = "cargo"
+
+[policy]
+native_marker = "auto"
+require_type_hints = true
+allow_dynamic_features = false
+

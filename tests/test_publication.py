@@ -1,0 +1,230 @@
+from __future__ import annotations
+
+import json
+from copy import deepcopy
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+
+from rextio_benchmark.build_runner import _run
+from rextio_benchmark.bundler import bundle_cohort
+from rextio_benchmark.cohort import cohort_id, validate_cohort
+from rextio_benchmark.portability import portable_value, require_portable
+from rextio_benchmark.readme_blocks import HEADLINE_ROWS, generate_blocks
+from rextio_benchmark.report import _host_identity
+from rextio_benchmark.verification import GateError, sha256_file
+
+
+def _report(timestamp: str, commit: str = "a" * 40) -> dict:
+    cases = []
+    for index, (_, case_id) in enumerate(HEADLINE_ROWS):
+        speedup = 0.75 if index == 0 else 1.0 + index / 10
+        cases.append(
+            {
+                "id": case_id,
+                "eligible": True,
+                "blockers": [],
+                "packages": {"rextio": "0.1.6"},
+                "gate": {
+                    "evidence": {
+                        "input": {
+                            "kind": "run-input",
+                            "path": f"cases/{case_id}/benchmark.json",
+                            "sha256": "0" * 64,
+                        },
+                        "output": {
+                            "kind": "run-output",
+                            "path": f"cases/{case_id}/.rextio/reports/build.json",
+                            "sha256": "1" * 64,
+                        }
+                    }
+                },
+                "lanes": {
+                    "python-source": {"steady_state": {"median_ns": 2_000_000.0}},
+                    "rextio-native": {"steady_state": {"median_ns": 3_000_000.0}},
+                },
+                "paired": {"median_speedup": speedup},
+            }
+        )
+    return {
+        "schema_version": 1,
+        "generated_at": timestamp,
+        "mode": "publish",
+        "publishable": True,
+        "repository": {"commit": commit, "dirty": False},
+        "system": {
+            "platform": "macOS-15",
+            "machine": "arm64",
+            "processor": "arm",
+            "python_controller": "3.11.9",
+            "toolchain": {"rustc": "rustc 1.88", "cargo": "cargo 1.88"},
+            "host": {"model": "Mac15,8", "cpu_brand": "Apple M3 Pro"},
+        },
+        "configuration": {"pairs": 12},
+        "cases": cases,
+    }
+
+
+def test_cohort_is_chronological_stable_and_not_fastest() -> None:
+    reports = [
+        _report("2026-07-26T00:00:00+00:00"),
+        _report("2026-07-26T00:01:00+00:00"),
+        _report("2026-07-26T00:02:00+00:00"),
+    ]
+    reports[1]["cases"][0]["paired"]["median_speedup"] = 0.80
+    summary = validate_cohort(reports)
+    assert summary["selected_report_index"] == 0
+    assert summary["selection"] == "chronological-first"
+    with pytest.raises(GateError, match="chronological"):
+        validate_cohort([reports[1], reports[0], reports[2]])
+
+
+def test_cohort_freezes_run_output_declarations() -> None:
+    reports = [
+        _report("2026-07-26T00:00:00+00:00"),
+        _report("2026-07-26T00:01:00+00:00"),
+        _report("2026-07-26T00:02:00+00:00"),
+    ]
+    reports[1]["cases"][0]["gate"]["evidence"]["output"]["sha256"] = "2" * 64
+    with pytest.raises(GateError, match="frozen run identity"):
+        validate_cohort(reports)
+
+
+def test_bundle_cohort_copies_all_reports_and_hashes_summary(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    reports = [
+        _report(f"2026-07-26T00:0{index}:00+00:00")
+        for index in range(3)
+    ]
+    paths = []
+    for index, report in enumerate(reports):
+        path = tmp_path / "results/local" / f"{index}.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(report), encoding="utf-8")
+        paths.append(path)
+    digests = [sha256_file(path) for path in paths]
+    expected_name = f"cohort-{cohort_id(digests)}"
+
+    monkeypatch.setattr(
+        "rextio_benchmark.bundler.verify_report",
+        lambda path, root: reports[paths.index(path)],
+    )
+    monkeypatch.setattr("rextio_benchmark.bundler._current_commit", lambda root: "a" * 40)
+
+    def fake_bundle(path: Path, root: Path, *, name: str | None = None):
+        assert name == expected_name
+        destination = root / "results/canonical" / name
+        destination.mkdir(parents=True)
+        manifest = {
+            "schema_version": 1,
+            "run_commit": "a" * 40,
+            "source_report_path": "results/local/0.json",
+            "canonical_report_path": f"results/canonical/{name}/report.json",
+            "file_count": 1,
+            "object_count": 1,
+            "logical_bytes": 1,
+            "stored_bytes": 1,
+            "cases": {},
+        }
+        (destination / "manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+        canonical = deepcopy(reports[0])
+        canonical["canonical_bundle"] = {
+            "manifest_path": f"results/canonical/{name}/manifest.json",
+            "manifest_sha256": "0" * 64,
+            "file_count": 1,
+            "object_count": 1,
+            "logical_bytes": 1,
+            "stored_bytes": 1,
+        }
+        (destination / "report.json").write_text(json.dumps(canonical), encoding="utf-8")
+        return destination / "report.json", destination / "manifest.json", {}
+
+    monkeypatch.setattr("rextio_benchmark.bundler.bundle_report", fake_bundle)
+    canonical, manifest, stability, _ = bundle_cohort(paths, tmp_path)
+    assert canonical.parent.name == expected_name
+    assert len(list((canonical.parent / "reports").glob("*.json"))) == 3
+    document = json.loads(manifest.read_text(encoding="utf-8"))
+    assert document["cohort"]["selected_report_index"] == 0
+    assert sha256_file(stability) == document["cohort"]["stability_summary_sha256"]
+    for bundled_json in canonical.parent.rglob("*.json"):
+        content = bundled_json.read_text(encoding="utf-8")
+        assert str(tmp_path.resolve()) not in content
+        assert str(Path.home().resolve()) not in content
+
+
+def test_host_identity_uses_mac_sysctl(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr("rextio_benchmark.report.platform.system", lambda: "Darwin")
+    monkeypatch.setattr(
+        "rextio_benchmark.report._command_text",
+        lambda command, cwd: {
+            "hw.model": "Mac15,8",
+            "machdep.cpu.brand_string": "Apple M3 Pro",
+        }[command[-1]],
+    )
+    assert _host_identity() == {"model": "Mac15,8", "cpu_brand": "Apple M3 Pro"}
+
+
+def test_portability_removes_repository_and_home_paths(tmp_path: Path) -> None:
+    home = tmp_path / "home"
+    root = tmp_path / "workspace/rextio-benchmark"
+    value = {
+        "command": [str(root / "profiles/base/.venv/bin/rextio")],
+        "stderr": f"at {root}/cases/core and {home}/.cargo/bin/cargo",
+    }
+    portable = portable_value(value, root, home)
+    require_portable(portable, root, home)
+    serialized = json.dumps(portable)
+    assert str(root) not in serialized
+    assert str(home) not in serialized
+
+
+def test_build_receipt_sanitizes_commands_and_tails(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    home = Path.home()
+    monkeypatch.setattr(
+        "rextio_benchmark.build_runner.subprocess.run",
+        lambda *args, **kwargs: SimpleNamespace(
+            returncode=0,
+            stdout=f"built {tmp_path}/cases/fixture\n",
+            stderr=f"cargo at {home}/.cargo/bin/cargo\n",
+        ),
+    )
+    record = _run(
+        [str(tmp_path / "profiles/base/.venv/bin/rextio"), "check"],
+        {},
+        tmp_path,
+    )
+    serialized = json.dumps(record)
+    assert str(tmp_path.resolve()) not in serialized
+    assert str(home.resolve()) not in serialized
+    assert record["command"][0] == "profiles/base/.venv/bin/rextio"
+
+
+def test_readme_blocks_keep_row_order_links_and_slow_values() -> None:
+    report = _report("2026-07-26T00:00:00+00:00")
+    report["canonical_bundle"] = {"manifest_path": "fixture"}
+    blocks = generate_blocks(
+        report,
+        report_logical_path="results/canonical/cohort/report.json",
+        measurement_commit="a" * 40,
+        evidence_commit="b" * 40,
+        github_url="https://github.com/rextio/rextio-benchmark",
+    )
+    assert list(blocks) == [
+        "README.md",
+        "README.ko.md",
+        "README.ja.md",
+        "README.zh-hans.md",
+        "README.zh-hant.md",
+    ]
+    for block in blocks.values():
+        positions = [block.index(label) for label, _ in HEADLINE_ROWS]
+        assert positions == sorted(positions)
+        assert "0.750×" in block
+        assert "/blob/" + "b" * 40 in block
+        assert "/commit/" + "a" * 40 in block

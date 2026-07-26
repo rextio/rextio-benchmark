@@ -1,0 +1,18 @@
+{
+  "project": "pandas",
+  "profile": "base",
+  "benchmarks": [
+    {
+      "id": "pandas-series-map",
+      "kind": "python-module",
+      "module": "pandas_case.workload",
+      "function": "map_pipeline",
+      "qualname": "pandas_case.workload.map_pipeline",
+      "expected_route": "native-plugin:rextio-pandas",
+      "tolerance": {"absolute": 0.0, "relative": 0.0},
+      "description": "Exact supported numeric Series.map UDF pipeline at large size.",
+      "context": "A manually vectorized pandas/NumPy rewrite may be faster."
+    }
+  ]
+}
+

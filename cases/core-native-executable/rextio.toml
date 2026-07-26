@@ -1,0 +1,14 @@
+[rust]
+build_tool = "cargo"
+
+[policy]
+native_marker = "auto"
+require_type_hints = true
+allow_dynamic_features = false
+
+[executable]
+entrypoint = "core_native_executable.main:main"
+name = "core-native-executable"
+backend = "rust"
+fallback = "error"
+

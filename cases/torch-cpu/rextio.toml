@@ -1,0 +1,6 @@
+[rust]
+build_tool = "cargo"
+
+[plugins]
+enabled = ["rextio-torch"]
+

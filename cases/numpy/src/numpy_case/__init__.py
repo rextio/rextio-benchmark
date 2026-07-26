@@ -1,0 +1,2 @@
+"""NumPy benchmark source package."""
+

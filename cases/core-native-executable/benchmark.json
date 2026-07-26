@@ -1,0 +1,18 @@
+{
+  "project": "core-native-executable",
+  "profile": "base",
+  "benchmarks": [
+    {
+      "id": "core-native-executable",
+      "kind": "executable",
+      "module": "core_native_executable.main",
+      "function": "main",
+      "qualname": "core_native_executable.main.main",
+      "expected_route": "native-direct",
+      "arguments": ["benchmark"],
+      "tolerance": {"absolute": 0.0, "relative": 0.0},
+      "description": "Closed fallback=error Rust executable versus the original Python command."
+    }
+  ]
+}
+

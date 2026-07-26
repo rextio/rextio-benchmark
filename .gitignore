@@ -1,0 +1,12 @@
+.DS_Store
+.codebase-memory/
+.pytest_cache/
+.ruff_cache/
+.venv/
+__pycache__/
+*.py[cod]
+profiles/*/.venv/
+cases/*/.rextio/
+cases/*/dist/
+results/local/*
+!results/local/.gitkeep

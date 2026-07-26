@@ -1,0 +1,28 @@
+{
+  "project": "numpy",
+  "profile": "base",
+  "benchmarks": [
+    {
+      "id": "numpy-mixed-fusion",
+      "kind": "python-module",
+      "module": "numpy_case.workload",
+      "function": "mixed_fusion",
+      "qualname": "numpy_case.workload.mixed_fusion",
+      "expected_route": "native-plugin:rextio-numpy",
+      "tolerance": {"absolute": 1e-9, "relative": 1e-9},
+      "description": "Mixed scalar control flow and fused NumPy elementwise chains."
+    },
+    {
+      "id": "numpy-blas-dot-negative-control",
+      "kind": "python-module",
+      "module": "numpy_case.workload",
+      "function": "blas_dot",
+      "qualname": "numpy_case.workload.blas_dot",
+      "expected_route": "native-plugin:rextio-numpy",
+      "tolerance": {"absolute": 1e-8, "relative": 1e-10},
+      "negative_control": true,
+      "description": "BLAS-dominated dot product; no speedup is presumed."
+    }
+  ]
+}
+

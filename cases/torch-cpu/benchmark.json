@@ -1,0 +1,17 @@
+{
+  "project": "torch-cpu",
+  "profile": "torch-cpu",
+  "benchmarks": [
+    {
+      "id": "torch-cpu-deep-mlp",
+      "kind": "python-module",
+      "module": "torch_case.workload",
+      "function": "inference",
+      "qualname": "torch_case.workload.inference",
+      "expected_route": "native-plugin:rextio-torch",
+      "tolerance": {"absolute": 1e-5, "relative": 1e-5},
+      "description": "Bounded CPU deep MLP with mixed scalar control flow."
+    }
+  ]
+}
+

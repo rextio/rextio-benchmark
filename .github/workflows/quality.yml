@@ -1,0 +1,38 @@
+name: quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  deterministic-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: "0.8.22"
+          enable-cache: true
+      - name: Sync lightweight base profile
+        run: uv sync --project profiles/base --locked --python 3.11
+      - name: Verify all lock files
+        run: |
+          uv lock --project profiles/base --check
+          uv lock --project profiles/torch-cpu --check
+          uv lock --project profiles/tensorflow-cpu --check
+          uv lock --project profiles/torch-cuda --check
+          uv lock --project profiles/tensorflow-cuda --check
+      - name: Ruff
+        env:
+          PYTHONPATH: src
+        run: profiles/base/.venv/bin/ruff check src tests cases
+      - name: Unit tests
+        env:
+          PYTHONPATH: src
+        run: profiles/base/.venv/bin/python -m pytest
+

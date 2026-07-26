@@ -1,0 +1,17 @@
+{
+  "project": "core-hybrid",
+  "profile": "base",
+  "benchmarks": [
+    {
+      "id": "core-hybrid",
+      "kind": "python-module",
+      "module": "core_hybrid.workload",
+      "function": "score",
+      "qualname": "core_hybrid.workload.score",
+      "expected_route": "native-direct",
+      "tolerance": {"absolute": 0.0, "relative": 0.0},
+      "description": "Scalar and control-flow hot loops through the generated wrapper."
+    }
+  ]
+}
+

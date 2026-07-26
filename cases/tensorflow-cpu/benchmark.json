@@ -1,0 +1,17 @@
+{
+  "project": "tensorflow-cpu",
+  "profile": "tensorflow-cpu",
+  "benchmarks": [
+    {
+      "id": "tensorflow-cpu-eager-chain",
+      "kind": "python-module",
+      "module": "tensorflow_case.workload",
+      "function": "inference",
+      "qualname": "tensorflow_case.workload.inference",
+      "expected_route": "native-plugin:rextio-tensorflow",
+      "tolerance": {"absolute": 0.0, "relative": 0.0},
+      "description": "Bounded CPU eager TFE operation chain; tf.function is not used."
+    }
+  ]
+}
+
