@@ -4,6 +4,8 @@ import importlib.util
 import json
 from pathlib import Path
 
+import pytest
+
 from rextio_benchmark.cohort import (
     BOUNDARY_PREPOST_CANONICAL_COHORT_DIR,
     BOUNDARY_PREPOST_CANONICAL_COHORT_FILE_COUNT,
@@ -27,7 +29,8 @@ from rextio_benchmark.cohort import (
     tree_fingerprint,
 )
 from rextio_benchmark.models import load_cases
-from rextio_benchmark.readme_blocks import HEADLINE_ROWS
+from rextio_benchmark.readme_blocks import HEADLINE_ROWS, load_verified_stability_summary
+from rextio_benchmark.verification import GateError
 
 ROOT = Path(__file__).resolve().parents[1]
 RELEASED_COHORT_ID = "15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8"
@@ -56,9 +59,7 @@ def test_candidate_policy_is_pre_measurement_and_complete() -> None:
     }
     assert {case_id for _, case_id in HEADLINE_ROWS} == HEADLINE_CASE_IDS
     assert load_cases(ROOT)
-    assert {case.benchmark_id for case in load_cases(ROOT)} == (
-        NEXT_CANDIDATE_COMPLETE_CASE_IDS
-    )
+    assert {case.benchmark_id for case in load_cases(ROOT)} == (NEXT_CANDIDATE_COMPLETE_CASE_IDS)
 
 
 def test_next_candidate_is_distinct_ready_and_diagnostic_only() -> None:
@@ -71,10 +72,7 @@ def test_next_candidate_is_distinct_ready_and_diagnostic_only() -> None:
     assert set(NEXT_CANDIDATE_COHORT_POLICY["complete_case_ids"]) == (
         NEXT_CANDIDATE_COMPLETE_CASE_IDS
     )
-    assert (
-        CANDIDATE_PLUGIN_013_COMPLETE_CASE_IDS | new_ids
-        == NEXT_CANDIDATE_COMPLETE_CASE_IDS
-    )
+    assert CANDIDATE_PLUGIN_013_COMPLETE_CASE_IDS | new_ids == NEXT_CANDIDATE_COMPLETE_CASE_IDS
     assert new_ids <= DIAGNOSTIC_CASE_IDS
     assert new_ids.isdisjoint(HEADLINE_CASE_IDS)
     assert NEXT_CANDIDATE_COHORT_POLICY["headline_case_ids"] == [
@@ -116,9 +114,7 @@ def test_historical_and_next_candidate_pins_are_exact_git_revisions() -> None:
         ),
     }
     for profile, (dependency, revision) in profile_pins.items():
-        text = (ROOT / "profiles" / profile / "pyproject.toml").read_text(
-            encoding="utf-8"
-        )
+        text = (ROOT / "profiles" / profile / "pyproject.toml").read_text(encoding="utf-8")
         assert "rextio==0.1.7" in text
         assert "b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97" in text
         assert dependency in text
@@ -217,13 +213,36 @@ def test_boundary_prepost_canonical_cohort_directory_is_byte_immutable() -> None
     assert digest == BOUNDARY_PREPOST_CANONICAL_COHORT_TREE_SHA256
 
 
+def test_boundary_prepost_readme_summary_is_hash_bound_and_headline_qualified() -> None:
+    report_path = ROOT / BOUNDARY_PREPOST_CANONICAL_COHORT_DIR / "report.json"
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    summary = load_verified_stability_summary(
+        report,
+        repository_root=ROOT,
+        report_logical_path=(BOUNDARY_PREPOST_CANONICAL_COHORT_DIR + "/report.json"),
+    )
+    assert summary.document["selected_report_index"] == 0
+    assert summary.document["report_count"] == 3
+    assert all(
+        summary.document["cases"][case_id]["within_threshold"] is True
+        for case_id in HEADLINE_CASE_IDS
+    )
+
+    tampered = json.loads(json.dumps(report))
+    tampered["canonical_bundle"]["stability_summary_sha256"] = "0" * 64
+    with pytest.raises(GateError, match="digest differs"):
+        load_verified_stability_summary(
+            tampered,
+            repository_root=ROOT,
+            report_logical_path=(BOUNDARY_PREPOST_CANONICAL_COHORT_DIR + "/report.json"),
+        )
+
+
 def test_new_diagnostic_manifests_use_exact_validation_without_headline_changes() -> None:
     manifests = {
         "numpy-f64-1d-boundary-direct-sink": ROOT / "cases/numpy/benchmark.json",
         "torch-cpu-small-batch-prepost": ROOT / "cases/torch-cpu/benchmark.json",
-        "tensorflow-cpu-small-batch-prepost": (
-            ROOT / "cases/tensorflow-cpu/benchmark.json"
-        ),
+        "tensorflow-cpu-small-batch-prepost": (ROOT / "cases/tensorflow-cpu/benchmark.json"),
     }
     for case_id, path in manifests.items():
         document = json.loads(path.read_text(encoding="utf-8"))
@@ -233,9 +252,7 @@ def test_new_diagnostic_manifests_use_exact_validation_without_headline_changes(
         assert case_id not in HEADLINE_CASE_IDS
         assert record["generated_expectations"]
 
-    numpy_document = json.loads(
-        (ROOT / "cases/numpy/benchmark.json").read_text(encoding="utf-8")
-    )
+    numpy_document = json.loads((ROOT / "cases/numpy/benchmark.json").read_text(encoding="utf-8"))
     numpy_record = next(
         item
         for item in numpy_document["benchmarks"]
@@ -265,18 +282,16 @@ def test_numpy_boundary_diagnostic_uses_readonly_f64_input() -> None:
 
 
 def test_small_batch_diagnostics_are_batch1_full_prepost_pipelines() -> None:
-    torch_adapter = (ROOT / "cases/torch-cpu/benchmark_case.py").read_text(
+    torch_adapter = (ROOT / "cases/torch-cpu/benchmark_case.py").read_text(encoding="utf-8")
+    torch_workload = (ROOT / "cases/torch-cpu/src/torch_case/workload.py").read_text(
         encoding="utf-8"
     )
-    torch_workload = (
-        ROOT / "cases/torch-cpu/src/torch_case/workload.py"
-    ).read_text(encoding="utf-8")
-    tensorflow_adapter = (
-        ROOT / "cases/tensorflow-cpu/benchmark_case.py"
-    ).read_text(encoding="utf-8")
-    tensorflow_workload = (
-        ROOT / "cases/tensorflow-cpu/src/tensorflow_case/workload.py"
-    ).read_text(encoding="utf-8")
+    tensorflow_adapter = (ROOT / "cases/tensorflow-cpu/benchmark_case.py").read_text(
+        encoding="utf-8"
+    )
+    tensorflow_workload = (ROOT / "cases/tensorflow-cpu/src/tensorflow_case/workload.py").read_text(
+        encoding="utf-8"
+    )
     assert "reshape(1, feature_width)" in torch_adapter
     assert "return probabilities.argmax(dim=1, keepdim=False)" in torch_workload
     assert "(1, feature_width)" in tensorflow_adapter

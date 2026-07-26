@@ -31,7 +31,12 @@ from rextio_benchmark.provenance import (
     lock_or_manifest_binds_pin,
     report_package_versions,
 )
-from rextio_benchmark.readme_blocks import generate_blocks
+from rextio_benchmark.readme_blocks import (
+    HEADLINE_ROWS,
+    VerifiedStabilitySummary,
+    generate_blocks,
+    load_verified_stability_summary,
+)
 from rextio_benchmark.verification import GateError
 from rextio_benchmark.verifier import (
     _replay_generated_expectations,
@@ -41,6 +46,26 @@ from rextio_benchmark.verifier import (
 ROOT = Path(__file__).resolve().parents[1]
 NUMPY_PIN = CANDIDATE_PLUGIN_PINS["rextio-numpy"]
 TF_PIN = CANDIDATE_PLUGIN_PINS["rextio-tensorflow"]
+
+
+def _verified_summary(report: dict) -> VerifiedStabilitySummary:
+    return VerifiedStabilitySummary(
+        document={
+            "measurement_commit": report["repository"]["commit"],
+            "cases": {
+                case_id: {
+                    "headline_gate": True,
+                    "within_threshold": True,
+                    "three_run_median": next(
+                        case for case in report["cases"] if case["id"] == case_id
+                    )["paired"]["median_speedup"],
+                }
+                for _, case_id in HEADLINE_ROWS
+            },
+        },
+        logical_path="results/canonical/fixture/stability.json",
+        sha256="0" * 64,
+    )
 
 
 def _policy_and_provenance(
@@ -174,18 +199,12 @@ RELEASED_MEASUREMENT_COMMIT = FROZEN_CANONICAL_COHORTS[RELEASED_COHORT_ID]["meas
 
 
 def test_lock_and_manifest_bind_exact_next_candidate_pins() -> None:
-    targets = parse_integration_targets(
-        (ROOT / TARGET_CONFIG_PATH).read_text(encoding="utf-8")
-    )
+    targets = parse_integration_targets((ROOT / TARGET_CONFIG_PATH).read_text(encoding="utf-8"))
     for target in targets:
         pin = target.pin()
         for profile in target.profiles:
-            manifest = (ROOT / "profiles" / profile / "pyproject.toml").read_text(
-                encoding="utf-8"
-            )
-            lock = (ROOT / "profiles" / profile / "uv.lock").read_text(
-                encoding="utf-8"
-            )
+            manifest = (ROOT / "profiles" / profile / "pyproject.toml").read_text(encoding="utf-8")
+            lock = (ROOT / "profiles" / profile / "uv.lock").read_text(encoding="utf-8")
             assert lock_or_manifest_binds_pin(manifest, target.name, pin)
             assert lock_or_manifest_binds_pin(lock, target.name, pin)
     numpy = next(target for target in targets if target.name == "rextio-numpy")
@@ -593,6 +612,7 @@ def test_readme_labels_candidate_only_from_bound_provenance() -> None:
         measurement_commit="a" * 40,
         evidence_commit="b" * 40,
         github_url="https://github.com/rextio/rextio-benchmark",
+        stability_summary=_verified_summary(report),
     )
     english = blocks["README.md"]
     assert "rextio-numpy 0.1.3 candidate@7316c47393a8" in english
@@ -631,6 +651,7 @@ def test_readme_labels_all_four_next_candidate_packages_in_every_locale() -> Non
         measurement_commit="a" * 40,
         evidence_commit="b" * 40,
         github_url="https://github.com/rextio/rextio-benchmark",
+        stability_summary=_verified_summary(report),
     )
     for block in blocks.values():
         assert "rextio 0.1.7 candidate@b8b8ed11f6b7" in block
@@ -778,6 +799,11 @@ def test_authentic_released_frozen_readme_has_no_candidate_labels() -> None:
         measurement_commit=real["repository"]["commit"],
         evidence_commit=FROZEN_CANONICAL_COHORTS[RELEASED_COHORT_ID]["evidence_commit"],
         github_url="https://github.com/rextio/rextio-benchmark",
+        stability_summary=load_verified_stability_summary(
+            real,
+            repository_root=ROOT,
+            report_logical_path=f"{RELEASED_CANONICAL_COHORT_DIR}/report.json",
+        ),
     )
     assert "candidate@" not in blocks["README.md"]
     assert "0.1.3" not in blocks["README.md"] or "rextio-numpy 0.1.2" in blocks["README.md"]
@@ -915,9 +941,7 @@ def test_installed_current_profile_candidate_provenance_when_present(
 ) -> None:
     """Installed live profiles must match the next policy, not frozen old pins."""
     current_pins = integration_target_pins(
-        parse_integration_targets(
-            (ROOT / TARGET_CONFIG_PATH).read_text(encoding="utf-8")
-        )
+        parse_integration_targets((ROOT / TARGET_CONFIG_PATH).read_text(encoding="utf-8"))
     )
     expected = current_pins[package]
     direct = (

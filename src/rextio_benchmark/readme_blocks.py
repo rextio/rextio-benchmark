@@ -1,6 +1,11 @@
 from __future__ import annotations
 
+import hashlib
+import json
+import math
 import re
+import statistics
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -35,6 +40,12 @@ LOCALES = {
             "Core 0.1.7 and rextio-torch 0.1.3; they are not PyPI releases. "
             "The same applies to rextio-numpy 0.1.3 and rextio-tensorflow 0.1.3."
         ),
+        "selection": "Selection: the chronologically first report (index 0) of exactly three qualifying publish reports; never selected by speedup.",  # noqa: E501
+        "stability": "Stability: all six frozen headline rows passed the 10% stability veto.",
+        "median_intro": "Three-run medians",
+        "median_labels": ("Core", "NumPy", "NetworkX", "pandas", "Torch", "TensorFlow"),
+        "nonclaim": "No result claims intrinsic BLAS, libtorch, TensorFlow-kernel, or CUDA acceleration.",  # noqa: E501
+        "abbrev_pin": "`candidate@` labels display the first 12 hexadecimal characters only; each candidate is verified and pinned by its full 40-character Git commit.",  # noqa: E501
         "links": ("Canonical report", "measurement commit", "evidence commit"),
     },
     "README.ko.md": {
@@ -56,6 +67,12 @@ LOCALES = {
             "미배포 exact Git 커밋 핀이며 PyPI 릴리스가 아닙니다. rextio-numpy "
             "0.1.3과 rextio-tensorflow 0.1.3에도 동일하게 적용됩니다."
         ),
+        "selection": "선택: 정확히 세 개의 적격 publish 보고서 중 시간순 첫 번째 보고서(index 0)를 사용하며, 속도비로 선택하지 않습니다.",  # noqa: E501
+        "stability": "안정성: 고정된 여섯 headline 행은 모두 10% 안정성 veto를 통과했습니다.",
+        "median_intro": "3회 실행 중앙값",
+        "median_labels": ("Core", "NumPy", "NetworkX", "pandas", "Torch", "TensorFlow"),
+        "nonclaim": "어떤 결과도 BLAS, libtorch, TensorFlow kernel 또는 CUDA 자체의 가속을 주장하지 않습니다.",  # noqa: E501
+        "abbrev_pin": "`candidate@` 표시는 앞 12자리 16진수만 보이며, 각 candidate는 전체 40자리 Git 커밋으로 검증·고정됩니다.",  # noqa: E501
         "links": ("정식 보고서", "측정 커밋", "증거 커밋"),
     },
     "README.ja.md": {
@@ -77,6 +94,12 @@ LOCALES = {
             "を含む未公開の exact Git コミット固定であり、PyPI リリースでは"
             "ありません。rextio-numpy 0.1.3 と rextio-tensorflow 0.1.3 も同様です。"
         ),
+        "selection": "選択: 正確に 3 件の適格な publish レポートのうち時系列で最初のレポート（index 0）を使い、速度比では選択しません。",  # noqa: E501
+        "stability": "安定性: 固定された 6 つの headline 行はすべて 10% の安定性 veto を通過しました。",  # noqa: E501
+        "median_intro": "3 回実行の中央値",
+        "median_labels": ("Core", "NumPy", "NetworkX", "pandas", "Torch", "TensorFlow"),
+        "nonclaim": "BLAS、libtorch、TensorFlow kernel、CUDA 自体の高速化を主張する結果ではありません。",  # noqa: E501
+        "abbrev_pin": "`candidate@` は先頭 12 桁の 16 進表示のみで、各 candidate は完全な 40 桁 Git コミットで検証・固定されます。",  # noqa: E501
         "links": ("正規レポート", "測定コミット", "証拠コミット"),
     },
     "README.zh-hans.md": {
@@ -96,6 +119,12 @@ LOCALES = {
             "exact Git 提交固定，不是 PyPI 发行版；rextio-numpy 0.1.3 和 "
             "rextio-tensorflow 0.1.3 也同样如此。"
         ),
+        "selection": "选择：恰好三份合格 publish 报告中按时间顺序第一份（index 0）；绝不按加速比选择。",  # noqa: E501
+        "stability": "稳定性：六个固定 headline 行全部通过了 10% 稳定性 veto。",
+        "median_intro": "三次运行中位数",
+        "median_labels": ("Core", "NumPy", "NetworkX", "pandas", "Torch", "TensorFlow"),
+        "nonclaim": "结果不声称 BLAS、libtorch、TensorFlow kernel 或 CUDA 内核本身得到加速。",
+        "abbrev_pin": "`candidate@` 只显示前 12 个十六进制字符；每个 candidate 都按完整 40 字符 Git 提交验证并固定。",  # noqa: E501
         "links": ("正式报告", "测量提交", "证据提交"),
     },
     "README.zh-hant.md": {
@@ -115,10 +144,128 @@ LOCALES = {
             "exact Git 提交固定，不是 PyPI 發行版；rextio-numpy 0.1.3 和 "
             "rextio-tensorflow 0.1.3 也同樣如此。"
         ),
+        "selection": "選擇：恰好三份合格 publish 報告中按時間順序第一份（index 0）；絕不按加速比選擇。",  # noqa: E501
+        "stability": "穩定性：六個固定 headline 行全部通過了 10% 穩定性 veto。",
+        "median_intro": "三次執行中位數",
+        "median_labels": ("Core", "NumPy", "NetworkX", "pandas", "Torch", "TensorFlow"),
+        "nonclaim": "結果不聲稱 BLAS、libtorch、TensorFlow kernel 或 CUDA 核心本身得到加速。",
+        "abbrev_pin": "`candidate@` 只顯示前 12 個十六進位字元；每個 candidate 都按完整 40 字元 Git 提交驗證並固定。",  # noqa: E501
         "links": ("正式報告", "測量提交", "證據提交"),
     },
 }
 _COMMIT = re.compile(r"^[0-9a-f]{40}$")
+
+
+@dataclass(frozen=True)
+class VerifiedStabilitySummary:
+    """Hash-bound stability summary accepted by the README renderer."""
+
+    document: dict[str, Any]
+    logical_path: str
+    sha256: str
+
+
+def load_verified_stability_summary(
+    report: dict[str, Any],
+    *,
+    repository_root: Path,
+    report_logical_path: str,
+) -> VerifiedStabilitySummary:
+    """Load only the canonical bundle's hash-bound, headline-qualified summary.
+
+    The renderer must not accept ad-hoc median values. The CLI calls
+    ``verify_report`` first, then this loader validates the canonical metadata,
+    digest, cohort identity, chronological selection, and six headline gates.
+    """
+    metadata = report.get("canonical_bundle")
+    if not isinstance(metadata, dict):
+        raise GateError("README blocks require canonical bundle metadata")
+    logical = metadata.get("stability_summary_path")
+    expected_sha = metadata.get("stability_summary_sha256")
+    cohort_id = metadata.get("cohort_id")
+    policy = report.get("policy")
+    policy_id = policy.get("policy_id") if isinstance(policy, dict) else None
+    if (
+        not isinstance(logical, str)
+        or not isinstance(expected_sha, str)
+        or not re.fullmatch(r"[0-9a-f]{64}", expected_sha)
+        or not isinstance(cohort_id, str)
+        or not re.fullmatch(r"[0-9a-f]{64}", cohort_id)
+    ):
+        raise GateError("canonical report lacks a bound stability summary")
+    report_path = Path(report_logical_path)
+    summary_path = Path(logical)
+    if (
+        report_path.is_absolute()
+        or summary_path.is_absolute()
+        or ".." in report_path.parts
+        or ".." in summary_path.parts
+        or report_path.parent != summary_path.parent
+        or not logical.endswith("/stability.json")
+    ):
+        raise GateError("canonical stability summary path is not sibling-bound")
+    path = (repository_root / summary_path).resolve()
+    try:
+        path.relative_to(repository_root.resolve())
+    except ValueError as error:
+        raise GateError("canonical stability summary escapes repository") from error
+    if not path.is_file():
+        raise GateError("canonical stability summary is missing")
+    raw = path.read_bytes()
+    actual_sha = hashlib.sha256(raw).hexdigest()
+    if actual_sha != expected_sha:
+        raise GateError("canonical stability summary digest differs")
+    try:
+        document = json.loads(raw)
+    except json.JSONDecodeError as error:
+        raise GateError("canonical stability summary is not JSON") from error
+    if not isinstance(document, dict):
+        raise GateError("canonical stability summary must be an object")
+    if (
+        document.get("schema_version") != 1
+        or document.get("cohort_id") != cohort_id
+        or document.get("measurement_commit") != report.get("repository", {}).get("commit")
+        or document.get("policy_id") != policy_id
+        or document.get("selection") != "chronological-first"
+        or document.get("selected_report_index") != 0
+        or document.get("report_count") != 3
+        or document.get("stability_threshold_fraction") != 0.10
+    ):
+        raise GateError("canonical stability summary identity differs")
+    cases = document.get("cases")
+    if not isinstance(cases, dict):
+        raise GateError("canonical stability summary lacks cases")
+    report_case_ids = {case.get("id") for case in report.get("cases", []) if isinstance(case, dict)}
+    if (
+        not all(isinstance(case_id, str) for case_id in report_case_ids)
+        or set(cases) != report_case_ids
+    ):
+        raise GateError("canonical stability summary case keys differ")
+    for _, case_id in HEADLINE_ROWS:
+        record = cases.get(case_id)
+        speedups = record.get("median_speedups") if isinstance(record, dict) else None
+        median = record.get("three_run_median") if isinstance(record, dict) else None
+        deviation = record.get("maximum_relative_deviation") if isinstance(record, dict) else None
+        if (
+            not isinstance(record, dict)
+            or record.get("headline_gate") is not True
+            or record.get("within_threshold") is not True
+            or not isinstance(speedups, list)
+            or len(speedups) != 3
+            or not all(
+                isinstance(value, (int, float)) and math.isfinite(value) and value > 0
+                for value in speedups
+            )
+            or not isinstance(median, (int, float))
+            or not math.isfinite(median)
+            or median <= 0
+            or not isinstance(deviation, (int, float))
+            or not math.isfinite(deviation)
+            or deviation > 0.10
+            or not math.isclose(median, statistics.median(speedups), rel_tol=0.0, abs_tol=1e-12)
+        ):
+            raise GateError(f"canonical stability summary rejects headline {case_id}")
+    return VerifiedStabilitySummary(document=document, logical_path=logical, sha256=actual_sha)
 
 
 def _format_versions(
@@ -143,6 +290,7 @@ def generate_blocks(
     measurement_commit: str,
     evidence_commit: str,
     github_url: str,
+    stability_summary: VerifiedStabilitySummary | None = None,
 ) -> dict[str, str]:
     if not report.get("publishable") or report.get("canonical_bundle") is None:
         raise GateError("README blocks require a verified canonical publish report")
@@ -222,11 +370,20 @@ def generate_blocks(
         bound_pins = bound_candidate_pins_from_report(report)
         if set(bound_pins) != expected_names or set(bound_pins) != present_names:
             raise GateError("README candidate policy pins do not match the full candidate set")
+    if not isinstance(stability_summary, VerifiedStabilitySummary):
+        raise GateError("README blocks require a verified stability summary")
+    summary = stability_summary.document
+    if summary.get("measurement_commit") != measurement_commit:
+        raise GateError("stability summary measurement commit differs")
     version_text = _format_versions(display_versions, bound_pins)
     uses_candidates = bool(bound_pins)
     outputs = {}
     for filename, locale in LOCALES.items():
         domain, source, native, ratio = locale["columns"]
+        three_run_medians = "; ".join(
+            f"{label} {summary['cases'][case_id]['three_run_median']:.3f}×"
+            for label, (_, case_id) in zip(locale["median_labels"], HEADLINE_ROWS, strict=True)
+        )
         lines = [
             "<!-- rextio-benchmark:start -->",
             f"## {locale['heading']}",
@@ -234,6 +391,8 @@ def generate_blocks(
             f"{locale['intro']}; **{machine}**, **{date}**, CPython "
             f"**{report['system']['python_controller']}**.",
             f"{locale['versions']}: {version_text}.",
+            locale["selection"],
+            f"{locale['stability']} {locale['median_intro']}: {three_run_medians}.",
             "",
             f"| {domain} | {source} | {native} | {ratio} |",
             "| --- | ---: | ---: | ---: |",
@@ -249,10 +408,17 @@ def generate_blocks(
             [
                 "",
                 locale["caveat"],
+                locale["nonclaim"],
             ]
         )
         if uses_candidates:
-            lines.extend(["", locale["candidate_caveat"]])
+            lines.extend(
+                [
+                    "",
+                    locale["candidate_caveat"],
+                    locale["abbrev_pin"],
+                ]
+            )
         lines.extend(
             [
                 "",

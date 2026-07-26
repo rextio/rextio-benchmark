@@ -256,8 +256,11 @@ Generate Core README blocks only from that verified canonical report with
 retains ratios below 1×, emits identical numbers and commit-pinned links in
 all five localized blocks, and labels `candidate@REV` / candidate caveats only
 from verified bound report policy and package provenance (never from version
-strings alone). It never invents numbers and never inserts diagnostic cases
-into the headline table.
+strings alone). It additionally reads the sibling hash-bound `stability.json`
+and requires its policy, cohort/measurement identity, chronological index 0 of
+exactly three reports, complete case keys, 10% threshold, and six qualifying
+headline rows before rendering selection or three-run-median wording. It never
+invents numbers and never inserts diagnostic cases into the headline table.
 Normalized outputs are stored once per case in the report's content-addressed
 `output_table`. Publication verification recomputes every table address,
 rejects dangling or unreferenced entries, and independently applies the

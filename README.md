@@ -193,6 +193,11 @@ unrelated checkouts fail closed. After committing that bundle, render the five
 localized Core README blocks with
 `rextio_benchmark readme-blocks`; pass the canonical report, full
 measurement/evidence commits, GitHub URL, and an output directory explicitly.
+The command verifies the hash-bound sibling `stability.json` before rendering:
+it requires canonical cohort/policy identity, chronological index 0 of three
+reports, exact case keys, a 10% threshold, and six passing headline gates.
+Generated blocks therefore carry verified three-run medians rather than manual
+stability claims.
 
 ## Cases
 

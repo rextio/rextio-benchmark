@@ -5,7 +5,7 @@ from pathlib import Path
 
 from .build_runner import build_cpu
 from .bundler import bundle_cohort, bundle_report
-from .readme_blocks import generate_blocks, write_blocks
+from .readme_blocks import generate_blocks, load_verified_stability_summary, write_blocks
 from .report import run_suite
 from .verifier import verify_report
 
@@ -82,6 +82,11 @@ def main(argv: list[str] | None = None) -> int:
         report_path = arguments.report.resolve()
         report = verify_report(report_path, root)
         logical = report_path.relative_to(root.resolve()).as_posix()
+        stability_summary = load_verified_stability_summary(
+            report,
+            repository_root=root,
+            report_logical_path=logical,
+        )
         paths = write_blocks(
             arguments.output_dir.resolve(),
             generate_blocks(
@@ -90,6 +95,7 @@ def main(argv: list[str] | None = None) -> int:
                 measurement_commit=arguments.measurement_commit,
                 evidence_commit=arguments.evidence_commit,
                 github_url=arguments.github_url,
+                stability_summary=stability_summary,
             ),
         )
         for path in paths:

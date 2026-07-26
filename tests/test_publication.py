@@ -17,7 +17,11 @@ from rextio_benchmark.integration_targets import (
     parse_integration_targets,
 )
 from rextio_benchmark.portability import portable_value, require_portable
-from rextio_benchmark.readme_blocks import HEADLINE_ROWS, generate_blocks
+from rextio_benchmark.readme_blocks import (
+    HEADLINE_ROWS,
+    VerifiedStabilitySummary,
+    generate_blocks,
+)
 from rextio_benchmark.report import _host_identity
 from rextio_benchmark.verification import GateError, sha256_file
 
@@ -26,6 +30,26 @@ DIAGNOSTIC_CASES = (
     "numpy-blas-dot-negative-control",
     "numpy-mixed-nonfused-phase1",
 )
+
+
+def _verified_summary(report: dict) -> VerifiedStabilitySummary:
+    return VerifiedStabilitySummary(
+        document={
+            "measurement_commit": report["repository"]["commit"],
+            "cases": {
+                case_id: {
+                    "headline_gate": True,
+                    "within_threshold": True,
+                    "three_run_median": next(
+                        case for case in report["cases"] if case["id"] == case_id
+                    )["paired"]["median_speedup"],
+                }
+                for _, case_id in HEADLINE_ROWS
+            },
+        },
+        logical_path="results/canonical/fixture/stability.json",
+        sha256="0" * 64,
+    )
 
 
 def _report(timestamp: str, commit: str = "a" * 40) -> dict:
@@ -336,6 +360,7 @@ def test_readme_blocks_keep_row_order_links_and_slow_values() -> None:
         measurement_commit="a" * 40,
         evidence_commit="b" * 40,
         github_url="https://github.com/rextio/rextio-benchmark",
+        stability_summary=_verified_summary(report),
     )
     assert list(blocks) == [
         "README.md",
@@ -409,6 +434,7 @@ def test_readme_blocks_state_candidate_commit_caveats() -> None:
         measurement_commit="a" * 40,
         evidence_commit="b" * 40,
         github_url="https://github.com/rextio/rextio-benchmark",
+        stability_summary=_verified_summary(report),
     )
     english = blocks["README.md"]
     assert "rextio-numpy 0.1.3 candidate@7316c47393a8" in english
@@ -422,6 +448,7 @@ def test_readme_blocks_state_candidate_commit_caveats() -> None:
             measurement_commit="a" * 40,
             evidence_commit="b" * 40,
             github_url="https://github.com/rextio/rextio-benchmark",
+            stability_summary=_verified_summary(report),
         )["README.md"]
     )
     for block in blocks.values():
