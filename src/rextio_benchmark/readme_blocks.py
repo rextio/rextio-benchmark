@@ -18,58 +18,69 @@ LOCALES = {
     "README.md": {
         "heading": "Verified CPU benchmark snapshot",
         "intro": "Same Python source and deterministic inputs",
+        "versions": "Versions",
         "columns": ("Domain", "Python source", "Rextio native", "Speedup (source ÷ native)"),
         "caveat": (
             "Build, import, first-call, and worker-process startup are excluded from "
             "these steady-state rows. The Core executable is separate because process "
             "startup is included. NumPy `dot` remains a BLAS-owned negative control; a "
-            "manually vectorized pandas/NumPy rewrite may be faster."
+            "manually vectorized pandas/NumPy rewrite may be faster. Ratios below 1× "
+            "mean Rextio was slower; values near 1× indicate parity, not a material "
+            "speedup."
         ),
         "links": ("Canonical report", "measurement commit", "evidence commit"),
     },
     "README.ko.md": {
         "heading": "검증된 CPU 벤치마크 스냅샷",
         "intro": "동일한 Python 소스와 결정적 입력",
+        "versions": "버전",
         "columns": ("영역", "Python 소스", "Rextio native", "속도비 (소스 ÷ native)"),
         "caveat": (
             "빌드, import, 첫 호출, worker 프로세스 시작 시간은 이 steady-state "
             "행에서 제외됩니다. Core 실행 파일은 프로세스 시작을 포함하므로 별도 "
             "보고됩니다. NumPy `dot`은 BLAS negative control이며 수동 벡터화한 "
-            "pandas/NumPy 재작성은 더 빠를 수 있습니다."
+            "pandas/NumPy 재작성은 더 빠를 수 있습니다. 1× 미만은 Rextio가 더 "
+            "느렸다는 뜻이며, 1× 부근 값은 유의미한 가속이 아닌 동등 성능입니다."
         ),
         "links": ("정식 보고서", "측정 커밋", "증거 커밋"),
     },
     "README.ja.md": {
         "heading": "検証済み CPU ベンチマーク",
         "intro": "同一の Python ソースと決定的入力",
+        "versions": "バージョン",
         "columns": ("領域", "Python ソース", "Rextio native", "高速化 (source ÷ native)"),
         "caveat": (
             "build、import、初回呼び出し、worker 起動時間は steady-state 行から除外"
             "します。Core 実行ファイルはプロセス起動を含むため別掲です。NumPy "
             "`dot` は BLAS negative control で、手動ベクトル化 pandas/NumPy "
-            "書き換えの方が速い場合があります。"
+            "書き換えの方が速い場合があります。1× 未満は Rextio の方が遅く、"
+            "1× 付近は実質的な高速化ではなく同等性能を示します。"
         ),
         "links": ("正規レポート", "測定コミット", "証拠コミット"),
     },
     "README.zh-hans.md": {
         "heading": "已验证的 CPU 基准快照",
         "intro": "相同的 Python 源码和确定性输入",
+        "versions": "版本",
         "columns": ("领域", "Python 源码", "Rextio native", "加速比 (source ÷ native)"),
         "caveat": (
             "这些 steady-state 行不含构建、import、首次调用和 worker 进程启动。"
             "Core 可执行文件因包含进程启动而单独报告。NumPy `dot` 保留为 BLAS "
-            "negative control；手工向量化的 pandas/NumPy 重写可能更快。"
+            "negative control；手工向量化的 pandas/NumPy 重写可能更快。低于 "
+            "1× 表示 Rextio 更慢；接近 1× 表示性能相当，而非实质性加速。"
         ),
         "links": ("规范报告", "测量提交", "证据提交"),
     },
     "README.zh-hant.md": {
         "heading": "已驗證的 CPU 基準快照",
         "intro": "相同的 Python 原始碼和確定性輸入",
+        "versions": "版本",
         "columns": ("領域", "Python 原始碼", "Rextio native", "加速比 (source ÷ native)"),
         "caveat": (
             "這些 steady-state 行不含建置、import、首次呼叫和 worker 行程啟動。"
             "Core 執行檔因包含行程啟動而單獨報告。NumPy `dot` 保留為 BLAS "
-            "negative control；手動向量化的 pandas/NumPy 重寫可能更快。"
+            "negative control；手動向量化的 pandas/NumPy 重寫可能更快。低於 "
+            "1× 表示 Rextio 較慢；接近 1× 表示效能相當，而非實質性加速。"
         ),
         "links": ("規範報告", "測量提交", "證據提交"),
     },
@@ -124,7 +135,7 @@ def generate_blocks(
             "",
             f"{locale['intro']}; **{machine}**, **{date}**, CPython "
             f"**{report['system']['python_controller']}**.",
-            f"Versions: {version_text}.",
+            f"{locale['versions']}: {version_text}.",
             "",
             f"| {domain} | {source} | {native} | {ratio} |",
             "| --- | ---: | ---: | ---: |",
