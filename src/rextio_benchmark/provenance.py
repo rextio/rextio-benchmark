@@ -16,6 +16,11 @@ from .cohort import (
     FROZEN_CANONICAL_COHORTS,
     RELEASED_CPU_0_1_0_CASE_PACKAGES,
 )
+from .integration_targets import (
+    TARGET_PACKAGE_GIT_URLS,
+    TARGET_PACKAGE_VERSIONS,
+    TARGET_POLICY_ID,
+)
 from .verification import GateError
 
 _FULL_COMMIT = re.compile(r"^[0-9a-f]{40}$")
@@ -30,7 +35,11 @@ def package_vcs_provenance(
     included. Absolute local paths are never stored — only the URL, VCS kind,
     commit id, and optional requested revision.
     """
-    selected = tuple(names) if names is not None else tuple(CANDIDATE_PLUGIN_PINS)
+    selected = (
+        tuple(names)
+        if names is not None
+        else tuple(sorted(set(CANDIDATE_PLUGIN_PINS) | set(TARGET_PACKAGE_VERSIONS)))
+    )
     result: dict[str, dict[str, str]] = {}
     for name in selected:
         try:
@@ -91,6 +100,29 @@ def report_package_versions(report: Mapping[str, Any]) -> dict[str, str]:
             if not isinstance(name, str) or not isinstance(version, str):
                 continue
             if name not in CANDIDATE_PLUGIN_PINS:
+                continue
+            prior = versions.get(name)
+            if prior is not None and prior != version:
+                raise GateError(f"package version conflict for {name}: {prior} vs {version}")
+            versions[name] = version
+    return versions
+
+
+def report_named_package_versions(
+    report: Mapping[str, Any],
+    names: set[str] | frozenset[str],
+) -> dict[str, str]:
+    """Return conflict-checked versions for an explicit package-name set."""
+    versions: dict[str, str] = {}
+    for case in report.get("cases") or []:
+        if not isinstance(case, Mapping):
+            continue
+        packages = case.get("packages") or {}
+        if not isinstance(packages, Mapping):
+            continue
+        for name in names:
+            version = packages.get(name)
+            if not isinstance(version, str):
                 continue
             prior = versions.get(name)
             if prior is not None and prior != version:
@@ -401,33 +433,46 @@ def bound_candidate_pins_from_report(report: Mapping[str, Any]) -> dict[str, dic
         return {}
     if not isinstance(policy, Mapping) or not isinstance(provenance, Mapping):
         raise GateError("candidate policy and package_provenance must both be objects")
-    if policy.get("policy_id") != CANDIDATE_COHORT_POLICY["policy_id"]:
-        raise GateError(
-            f"unsupported candidate policy_id: {policy.get('policy_id')!r}"
-        )
+    policy_id = policy.get("policy_id")
+    if policy_id not in {CANDIDATE_COHORT_POLICY["policy_id"], TARGET_POLICY_ID}:
+        raise GateError(f"unsupported candidate policy_id: {policy_id!r}")
     if policy.get("policy_version") != CANDIDATE_COHORT_POLICY["policy_version"]:
         raise GateError("candidate policy_version differs")
-    pins = policy.get("candidate_plugins")
+    next_policy = policy_id == TARGET_POLICY_ID
+    pins_key = "candidate_packages" if next_policy else "candidate_plugins"
+    pins = policy.get(pins_key)
     if not isinstance(pins, Mapping) or not pins:
-        raise GateError("candidate policy lacks candidate_plugins")
+        raise GateError(f"candidate policy lacks {pins_key}")
+    if next_policy and set(pins) != set(TARGET_PACKAGE_VERSIONS):
+        raise GateError("next candidate policy package set differs")
     bound: dict[str, dict[str, str]] = {}
     for name, pin in pins.items():
         if not isinstance(name, str) or not isinstance(pin, Mapping):
-            raise GateError("candidate_plugins entries must be objects")
+            raise GateError(f"{pins_key} entries must be objects")
         normalized = {
             "version": str(pin.get("version", "")),
             "git_url": str(pin.get("git_url", "")).rstrip("/"),
             "rev": str(pin.get("rev", "")),
         }
-        expected = CANDIDATE_PLUGIN_PINS.get(name)
-        if expected is None:
-            raise GateError(f"unknown candidate plugin in policy: {name}")
-        if (
-            normalized["version"] != expected["version"]
-            or normalized["git_url"] != expected["git_url"].rstrip("/")
-            or normalized["rev"] != expected["rev"]
-        ):
-            raise GateError(f"policy pin for {name} does not match frozen candidate pins")
+        if next_policy:
+            if name not in TARGET_PACKAGE_VERSIONS:
+                raise GateError(f"unknown next candidate package in policy: {name}")
+            if (
+                normalized["version"] != TARGET_PACKAGE_VERSIONS[name]
+                or normalized["git_url"] != TARGET_PACKAGE_GIT_URLS[name]
+                or _FULL_COMMIT.fullmatch(normalized["rev"]) is None
+            ):
+                raise GateError(f"next candidate policy pin for {name} differs")
+        else:
+            expected = CANDIDATE_PLUGIN_PINS.get(name)
+            if expected is None:
+                raise GateError(f"unknown candidate plugin in policy: {name}")
+            if (
+                normalized["version"] != expected["version"]
+                or normalized["git_url"] != expected["git_url"].rstrip("/")
+                or normalized["rev"] != expected["rev"]
+            ):
+                raise GateError(f"policy pin for {name} does not match frozen candidate pins")
         record = provenance.get(name)
         if not isinstance(record, Mapping):
             raise GateError(f"package_provenance missing for policy pin {name}")

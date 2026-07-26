@@ -16,17 +16,12 @@ makes BLAS, libtorch, TensorFlow, or CUDA kernels intrinsically faster.
 - a stable Rust toolchain with `cargo` and `rustc`
 - enough disk space for isolated Torch and TensorFlow environments
 
-The locks use the released distributions `rextio==0.1.6`,
-`rextio-networkx==0.1.1`, `rextio-pandas==0.1.2`, and `rextio-torch==0.1.2`,
-plus **unreleased commit-pinned candidate** builds
-`rextio-numpy==0.1.3` at Git rev
-`7316c47393a86f1c701049b878d01e8d8f561cdb` and
-`rextio-tensorflow==0.1.3` at Git rev
-`346ca58148ed2563d4c7547dd8443d60cd4f905b`. Those candidates are **not** PyPI
-`rextio-numpy` 0.1.3 or `rextio-tensorflow` 0.1.3 releases. The optional CUDA
-locks add released `rextio-device-cuda==0.1.0` and the same TensorFlow
-candidate pin. See [CHANGELOG.md](CHANGELOG.md) and
-[PUBLICATION.md](PUBLICATION.md).
+The locks use **unreleased commit-pinned candidate** builds of Core 0.1.7,
+NumPy 0.1.3, Torch 0.1.3, and TensorFlow 0.1.3 at the exact Git revisions
+declared in `profiles/next-candidate.toml`. They are not corresponding PyPI
+releases. NetworkX 0.1.1 and pandas 0.1.2 remain released pins; optional CUDA
+locks also include released `rextio-device-cuda==0.1.0`. See
+[CHANGELOG.md](CHANGELOG.md) and [PUBLICATION.md](PUBLICATION.md).
 
 > **Methodology amendment:** The first implementation applied the 10 percent
 > stability veto to all cases and rejected the first cohort because the
@@ -220,12 +215,13 @@ The three new diagnostics belong to the separate unmeasured policy
 `candidate-boundary-prepost-0.1.1`; they do not alter the six frozen headline
 rows. Activation is deliberately fail-closed through
 `profiles/next-candidate.toml`. Core 0.1.7 is pinned there to
-`b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97` and TensorFlow 0.1.3 to
-`1fdb2e1cd91d058a056db76c2e0a15d52c855053`; NumPy and Torch 0.1.3 remain
-`PENDING_INTEGRATION_SHA` until their integration merges exist. Build and
-benchmark commands refuse to start this policy until every revision is a full
-commit and the affected CPU profile manifests select those exact Git sources.
-No chronological-first run has been started or selected.
+`b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97`, NumPy 0.1.3 to
+`cf461e6775780a598517980c555a1aec079285d8`, and TensorFlow 0.1.3 to
+`1fdb2e1cd91d058a056db76c2e0a15d52c855053`, and Torch 0.1.3 to
+`1e92b24b154c7266dc37d19533fc3e17a8b05f9a`. Every revision is a full commit,
+and the affected CPU profile manifests select those exact Git sources. The
+policy is ready for an independently audited chronological-first run; no run
+has been started or selected.
 
 ## Measurement contract
 

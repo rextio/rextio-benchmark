@@ -10,6 +10,12 @@ import pytest
 from rextio_benchmark.build_runner import _run
 from rextio_benchmark.bundler import bundle_cohort
 from rextio_benchmark.cohort import cohort_id, validate_cohort
+from rextio_benchmark.integration_targets import (
+    TARGET_CONFIG_PATH,
+    TARGET_POLICY_ID,
+    integration_target_pins,
+    parse_integration_targets,
+)
 from rextio_benchmark.portability import portable_value, require_portable
 from rextio_benchmark.readme_blocks import HEADLINE_ROWS, generate_blocks
 from rextio_benchmark.report import _host_identity
@@ -43,7 +49,7 @@ def _report(timestamp: str, commit: str = "a" * 40) -> dict:
                             "kind": "run-output",
                             "path": f"cases/{case_id}/.rextio/reports/build.json",
                             "sha256": "1" * 64,
-                        }
+                        },
                     }
                 },
                 "lanes": {
@@ -56,9 +62,7 @@ def _report(timestamp: str, commit: str = "a" * 40) -> dict:
     for case_id in DIAGNOSTIC_CASES:
         cases.append(deepcopy(cases[0]))
         cases[-1]["id"] = case_id
-        cases[-1]["gate"]["evidence"]["input"]["path"] = (
-            f"cases/{case_id}/benchmark.json"
-        )
+        cases[-1]["gate"]["evidence"]["input"]["path"] = f"cases/{case_id}/benchmark.json"
         cases[-1]["gate"]["evidence"]["output"]["path"] = (
             f"cases/{case_id}/.rextio/reports/build.json"
         )
@@ -107,14 +111,13 @@ def test_unstable_nonheadline_case_is_retained_without_veto() -> None:
         "median_speedup"
     ] = 1.23
     summary = validate_cohort(reports)
-    assert set(summary["cases"]) == {
-        case_id for _, case_id in HEADLINE_ROWS
-    } | set(DIAGNOSTIC_CASES)
+    assert set(summary["cases"]) == {case_id for _, case_id in HEADLINE_ROWS} | set(
+        DIAGNOSTIC_CASES
+    )
     assert summary["cases"][negative]["headline_gate"] is False
     assert summary["cases"][negative]["within_threshold"] is False
     assert all(
-        {"headline_gate", "within_threshold"} <= set(record)
-        for record in summary["cases"].values()
+        {"headline_gate", "within_threshold"} <= set(record) for record in summary["cases"].values()
     )
     assert summary["cases"][HEADLINE_ROWS[0][1]]["headline_gate"] is True
     assert summary["cases"][HEADLINE_ROWS[0][1]]["within_threshold"] is True
@@ -126,11 +129,9 @@ def test_unstable_headline_case_still_rejects() -> None:
         _report("2026-07-26T00:01:00+00:00"),
         _report("2026-07-26T00:02:00+00:00"),
     ]
-    next(
-        case
-        for case in reports[1]["cases"]
-        if case["id"] == HEADLINE_ROWS[0][1]
-    )["paired"]["median_speedup"] = 1.0
+    next(case for case in reports[1]["cases"] if case["id"] == HEADLINE_ROWS[0][1])["paired"][
+        "median_speedup"
+    ] = 1.0
     with pytest.raises(GateError, match=HEADLINE_ROWS[0][1]):
         validate_cohort(reports)
 
@@ -150,10 +151,27 @@ def test_bundle_cohort_copies_all_reports_and_hashes_summary(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    reports = [
-        _report(f"2026-07-26T00:0{index}:00+00:00")
-        for index in range(3)
-    ]
+    reports = [_report(f"2026-07-26T00:0{index}:00+00:00") for index in range(3)]
+    root = Path(__file__).resolve().parents[1]
+    ready_config = (root / TARGET_CONFIG_PATH).read_text(encoding="utf-8")
+    pins = integration_target_pins(parse_integration_targets(ready_config))
+    provenance = {
+        name: {
+            "version": pin["version"],
+            "url": pin["git_url"],
+            "vcs": "git",
+            "commit_id": pin["rev"],
+        }
+        for name, pin in pins.items()
+    }
+    for report in reports:
+        report["policy"] = {
+            "policy_id": TARGET_POLICY_ID,
+            "policy_version": 1,
+            "status": "pre-measurement",
+            "candidate_packages": pins,
+        }
+        report["package_provenance"] = provenance
     paths = []
     for index, report in enumerate(reports):
         path = tmp_path / "results/local" / f"{index}.json"
@@ -213,7 +231,10 @@ def test_bundle_cohort_copies_all_reports_and_hashes_summary(
     assert canonical.parent.name == expected_name
     assert len(list((canonical.parent / "reports").glob("*.json"))) == 3
     document = json.loads(manifest.read_text(encoding="utf-8"))
+    assert document["schema_version"] == 3
     assert document["cohort"]["selected_report_index"] == 0
+    assert document["cohort"]["candidate_packages"] == pins
+    assert document["cohort"]["package_provenance"] == provenance
     assert sha256_file(canonical.with_suffix(".md")) == document["report_markdown_sha256"]
     assert sha256_file(stability) == document["cohort"]["stability_summary_sha256"]
     for bundled_json in canonical.parent.rglob("*.json"):
@@ -393,13 +414,16 @@ def test_readme_blocks_state_candidate_commit_caveats() -> None:
     assert "rextio-numpy 0.1.3 candidate@7316c47393a8" in english
     assert "rextio-tensorflow 0.1.3 candidate@346ca58148ed" in english
     assert "not" in english.lower() and "PyPI" in english
-    assert blocks["README.md"] == generate_blocks(
-        report,
-        report_logical_path="results/canonical/cohort/report.json",
-        measurement_commit="a" * 40,
-        evidence_commit="b" * 40,
-        github_url="https://github.com/rextio/rextio-benchmark",
-    )["README.md"]
+    assert (
+        blocks["README.md"]
+        == generate_blocks(
+            report,
+            report_logical_path="results/canonical/cohort/report.json",
+            measurement_commit="a" * 40,
+            evidence_commit="b" * 40,
+            github_url="https://github.com/rextio/rextio-benchmark",
+        )["README.md"]
+    )
     for block in blocks.values():
         assert "candidate" in block.lower() or "Candidate" in block
         data_rows = [

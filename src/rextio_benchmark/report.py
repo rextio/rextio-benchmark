@@ -10,7 +10,9 @@ from typing import Any
 from .case_runner import MODE_SETTINGS, run_executable_case, run_module_case
 from .integration_targets import (
     cases_require_integration_targets,
+    integration_policy_binding,
     require_integration_targets_ready,
+    validate_integration_provenance,
 )
 from .models import load_cases, profile_python
 from .portability import portable_value, require_portable
@@ -63,9 +65,10 @@ def run_suite(repository_root: Path, mode: str) -> tuple[dict[str, Any], Path]:
         raise ValueError(f"unknown mode {mode!r}")
     repository = _repository_state(repository_root)
     loaded_cases = load_cases(repository_root)
-    if cases_require_integration_targets(
+    uses_next_targets = cases_require_integration_targets(
         frozenset(case.benchmark_id for case in loaded_cases)
-    ):
+    )
+    if uses_next_targets:
         require_integration_targets_ready(repository_root)
     cases = []
     for case in loaded_cases:
@@ -116,12 +119,12 @@ def run_suite(repository_root: Path, mode: str) -> tuple[dict[str, Any], Path]:
                 raise RuntimeError(f"package provenance conflict for {name}")
             merged_provenance[name] = record
 
-    # Candidate-plugin versions only: fail closed on rextio-numpy / rextio-tensorflow
-    # conflicts; ignore legitimate numpy/networkx profile isolation differences.
-    try:
-        candidate_versions = report_package_versions({"cases": cases})
-    except GateError as error:
-        raise RuntimeError(str(error)) from error
+    candidate_versions: dict[str, str] | None = None
+    if not uses_next_targets:
+        try:
+            candidate_versions = report_package_versions({"cases": cases})
+        except GateError as error:
+            raise RuntimeError(str(error)) from error
 
     blockers = []
     if mode == "quick":
@@ -131,17 +134,23 @@ def run_suite(repository_root: Path, mode: str) -> tuple[dict[str, Any], Path]:
     if repository["dirty"]:
         blockers.append("repository-worktree-is-dirty")
     blockers.extend(
-        f"{case['id']}: {blocker}"
-        for case in cases
-        for blocker in case.get("blockers", [])
+        f"{case['id']}: {blocker}" for case in cases for blocker in case.get("blockers", [])
     )
     policy = None
     package_provenance = None
     try:
-        policy, package_provenance = assemble_candidate_policy_binding(
-            candidate_versions,
-            merged_provenance,
-        )
+        if uses_next_targets:
+            policy = integration_policy_binding(repository_root)
+            package_provenance = validate_integration_provenance(
+                repository_root,
+                merged_provenance,
+            )
+        else:
+            assert candidate_versions is not None
+            policy, package_provenance = assemble_candidate_policy_binding(
+                candidate_versions,
+                merged_provenance,
+            )
     except Exception as error:
         blockers.append(f"candidate-provenance: {error}")
     publishable = mode == "publish" and not blockers and all(case["eligible"] for case in cases)

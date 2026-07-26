@@ -19,6 +19,9 @@ TARGET_PACKAGE_VERSIONS = {
     "rextio-tensorflow": "0.1.3",
     "rextio-torch": "0.1.3",
 }
+TARGET_PACKAGE_GIT_URLS = {
+    name: f"https://github.com/rextio/{name}" for name in TARGET_PACKAGE_VERSIONS
+}
 NEXT_DIAGNOSTIC_CASE_IDS = frozenset(
     {
         "numpy-f64-1d-boundary-direct-sink",
@@ -46,12 +49,12 @@ class IntegrationTarget:
         }
 
 
-def load_integration_targets(repository_root: Path) -> tuple[IntegrationTarget, ...]:
-    path = repository_root / TARGET_CONFIG_PATH
+def parse_integration_targets(text: str) -> tuple[IntegrationTarget, ...]:
+    """Parse and validate one next-candidate target configuration."""
     try:
-        document = tomllib.loads(path.read_text(encoding="utf-8"))
-    except (OSError, tomllib.TOMLDecodeError) as error:
-        raise GateError(f"next candidate target config is unavailable: {error}") from error
+        document = tomllib.loads(text)
+    except tomllib.TOMLDecodeError as error:
+        raise GateError(f"next candidate target config is invalid: {error}") from error
     if document.get("schema_version") != 1:
         raise GateError("next candidate target schema_version must be 1")
     if document.get("policy_id") != TARGET_POLICY_ID:
@@ -96,7 +99,18 @@ def load_integration_targets(repository_root: Path) -> tuple[IntegrationTarget, 
     for name, expected_version in TARGET_PACKAGE_VERSIONS.items():
         if by_name[name].version != expected_version:
             raise GateError(f"next candidate version for {name} differs")
+        if by_name[name].git_url != TARGET_PACKAGE_GIT_URLS[name]:
+            raise GateError(f"next candidate Git URL for {name} differs")
     return tuple(sorted(targets, key=lambda target: target.name))
+
+
+def load_integration_targets(repository_root: Path) -> tuple[IntegrationTarget, ...]:
+    path = repository_root / TARGET_CONFIG_PATH
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError as error:
+        raise GateError(f"next candidate target config is unavailable: {error}") from error
+    return parse_integration_targets(text)
 
 
 def _profile_binding_blockers(
@@ -113,9 +127,7 @@ def _profile_binding_blockers(
             continue
         dependencies = document.get("project", {}).get("dependencies", [])
         if f"{target.name}=={target.version}" not in dependencies:
-            blockers.append(
-                f"{target.name}: profile {profile} does not select {target.version}"
-            )
+            blockers.append(f"{target.name}: profile {profile} does not select {target.version}")
         sources = document.get("tool", {}).get("uv", {}).get("sources", {})
         source = sources.get(target.name) if isinstance(sources, Mapping) else None
         if not isinstance(source, Mapping):
@@ -159,6 +171,12 @@ def integration_policy_binding(repository_root: Path) -> dict[str, Any]:
     }
 
 
+def integration_target_pins(
+    targets: tuple[IntegrationTarget, ...],
+) -> dict[str, dict[str, str]]:
+    return {target.name: target.pin() for target in targets}
+
+
 def validate_integration_provenance(
     repository_root: Path,
     provenance: Mapping[str, Mapping[str, str]],
@@ -177,6 +195,13 @@ def validate_integration_provenance(
             or record.get("commit_id") != target.rev
         ):
             raise GateError(f"{target.name}: installed VCS provenance differs")
+        requested = record.get("requested_revision")
+        if (
+            requested is not None
+            and requested != target.rev
+            and not target.rev.startswith(str(requested))
+        ):
+            raise GateError(f"{target.name}: installed requested revision differs")
         bound[target.name] = {str(key): str(value) for key, value in record.items()}
     return bound
 

@@ -227,9 +227,7 @@ def bundle_cohort(
                     "index": index - 1,
                     "generated_at": report["generated_at"],
                     "source_path": logical_path(path, repository_root),
-                    "bundle_path": (
-                        target.relative_to(repository_root).as_posix()
-                    ),
+                    "bundle_path": (target.relative_to(repository_root).as_posix()),
                     "sha256": digest,
                     "selected": index == 1,
                 }
@@ -241,18 +239,26 @@ def bundle_cohort(
         stability_sha256 = sha256_file(stability_path)
 
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        manifest["schema_version"] = 2
-        manifest["cohort"] = {
+        next_policy = "candidate_packages" in stability
+        manifest["schema_version"] = 3 if next_policy else 2
+        cohort_manifest: dict[str, Any] = {
             "cohort_id": identifier,
             "selection": "chronological-first",
             "selected_report_index": 0,
             "report_count": 3,
-            "stability_summary_path": stability_path.relative_to(
-                repository_root
-            ).as_posix(),
+            "stability_summary_path": stability_path.relative_to(repository_root).as_posix(),
             "stability_summary_sha256": stability_sha256,
             "reports": bundled_reports,
         }
+        if next_policy:
+            cohort_manifest.update(
+                {
+                    "policy_id": stability["policy_id"],
+                    "candidate_packages": stability["candidate_packages"],
+                    "package_provenance": stability["package_provenance"],
+                }
+            )
+        manifest["cohort"] = cohort_manifest
         _write_json(manifest_path, manifest)
         manifest_sha256 = sha256_file(manifest_path)
         canonical = json.loads(canonical_report_path.read_text(encoding="utf-8"))
@@ -261,9 +267,7 @@ def bundle_cohort(
             {
                 "cohort_id": identifier,
                 "report_count": 3,
-                "stability_summary_path": stability_path.relative_to(
-                    repository_root
-                ).as_posix(),
+                "stability_summary_path": stability_path.relative_to(repository_root).as_posix(),
                 "stability_summary_sha256": stability_sha256,
             }
         )

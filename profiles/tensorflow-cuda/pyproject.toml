@@ -3,7 +3,8 @@ name = "rextio-benchmark-tensorflow-cuda-profile"
 version = "0.0.0"
 requires-python = "==3.11.*"
 dependencies = [
-  "rextio==0.1.6",
+  # Candidate 0.1.7 from the exact Git revision below — not a PyPI 0.1.7 release.
+  "rextio==0.1.7",
   # Candidate 0.1.3 from the exact Git revision below — not a PyPI 0.1.3 release.
   "rextio-tensorflow==0.1.3",
   "rextio-device-cuda==0.1.0",
@@ -15,5 +16,7 @@ dependencies = [
 package = false
 
 [tool.uv.sources]
+# Unreleased commit-pinned candidate build. Do not treat as PyPI rextio 0.1.7.
+rextio = { git = "https://github.com/rextio/rextio", rev = "b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97" }
 # Unreleased commit-pinned candidate build. Do not treat as PyPI rextio-tensorflow 0.1.3.
-rextio-tensorflow = { git = "https://github.com/rextio/rextio-tensorflow", rev = "346ca58148ed2563d4c7547dd8443d60cd4f905b" }
+rextio-tensorflow = { git = "https://github.com/rextio/rextio-tensorflow", rev = "1fdb2e1cd91d058a056db76c2e0a15d52c855053" }

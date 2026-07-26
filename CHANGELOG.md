@@ -40,8 +40,10 @@ commit-pinned candidate builds**, not PyPI 0.1.3 releases.
 - Add fail-closed integration-target and provenance surfaces for Core 0.1.7,
   NumPy/Torch/TensorFlow 0.1.3. Core is pinned to
   `b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97` and TensorFlow to
-  `1fdb2e1cd91d058a056db76c2e0a15d52c855053`; NumPy and Torch remain explicit
-  pending placeholders until their integration merge commits exist.
+  `1fdb2e1cd91d058a056db76c2e0a15d52c855053`; NumPy is pinned to
+  `cf461e6775780a598517980c555a1aec079285d8` and Torch to
+  `1e92b24b154c7266dc37d19533fc3e17a8b05f9a`. The five base, CPU, and CUDA
+  profile locks select those exact candidate revisions before measurement.
 
 ### Changed
 

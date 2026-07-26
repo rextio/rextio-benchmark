@@ -104,7 +104,7 @@ CANDIDATE_COHORT_POLICY: dict[str, Any] = {
 NEXT_CANDIDATE_COHORT_POLICY: dict[str, Any] = {
     "policy_id": "candidate-boundary-prepost-0.1.1",
     "policy_version": POLICY_VERSION,
-    "status": "blocked-pending-integration-shas",
+    "status": "pre-measurement",
     "selection": "chronological-first",
     "report_count": REPORT_COUNT,
     "stability_threshold_fraction": STABILITY_THRESHOLD,
@@ -114,8 +114,8 @@ NEXT_CANDIDATE_COHORT_POLICY: dict[str, Any] = {
     "target_config": "profiles/next-candidate.toml",
     "notes": (
         "Unmeasured diagnostic expansion for the NumPy F64_1D direct boundary "
-        "and Torch/TensorFlow CPU small-batch pre/post paths. It cannot run or "
-        "publish until every integration target and active profile is exact-bound."
+        "and Torch/TensorFlow CPU small-batch pre/post paths. Every integration "
+        "target and active profile is exact-bound; no measurement has started."
     ),
 }
 
@@ -332,6 +332,10 @@ def validate_cohort(reports: Sequence[dict[str, Any]]) -> dict[str, Any]:
         plugins = policy.get("candidate_plugins")
         if isinstance(plugins, dict):
             summary["candidate_plugins"] = plugins
+        packages = policy.get("candidate_packages")
+        if isinstance(packages, dict):
+            summary["candidate_packages"] = packages
+            summary["package_provenance"] = package_provenance
     return summary
 
 

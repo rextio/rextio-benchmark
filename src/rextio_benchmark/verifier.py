@@ -12,6 +12,15 @@ from typing import Any
 import jsonschema
 
 from .cohort import cohort_id, expected_complete_case_ids, validate_cohort
+from .integration_targets import (
+    NEXT_DIAGNOSTIC_CASE_IDS,
+    TARGET_CONFIG_PATH,
+    TARGET_PACKAGE_VERSIONS,
+    TARGET_POLICY_ID,
+    cases_require_integration_targets,
+    integration_target_pins,
+    parse_integration_targets,
+)
 from .models import BenchmarkCase, load_cases, paired_orders
 from .output_table import validate_output_table
 from .portability import require_portable
@@ -22,6 +31,7 @@ from .provenance import (
     full_candidate_plugin_pins,
     is_released_frozen_report,
     lock_or_manifest_binds_pin,
+    report_named_package_versions,
     report_package_versions,
     requires_full_candidate_binding,
 )
@@ -103,8 +113,7 @@ def _verify_bundle_record(
     repository_root: Path,
 ) -> Path:
     _require(
-        set(bundled)
-        == {"kind", "logical_path", "bundle_path", "sha256", "size_bytes"},
+        set(bundled) == {"kind", "logical_path", "bundle_path", "sha256", "size_bytes"},
         f"bundle record shape differs: {role}",
     )
     _require(bundled["kind"] == "run-output", f"invalid bundle kind: {role}")
@@ -153,8 +162,7 @@ def _verify_evidence(
     )
     if declaration["kind"] == "native-extension":
         _require(
-            declaration["declared_path"]
-            == evidence["declared_native_artifact"]["path"],
+            declaration["declared_path"] == evidence["declared_native_artifact"]["path"],
             "declared installed artifact differs",
         )
     seen_paths: set[str] = set()
@@ -203,22 +211,19 @@ def _verify_evidence(
         declared = (build.get("executable_build") or {}).get("path")
         _require(
             declared
-            and Path(str(declared)).parts[-2:]
-            == Path(declaration["declared_path"]).parts[-2:],
+            and Path(str(declared)).parts[-2:] == Path(declaration["declared_path"]).parts[-2:],
             "executable artifact differs from build.json declaration",
         )
     else:
         build_python = build.get("build_python")
         installed = (build.get("native_build") or {}).get("installed_path")
         _require(
-            build_python
-            and Path(str(build_python)).parts[-3:] == (".rextio", "build", "python"),
+            build_python and Path(str(build_python)).parts[-3:] == (".rextio", "build", "python"),
             "runtime tree differs from build.json declaration",
         )
         _require(
             installed
-            and Path(str(installed)).parts[-4:]
-            == Path(declaration["declared_path"]).parts[-4:],
+            and Path(str(installed)).parts[-4:] == Path(declaration["declared_path"]).parts[-4:],
             "native artifact differs from build.json declaration",
         )
     return resolved_outputs
@@ -253,16 +258,17 @@ def _load_canonical_bundle(
         "cases",
     }
     version = manifest["schema_version"]
-    _require(version in {1, 2}, "canonical bundle schema differs")
+    _require(version in {1, 2, 3}, "canonical bundle schema differs")
     _require(
         set(manifest) == (base_keys if version == 1 else base_keys | {"cohort"}),
         "canonical bundle manifest shape differs",
     )
     _require(manifest["run_commit"] == report["repository"]["commit"], "bundle commit differs")
     _require(
-        manifest["canonical_report_path"] == resolve_logical_path(
-            manifest["canonical_report_path"], repository_root
-        ).relative_to(repository_root.resolve()).as_posix(),
+        manifest["canonical_report_path"]
+        == resolve_logical_path(manifest["canonical_report_path"], repository_root)
+        .relative_to(repository_root.resolve())
+        .as_posix(),
         "canonical report path is not portable",
     )
     _require(
@@ -281,19 +287,25 @@ def _load_canonical_bundle(
     )
     _verify_canonical_markdown(report, manifest, bundle_root, repository_root)
     resolve_logical_path(manifest["source_report_path"], repository_root)
-    if version == 2:
+    if version in {2, 3}:
         cohort = manifest["cohort"]
+        cohort_keys = {
+            "cohort_id",
+            "selection",
+            "selected_report_index",
+            "report_count",
+            "stability_summary_path",
+            "stability_summary_sha256",
+            "reports",
+        }
+        if version == 3:
+            cohort_keys |= {
+                "policy_id",
+                "candidate_packages",
+                "package_provenance",
+            }
         _require(
-            set(cohort)
-            == {
-                "cohort_id",
-                "selection",
-                "selected_report_index",
-                "report_count",
-                "stability_summary_path",
-                "stability_summary_sha256",
-                "reports",
-            },
+            set(cohort) == cohort_keys,
             "cohort manifest shape differs",
         )
         _require(cohort["selection"] == "chronological-first", "cohort selection differs")
@@ -325,9 +337,13 @@ def _load_canonical_bundle(
         recomputed = validate_cohort(raw_reports)
         recomputed["cohort_id"] = cohort["cohort_id"]
         recomputed["reports"] = records
-        stability_path = resolve_logical_path(
-            cohort["stability_summary_path"], repository_root
-        )
+        if version == 3:
+            for key in ("policy_id", "candidate_packages", "package_provenance"):
+                _require(
+                    cohort[key] == recomputed.get(key),
+                    f"cohort {key} differs from stability policy",
+                )
+        stability_path = resolve_logical_path(cohort["stability_summary_path"], repository_root)
         _require(stability_path.is_file(), "stability summary is missing")
         _require(
             sha256_file(stability_path) == cohort["stability_summary_sha256"],
@@ -441,8 +457,7 @@ def _verify_lane(
         sizes = observation["batch_sizes"]
         elapsed = observation["batch_elapsed_ns"]
         _require(
-            len(samples) == expected_samples
-            and len(samples) == len(sizes) == len(elapsed),
+            len(samples) == expected_samples and len(samples) == len(sizes) == len(elapsed),
             f"{case.benchmark_id}/{lane_name} batch evidence",
         )
         _require(not Path(observation["module_path"]).is_absolute(), "absolute module path")
@@ -512,9 +527,7 @@ def _verify_environment(
             "rextio-native",
         }
         _require(set(active) == expected_lanes, "active provenance lane set differs")
-        generated_root = (
-            Path("cases") / case.project / ".rextio" / "build" / "python"
-        ).as_posix()
+        generated_root = (Path("cases") / case.project / ".rextio" / "build" / "python").as_posix()
         for lane, modules in active.items():
             _require(
                 set(modules) <= set(case.required_modules),
@@ -565,7 +578,8 @@ def _verify_environment(
     effective = environment["effective_threads"]
     if case.profile == "torch-cpu":
         _require(
-            effective.get("torch") == {
+            effective.get("torch")
+            == {
                 "intraop_threads": 1,
                 "interop_threads": 1,
             },
@@ -573,7 +587,8 @@ def _verify_environment(
         )
     if case.profile == "tensorflow-cpu":
         _require(
-            effective.get("tensorflow") == {
+            effective.get("tensorflow")
+            == {
                 "intraop_threads": 1,
                 "interop_threads": 1,
             },
@@ -658,9 +673,7 @@ def _verify_candidate_policy_and_provenance(
             )
         bound = bound_candidate_pins_from_report(report)
         if set(bound) != set(expected):
-            raise GateError(
-                "candidate policy pins must equal the full frozen candidate plugin set"
-            )
+            raise GateError("candidate policy pins must equal the full frozen candidate plugin set")
         for name, pin in bound.items():
             if versions.get(name) != pin["version"]:
                 raise GateError(f"{name}: packages version does not match policy pin")
@@ -674,9 +687,7 @@ def _verify_candidate_policy_and_provenance(
     if not present:
         raise GateError("candidate policy/provenance present without candidate package versions")
     if policy is None or provenance is None:
-        raise GateError(
-            "current candidate report requires policy and package_provenance bindings"
-        )
+        raise GateError("current candidate report requires policy and package_provenance bindings")
     bound = bound_candidate_pins_from_report(report)
     if set(bound) != set(present):
         raise GateError("candidate policy pins do not match report package versions")
@@ -684,6 +695,129 @@ def _verify_candidate_policy_and_provenance(
         if versions.get(name) != pin["version"]:
             raise GateError(f"{name}: packages version does not match policy pin")
     _verify_profile_bindings_for_pins(report, repository_root, bound)
+
+
+def _required_run_input_blob(
+    report: dict[str, Any],
+    record: object,
+    *,
+    role: str,
+    expected_path: str,
+    repository_root: Path,
+) -> bytes:
+    if not isinstance(record, dict):
+        raise GateError(f"next candidate evidence lacks {role}")
+    if record.get("kind") != "run-input" or record.get("path") != expected_path:
+        raise GateError(f"next candidate {role} evidence binding differs")
+    blob = _git_blob(repository_root, report["repository"]["commit"], expected_path)
+    if blob is None:
+        raise GateError(f"next candidate {role} unavailable at run commit")
+    if hashlib.sha256(blob).hexdigest() != record.get("sha256"):
+        raise GateError(f"next candidate {role} digest differs at run commit")
+    return blob
+
+
+def _verify_next_integration_policy_and_provenance(
+    report: dict[str, Any],
+    repository_root: Path,
+    known: dict[str, BenchmarkCase],
+) -> None:
+    """Bind the 12-case policy to run-commit config, profiles, and PEP 610."""
+    policy = report.get("policy")
+    provenance = report.get("package_provenance")
+    required = requires_full_candidate_binding(report) or any(
+        case.get("eligible")
+        for case in report.get("cases", [])
+        if case.get("id") in NEXT_DIAGNOSTIC_CASE_IDS
+    )
+    if not required and policy is None and provenance is None:
+        return
+    if not isinstance(policy, dict) or policy.get("policy_id") != TARGET_POLICY_ID:
+        raise GateError("next publishability requires next candidate policy and provenance")
+    bound = bound_candidate_pins_from_report(report)
+    if set(bound) != set(TARGET_PACKAGE_VERSIONS):
+        raise GateError("next candidate policy must bind all four candidate packages")
+    versions = report_named_package_versions(
+        report,
+        frozenset(TARGET_PACKAGE_VERSIONS),
+    )
+    for name, pin in bound.items():
+        if versions.get(name) != pin["version"]:
+            raise GateError(f"{name}: packages version does not match next policy pin")
+
+    config_blob: bytes | None = None
+    harness_path = "src/rextio_benchmark/integration_targets.py"
+    for case_report in report["cases"]:
+        gate = case_report.get("gate")
+        evidence = gate.get("evidence") if isinstance(gate, dict) else None
+        if not isinstance(evidence, dict):
+            raise GateError(f"{case_report['id']}: next candidate report lacks gate evidence")
+        candidate_blob = _required_run_input_blob(
+            report,
+            evidence.get("integration_target_config"),
+            role="integration_target_config",
+            expected_path=TARGET_CONFIG_PATH.as_posix(),
+            repository_root=repository_root,
+        )
+        _required_run_input_blob(
+            report,
+            evidence.get("harness_integration_targets"),
+            role="harness_integration_targets",
+            expected_path=harness_path,
+            repository_root=repository_root,
+        )
+        if config_blob is None:
+            config_blob = candidate_blob
+        elif config_blob != candidate_blob:
+            raise GateError("next candidate config evidence differs across cases")
+    if config_blob is None:
+        raise GateError("next candidate config evidence is absent")
+    targets = parse_integration_targets(config_blob.decode("utf-8"))
+    if any(len(target.rev) != 40 for target in targets):
+        raise GateError("next candidate config contains a pending integration revision")
+    if bound != integration_target_pins(targets):
+        raise GateError("next candidate policy differs from run-commit target config")
+
+    by_id = {case["id"]: case for case in report["cases"]}
+    for target in targets:
+        for profile in target.profiles:
+            matching = [
+                by_id[case_id]
+                for case_id, case in known.items()
+                if case.profile == profile
+                and case_id in by_id
+                and by_id[case_id].get("packages", {}).get(target.name) == target.version
+            ]
+            if not matching:
+                raise GateError(f"{target.name}: no {profile} case binds next candidate version")
+            lock_bound = False
+            manifest_bound = False
+            for case_report in matching:
+                evidence = case_report["gate"]["evidence"]
+                for role in ("profile_lock", "profile_manifest"):
+                    record = evidence.get(role)
+                    if not isinstance(record, dict) or record.get("kind") != "run-input":
+                        continue
+                    blob = _git_blob(
+                        repository_root,
+                        report["repository"]["commit"],
+                        str(record.get("path", "")),
+                    )
+                    if blob is None or hashlib.sha256(blob).hexdigest() != record.get("sha256"):
+                        continue
+                    if lock_or_manifest_binds_pin(
+                        blob.decode("utf-8"),
+                        target.name,
+                        target.pin(),
+                    ):
+                        if role == "profile_lock":
+                            lock_bound = True
+                        else:
+                            manifest_bound = True
+            if not lock_bound or not manifest_bound:
+                raise GateError(
+                    f"{target.name}: {profile} lock/manifest do not bind target revision"
+                )
 
 
 def _replay_generated_expectations(
@@ -877,7 +1011,10 @@ def verify_report(report_path: Path, repository_root: Path) -> dict[str, Any]:
         identifier_set == set(expected_cases),
         "report case set differs from manifests",
     )
-    _verify_candidate_policy_and_provenance(report, repository_root)
+    if cases_require_integration_targets(identifier_set):
+        _verify_next_integration_policy_and_provenance(report, repository_root, known)
+    else:
+        _verify_candidate_policy_and_provenance(report, repository_root)
     replay_expectations = not is_released_frozen_report(report)
     for case_report in report["cases"]:
         case = known[case_report["id"]]
@@ -894,9 +1031,7 @@ def verify_report(report_path: Path, repository_root: Path) -> dict[str, Any]:
             repository_root,
             report["repository"]["commit"],
             bundle_evidence=(
-                canonical_bundle[case.benchmark_id]
-                if canonical_bundle is not None
-                else None
+                canonical_bundle[case.benchmark_id] if canonical_bundle is not None else None
             ),
         )
         if replay_expectations:
@@ -912,9 +1047,7 @@ def verify_report(report_path: Path, repository_root: Path) -> dict[str, Any]:
     current = _current_commit(repository_root)
     run_commit = report["repository"]["commit"]
     commit_available = _run_commit_available(repository_root, run_commit, current)
-    all_cases_eligible = all(
-        case["eligible"] and not case["blockers"] for case in report["cases"]
-    )
+    all_cases_eligible = all(case["eligible"] and not case["blockers"] for case in report["cases"])
     recomputed_publishable = (
         report["mode"] == "publish"
         and run_commit is not None
@@ -927,8 +1060,7 @@ def verify_report(report_path: Path, repository_root: Path) -> dict[str, Any]:
     )
     _require(report["publishable"] == recomputed_publishable, "publishability differs")
     _require(
-        report["eligibility"]["status"]
-        == ("eligible" if report["publishable"] else "blocked"),
+        report["eligibility"]["status"] == ("eligible" if report["publishable"] else "blocked"),
         "global eligibility status differs",
     )
     return report

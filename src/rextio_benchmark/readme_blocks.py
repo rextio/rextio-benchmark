@@ -31,8 +31,9 @@ LOCALES = {
             "speedup."
         ),
         "candidate_caveat": (
-            "Plugin versions marked candidate are unreleased Git commit pins, not "
-            "PyPI rextio-numpy 0.1.3 or rextio-tensorflow 0.1.3 releases."
+            "Packages marked candidate are unreleased exact Git commit pins, including "
+            "Core 0.1.7 and rextio-torch 0.1.3; they are not PyPI releases. "
+            "The same applies to rextio-numpy 0.1.3 and rextio-tensorflow 0.1.3."
         ),
         "links": ("Canonical report", "measurement commit", "evidence commit"),
     },
@@ -51,8 +52,9 @@ LOCALES = {
             "대체로 동등하다는 뜻입니다."
         ),
         "candidate_caveat": (
-            "candidate로 표시된 플러그인 버전은 PyPI rextio-numpy 0.1.3 또는 "
-            "rextio-tensorflow 0.1.3 릴리스가 아니라 미배포 Git 커밋 핀입니다."
+            "candidate로 표시된 패키지는 Core 0.1.7과 rextio-torch 0.1.3을 포함한 "
+            "미배포 exact Git 커밋 핀이며 PyPI 릴리스가 아닙니다. rextio-numpy "
+            "0.1.3과 rextio-tensorflow 0.1.3에도 동일하게 적용됩니다."
         ),
         "links": ("정식 보고서", "측정 커밋", "증거 커밋"),
     },
@@ -71,8 +73,9 @@ LOCALES = {
             "1× 付近は実質的な高速化ではなく同等性能を示します。"
         ),
         "candidate_caveat": (
-            "candidate と記したプラグイン版は PyPI の rextio-numpy 0.1.3 や "
-            "rextio-tensorflow 0.1.3 リリースではなく、未公開 Git コミット固定です。"
+            "candidate と記したパッケージは Core 0.1.7 と rextio-torch 0.1.3 "
+            "を含む未公開の exact Git コミット固定であり、PyPI リリースでは"
+            "ありません。rextio-numpy 0.1.3 と rextio-tensorflow 0.1.3 も同様です。"
         ),
         "links": ("正規レポート", "測定コミット", "証拠コミット"),
     },
@@ -89,8 +92,9 @@ LOCALES = {
             "1× 表示 Rextio 更慢；接近 1× 表示性能相当，而非实质性加速。"
         ),
         "candidate_caveat": (
-            "标为 candidate 的插件版本是未发布的 Git 提交固定，不是 PyPI 上的 "
-            "rextio-numpy 0.1.3 或 rextio-tensorflow 0.1.3 发行版。"
+            "标为 candidate 的包（包括 Core 0.1.7 和 rextio-torch 0.1.3）是未发布的 "
+            "exact Git 提交固定，不是 PyPI 发行版；rextio-numpy 0.1.3 和 "
+            "rextio-tensorflow 0.1.3 也同样如此。"
         ),
         "links": ("正式报告", "测量提交", "证据提交"),
     },
@@ -107,8 +111,9 @@ LOCALES = {
             "1× 表示 Rextio 較慢；接近 1× 表示效能相當，而非實質性加速。"
         ),
         "candidate_caveat": (
-            "標為 candidate 的外掛版本是未發佈的 Git 提交固定，不是 PyPI 上的 "
-            "rextio-numpy 0.1.3 或 rextio-tensorflow 0.1.3 發行版。"
+            "標為 candidate 的套件（包括 Core 0.1.7 和 rextio-torch 0.1.3）是未發佈的 "
+            "exact Git 提交固定，不是 PyPI 發行版；rextio-numpy 0.1.3 和 "
+            "rextio-tensorflow 0.1.3 也同樣如此。"
         ),
         "links": ("正式報告", "測量提交", "證據提交"),
     },
@@ -175,36 +180,48 @@ def generate_blocks(
     # Non-released publishable/canonical reports require the full frozen candidate set;
     # authentic released frozen reports stay unlabeled. Version strings alone never
     # imply candidacy.
+    from .integration_targets import TARGET_PACKAGE_VERSIONS, TARGET_POLICY_ID
     from .provenance import (
         bound_candidate_pins_from_report,
         candidate_plugins_in_versions,
         full_candidate_plugin_pins,
         is_released_frozen_report,
+        report_named_package_versions,
         report_package_versions,
     )
 
-    candidate_versions = report_package_versions(report)
     if is_released_frozen_report(report):
         bound_pins: dict[str, dict[str, str]] = {}
     else:
-        present = candidate_plugins_in_versions(candidate_versions)
-        expected = full_candidate_plugin_pins()
-        if set(present) != set(expected):
+        policy = report.get("policy")
+        next_policy = isinstance(policy, dict) and policy.get("policy_id") == TARGET_POLICY_ID
+        if next_policy:
+            expected_names = set(TARGET_PACKAGE_VERSIONS)
+            versions = report_named_package_versions(report, expected_names)
+            present_names = {
+                name
+                for name, version in versions.items()
+                if version == TARGET_PACKAGE_VERSIONS[name]
+            }
+        else:
+            candidate_versions = report_package_versions(report)
+            present = candidate_plugins_in_versions(candidate_versions)
+            expected_names = set(full_candidate_plugin_pins())
+            present_names = set(present)
+        if present_names != expected_names:
+            set_label = "package" if next_policy else "plugin"
             raise GateError(
                 "README blocks for non-released reports require the full frozen "
-                "candidate plugin set "
-                f"(expected {sorted(expected)}, found {sorted(present)})"
+                f"candidate {set_label} set "
+                f"(expected {sorted(expected_names)}, found {sorted(present_names)})"
             )
         if report.get("policy") is None or report.get("package_provenance") is None:
             raise GateError(
-                "README blocks for candidate versions require bound policy and "
-                "package_provenance"
+                "README blocks for candidate versions require bound policy and package_provenance"
             )
         bound_pins = bound_candidate_pins_from_report(report)
-        if set(bound_pins) != set(expected) or set(bound_pins) != set(present):
-            raise GateError(
-                "README candidate policy pins do not match the full frozen candidate set"
-            )
+        if set(bound_pins) != expected_names or set(bound_pins) != present_names:
+            raise GateError("README candidate policy pins do not match the full candidate set")
     version_text = _format_versions(display_versions, bound_pins)
     uses_candidates = bool(bound_pins)
     outputs = {}
@@ -226,9 +243,7 @@ def generate_blocks(
             source_ms = case["lanes"]["python-source"]["steady_state"]["median_ns"] / 1e6
             native_ms = case["lanes"]["rextio-native"]["steady_state"]["median_ns"] / 1e6
             speedup = case["paired"]["median_speedup"]
-            lines.append(
-                f"| {label} | {source_ms:.6f} ms | {native_ms:.6f} ms | {speedup:.3f}× |"
-            )
+            lines.append(f"| {label} | {source_ms:.6f} ms | {native_ms:.6f} ms | {speedup:.3f}× |")
         links = locale["links"]
         lines.extend(
             [

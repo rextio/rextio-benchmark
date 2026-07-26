@@ -1,6 +1,6 @@
 schema_version = 1
 policy_id = "candidate-boundary-prepost-0.1.1"
-status = "blocked-pending-integration-shas"
+status = "pre-measurement"
 diagnostic_case_ids = [
   "numpy-f64-1d-boundary-direct-sink",
   "torch-cpu-small-batch-prepost",
@@ -18,14 +18,14 @@ profiles = ["base", "torch-cpu", "tensorflow-cpu"]
 name = "rextio-numpy"
 version = "0.1.3"
 git_url = "https://github.com/rextio/rextio-numpy"
-rev = "PENDING_INTEGRATION_SHA"
+rev = "cf461e6775780a598517980c555a1aec079285d8"
 profiles = ["base"]
 
 [[packages]]
 name = "rextio-torch"
 version = "0.1.3"
 git_url = "https://github.com/rextio/rextio-torch"
-rev = "PENDING_INTEGRATION_SHA"
+rev = "1e92b24b154c7266dc37d19533fc3e17a8b05f9a"
 profiles = ["torch-cpu"]
 
 [[packages]]

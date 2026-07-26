@@ -3,7 +3,8 @@ name = "rextio-benchmark-base-profile"
 version = "0.0.0"
 requires-python = "==3.11.*"
 dependencies = [
-  "rextio==0.1.6",
+  # Candidate 0.1.7 from the exact Git revision below — not a PyPI 0.1.7 release.
+  "rextio==0.1.7",
   # Candidate 0.1.3 from the exact Git revision below — not a PyPI 0.1.3 release.
   "rextio-numpy==0.1.3",
   "rextio-networkx==0.1.1",
@@ -20,5 +21,7 @@ dependencies = [
 package = false
 
 [tool.uv.sources]
+# Unreleased commit-pinned candidate build. Do not treat as PyPI rextio 0.1.7.
+rextio = { git = "https://github.com/rextio/rextio", rev = "b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97" }
 # Unreleased commit-pinned candidate build. Do not treat as PyPI rextio-numpy 0.1.3.
-rextio-numpy = { git = "https://github.com/rextio/rextio-numpy", rev = "7316c47393a86f1c701049b878d01e8d8f561cdb" }
+rextio-numpy = { git = "https://github.com/rextio/rextio-numpy", rev = "cf461e6775780a598517980c555a1aec079285d8" }

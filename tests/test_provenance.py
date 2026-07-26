@@ -16,6 +16,12 @@ from rextio_benchmark.cohort import (
     RELEASED_CPU_0_1_0_CASE_PACKAGES,
     validate_cohort,
 )
+from rextio_benchmark.integration_targets import (
+    TARGET_CONFIG_PATH,
+    TARGET_POLICY_ID,
+    integration_target_pins,
+    parse_integration_targets,
+)
 from rextio_benchmark.models import BenchmarkCase
 from rextio_benchmark.provenance import (
     assemble_candidate_policy_binding,
@@ -164,22 +170,28 @@ def _minimal_report(*, with_binding: bool = True) -> dict:
 
 
 RELEASED_COHORT_ID = next(iter(FROZEN_CANONICAL_COHORTS))
-RELEASED_MEASUREMENT_COMMIT = FROZEN_CANONICAL_COHORTS[RELEASED_COHORT_ID][
-    "measurement_commit"
-]
+RELEASED_MEASUREMENT_COMMIT = FROZEN_CANONICAL_COHORTS[RELEASED_COHORT_ID]["measurement_commit"]
 
 
-def test_lock_and_manifest_bind_exact_candidate_pins() -> None:
-    base_py = (ROOT / "profiles/base/pyproject.toml").read_text(encoding="utf-8")
+def test_lock_and_manifest_bind_exact_next_candidate_pins() -> None:
+    targets = parse_integration_targets(
+        (ROOT / TARGET_CONFIG_PATH).read_text(encoding="utf-8")
+    )
+    for target in targets:
+        pin = target.pin()
+        for profile in target.profiles:
+            manifest = (ROOT / "profiles" / profile / "pyproject.toml").read_text(
+                encoding="utf-8"
+            )
+            lock = (ROOT / "profiles" / profile / "uv.lock").read_text(
+                encoding="utf-8"
+            )
+            assert lock_or_manifest_binds_pin(manifest, target.name, pin)
+            assert lock_or_manifest_binds_pin(lock, target.name, pin)
+    numpy = next(target for target in targets if target.name == "rextio-numpy")
     base_lock = (ROOT / "profiles/base/uv.lock").read_text(encoding="utf-8")
-    assert lock_or_manifest_binds_pin(base_py, "rextio-numpy", NUMPY_PIN)
-    assert lock_or_manifest_binds_pin(base_lock, "rextio-numpy", NUMPY_PIN)
-    tf_py = (ROOT / "profiles/tensorflow-cpu/pyproject.toml").read_text(encoding="utf-8")
-    tf_lock = (ROOT / "profiles/tensorflow-cpu/uv.lock").read_text(encoding="utf-8")
-    assert lock_or_manifest_binds_pin(tf_py, "rextio-tensorflow", TF_PIN)
-    assert lock_or_manifest_binds_pin(tf_lock, "rextio-tensorflow", TF_PIN)
-    bad = NUMPY_PIN | {"rev": "0" * 40}
-    assert not lock_or_manifest_binds_pin(base_lock, "rextio-numpy", bad)
+    bad = numpy.pin() | {"rev": "0" * 40}
+    assert not lock_or_manifest_binds_pin(base_lock, numpy.name, bad)
 
 
 def test_lock_binding_rejects_deceptive_unrelated_package_source() -> None:
@@ -311,8 +323,7 @@ def _released_shape_report(
     report: dict = {
         "repository": {"commit": commit, "dirty": False},
         "cases": [
-            {"id": case_id, "packages": dict(versions)}
-            for case_id, versions in packages.items()
+            {"id": case_id, "packages": dict(versions)} for case_id, versions in packages.items()
         ],
     }
     if with_canonical:
@@ -538,10 +549,11 @@ def test_verify_rejects_lock_that_does_not_bind_pin(tmp_path: Path) -> None:
         _verify_candidate_policy_and_provenance(report, tmp_path)
 
 
-def test_verify_accepts_bound_candidate_against_real_profiles() -> None:
+def test_verify_rejects_historical_candidate_against_advanced_live_profiles() -> None:
     report = _minimal_report(with_binding=True)
     report["repository"]["commit"] = None  # force live path reads of profile files
-    _verify_candidate_policy_and_provenance(report, ROOT)
+    with pytest.raises(GateError, match="no profile_lock binds rextio-numpy"):
+        _verify_candidate_policy_and_provenance(report, ROOT)
 
 
 def test_validate_cohort_includes_policy_in_identity_and_summary() -> None:
@@ -567,10 +579,7 @@ def test_validate_cohort_released_shape_omits_candidate_fields() -> None:
     """Released-style reports without policy keep the historical summary shape."""
     from test_publication import _report
 
-    reports = [
-        _report(f"2026-07-26T00:0{index}:00+00:00")
-        for index in range(3)
-    ]
+    reports = [_report(f"2026-07-26T00:0{index}:00+00:00") for index in range(3)]
     summary = validate_cohort(reports)
     assert "policy_id" not in summary
     assert "candidate_plugins" not in summary
@@ -589,6 +598,45 @@ def test_readme_labels_candidate_only_from_bound_provenance() -> None:
     assert "rextio-numpy 0.1.3 candidate@7316c47393a8" in english
     assert "rextio-tensorflow 0.1.3 candidate@346ca58148ed" in english
     assert "PyPI" in english
+
+
+def test_readme_labels_all_four_next_candidate_packages_in_every_locale() -> None:
+    report = _minimal_report(with_binding=False)
+    for case in report["cases"]:
+        packages = dict(case["packages"])
+        packages["rextio"] = "0.1.7"
+        if "rextio-torch" in packages:
+            packages["rextio-torch"] = "0.1.3"
+        case["packages"] = packages
+    ready = (ROOT / TARGET_CONFIG_PATH).read_text(encoding="utf-8")
+    pins = integration_target_pins(parse_integration_targets(ready))
+    report["policy"] = {
+        "policy_id": TARGET_POLICY_ID,
+        "policy_version": 1,
+        "status": "pre-measurement",
+        "candidate_packages": pins,
+    }
+    report["package_provenance"] = {
+        name: {
+            "version": pin["version"],
+            "url": pin["git_url"],
+            "vcs": "git",
+            "commit_id": pin["rev"],
+        }
+        for name, pin in pins.items()
+    }
+    blocks = generate_blocks(
+        report,
+        report_logical_path="results/canonical/cohort/report.json",
+        measurement_commit="a" * 40,
+        evidence_commit="b" * 40,
+        github_url="https://github.com/rextio/rextio-benchmark",
+    )
+    for block in blocks.values():
+        assert "rextio 0.1.7 candidate@b8b8ed11f6b7" in block
+        assert "rextio-torch 0.1.3 candidate@1e92b24b154c" in block
+        assert "Core 0.1.7" in block
+        assert "rextio-torch 0.1.3" in block
 
 
 def test_readme_fails_for_candidate_versions_without_binding() -> None:
@@ -863,9 +911,7 @@ def test_installed_base_profile_numpy_provenance_when_present() -> None:
 
 def test_candidate_plugins_in_versions_is_version_scoped() -> None:
     assert candidate_plugins_in_versions({"rextio-numpy": "0.1.2"}) == {}
-    assert set(candidate_plugins_in_versions({"rextio-numpy": "0.1.3"})) == {
-        "rextio-numpy"
-    }
+    assert set(candidate_plugins_in_versions({"rextio-numpy": "0.1.3"})) == {"rextio-numpy"}
 
 
 def test_bound_pins_empty_without_policy() -> None:

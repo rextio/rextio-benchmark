@@ -56,13 +56,13 @@ def test_candidate_policy_is_pre_measurement_and_complete() -> None:
     )
 
 
-def test_next_candidate_is_distinct_blocked_and_diagnostic_only() -> None:
+def test_next_candidate_is_distinct_ready_and_diagnostic_only() -> None:
     new_ids = {
         "numpy-f64-1d-boundary-direct-sink",
         "torch-cpu-small-batch-prepost",
         "tensorflow-cpu-small-batch-prepost",
     }
-    assert NEXT_CANDIDATE_COHORT_POLICY["status"] == "blocked-pending-integration-shas"
+    assert NEXT_CANDIDATE_COHORT_POLICY["status"] == "pre-measurement"
     assert set(NEXT_CANDIDATE_COHORT_POLICY["complete_case_ids"]) == (
         NEXT_CANDIDATE_COMPLETE_CASE_IDS
     )
@@ -77,7 +77,7 @@ def test_next_candidate_is_distinct_blocked_and_diagnostic_only() -> None:
     ]
 
 
-def test_candidate_plugin_pins_are_exact_git_revisions() -> None:
+def test_historical_and_next_candidate_pins_are_exact_git_revisions() -> None:
     assert CANDIDATE_PLUGIN_PINS["rextio-numpy"] == {
         "version": "0.1.3",
         "git_url": "https://github.com/rextio/rextio-numpy",
@@ -88,13 +88,36 @@ def test_candidate_plugin_pins_are_exact_git_revisions() -> None:
         "git_url": "https://github.com/rextio/rextio-tensorflow",
         "rev": "346ca58148ed2563d4c7547dd8443d60cd4f905b",
     }
-    base = (ROOT / "profiles/base/pyproject.toml").read_text(encoding="utf-8")
-    assert "7316c47393a86f1c701049b878d01e8d8f561cdb" in base
-    assert "rextio-numpy==0.1.3" in base
-    for profile in ("tensorflow-cpu", "tensorflow-cuda"):
-        text = (ROOT / "profiles" / profile / "pyproject.toml").read_text(encoding="utf-8")
-        assert "346ca58148ed2563d4c7547dd8443d60cd4f905b" in text
-        assert "rextio-tensorflow==0.1.3" in text
+    profile_pins = {
+        "base": (
+            "rextio-numpy==0.1.3",
+            "cf461e6775780a598517980c555a1aec079285d8",
+        ),
+        "torch-cpu": (
+            "rextio-torch==0.1.3",
+            "1e92b24b154c7266dc37d19533fc3e17a8b05f9a",
+        ),
+        "torch-cuda": (
+            "rextio-torch==0.1.3",
+            "1e92b24b154c7266dc37d19533fc3e17a8b05f9a",
+        ),
+        "tensorflow-cpu": (
+            "rextio-tensorflow==0.1.3",
+            "1fdb2e1cd91d058a056db76c2e0a15d52c855053",
+        ),
+        "tensorflow-cuda": (
+            "rextio-tensorflow==0.1.3",
+            "1fdb2e1cd91d058a056db76c2e0a15d52c855053",
+        ),
+    }
+    for profile, (dependency, revision) in profile_pins.items():
+        text = (ROOT / "profiles" / profile / "pyproject.toml").read_text(
+            encoding="utf-8"
+        )
+        assert "rextio==0.1.7" in text
+        assert "b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97" in text
+        assert dependency in text
+        assert revision in text
 
 
 def test_historical_cohorts_keep_their_complete_case_sets() -> None:

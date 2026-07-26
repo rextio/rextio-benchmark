@@ -114,7 +114,7 @@ control **0.241×**. Bundle path:
 Do not rewrite, re-hash, re-measure, rename, or delete that directory. Do not
 replace the frozen released 0.1.0 figures with these candidate numbers.
 
-## Boundary/pre-post diagnostic cohort (unmeasured and blocked)
+## Boundary/pre-post diagnostic cohort (unmeasured and ready)
 
 The next bounded candidate definition is distinct from both byte-frozen
 cohorts above. It adds three **non-headline diagnostics** and does not change
@@ -126,16 +126,16 @@ the six frozen README rows:
 | `torch-cpu-small-batch-prepost` | Batch-1 normalization, two small linears, four scalar-controlled activation rounds, softmax, exact int64 labels |
 | `tensorflow-cpu-small-batch-prepost` | Batch-1 eager normalization, two small matmuls, four scalar-controlled activation rounds, softmax, exact int64 labels |
 
-Policy id `candidate-boundary-prepost-0.1.1` is currently
-`blocked-pending-integration-shas`. `profiles/next-candidate.toml` records the
+Policy id `candidate-boundary-prepost-0.1.1` is currently `pre-measurement`.
+`profiles/next-candidate.toml` records the
 exact final Core 0.1.7 integration merge
 `b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97` and TensorFlow 0.1.3 integration
-merge `1fdb2e1cd91d058a056db76c2e0a15d52c855053`. NumPy 0.1.3 and Torch 0.1.3
-remain explicit `PENDING_INTEGRATION_SHA` entries; no revision is guessed.
-Build and measurement fail closed until both missing revisions are replaced
-with full 40-character commits and every active CPU profile selects every
-declared version from its exact Git source. Only then may a separate
-chronological-first cohort be attempted.
+merge `1fdb2e1cd91d058a056db76c2e0a15d52c855053`. NumPy 0.1.3 is pinned to
+`cf461e6775780a598517980c555a1aec079285d8`, and Torch 0.1.3 is pinned to
+`1e92b24b154c7266dc37d19533fc3e17a8b05f9a`. Every active CPU profile selects
+every declared version from its exact Git source. The separate
+chronological-first cohort is ready for an independent final audit before any
+measurement begins.
 
 No run has been selected, no performance number exists, and this definition
 does not authorize a canonical run, release, tag, merge, or headline change.
