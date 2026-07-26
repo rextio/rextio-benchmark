@@ -1,0 +1,166 @@
+{
+  "cases": {
+    "core-hybrid": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.03421568417712788,
+      "median_speedups": [
+        57.7120782203755,
+        56.78959134568298,
+        54.846496623650935
+      ],
+      "relative_deviations": [
+        0.01624394282179756,
+        0.0,
+        0.03421568417712788
+      ],
+      "three_run_median": 56.78959134568298,
+      "within_threshold": true
+    },
+    "core-native-executable": {
+      "headline_gate": false,
+      "maximum_relative_deviation": 0.01395584400104708,
+      "median_speedups": [
+        16.193639903550626,
+        15.926433184552653,
+        15.970754544547901
+      ],
+      "relative_deviations": [
+        0.01395584400104708,
+        0.0027751575463526436,
+        0.0
+      ],
+      "three_run_median": 15.970754544547901,
+      "within_threshold": true
+    },
+    "networkx-dijkstra": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.02270392919211849,
+      "median_speedups": [
+        3.7511159990969603,
+        3.8362810711318804,
+        3.6730098673228557
+      ],
+      "relative_deviations": [
+        0.0,
+        0.02270392919211849,
+        0.02082210515294854
+      ],
+      "three_run_median": 3.7511159990969603,
+      "within_threshold": true
+    },
+    "numpy-blas-dot-negative-control": {
+      "headline_gate": false,
+      "maximum_relative_deviation": 0.2297345037651416,
+      "median_speedups": [
+        0.22351588432340613,
+        0.27486519509207064,
+        0.22077499159879466
+      ],
+      "relative_deviations": [
+        0.0,
+        0.2297345037651416,
+        0.012262630608595436
+      ],
+      "three_run_median": 0.22351588432340613,
+      "within_threshold": false
+    },
+    "numpy-mixed-fusion": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.0309642104941364,
+      "median_speedups": [
+        0.48498989731006004,
+        0.5024381957241073,
+        0.4873478541833096
+      ],
+      "relative_deviations": [
+        0.004838344630040503,
+        0.0309642104941364,
+        0.0
+      ],
+      "three_run_median": 0.4873478541833096,
+      "within_threshold": true
+    },
+    "pandas-series-map": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.003302242495790871,
+      "median_speedups": [
+        66.00209901723929,
+        66.39283174285399,
+        66.22077607810867
+      ],
+      "relative_deviations": [
+        0.003302242495790871,
+        0.0025982127503666242,
+        0.0
+      ],
+      "three_run_median": 66.22077607810867,
+      "within_threshold": true
+    },
+    "tensorflow-cpu-eager-chain": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.0024340041257576604,
+      "median_speedups": [
+        0.983714658684866,
+        0.9813202931470587,
+        0.9854505587271919
+      ],
+      "relative_deviations": [
+        0.0,
+        0.0024340041257576604,
+        0.0017646377707196802
+      ],
+      "three_run_median": 0.983714658684866,
+      "within_threshold": true
+    },
+    "torch-cpu-deep-mlp": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.0009771206525486411,
+      "median_speedups": [
+        1.01364820839095,
+        1.0145994555354343,
+        1.0155908416175026
+      ],
+      "relative_deviations": [
+        0.0009375592893279801,
+        0.0,
+        0.0009771206525486411
+      ],
+      "three_run_median": 1.0145994555354343,
+      "within_threshold": true
+    }
+  },
+  "cohort_id": "15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8",
+  "measurement_commit": "ff7f4fea34199d850bed0446a8a223ef730ddf17",
+  "policy_version": 1,
+  "report_count": 3,
+  "reports": [
+    {
+      "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/reports/01-40791f784ec914da57cd2ef218e21fe1e5c63ca39a2de89039cf455bb1f03a21.json",
+      "generated_at": "2026-07-26T09:22:19.517029+00:00",
+      "index": 0,
+      "selected": true,
+      "sha256": "40791f784ec914da57cd2ef218e21fe1e5c63ca39a2de89039cf455bb1f03a21",
+      "source_path": "results/local/benchmark-publish-20260726T092219Z.json"
+    },
+    {
+      "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/reports/02-978f8273f4f44039125c02ec844e111071d26f4e9bb3ad8a7f4007bc73e31c7d.json",
+      "generated_at": "2026-07-26T09:38:40.004058+00:00",
+      "index": 1,
+      "selected": false,
+      "sha256": "978f8273f4f44039125c02ec844e111071d26f4e9bb3ad8a7f4007bc73e31c7d",
+      "source_path": "results/local/benchmark-publish-20260726T093840Z.json"
+    },
+    {
+      "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/reports/03-e5481d4f47d676bc7c7841f9c23460d1ab134215653e97014f0ae43a45dca0c6.json",
+      "generated_at": "2026-07-26T09:55:26.116951+00:00",
+      "index": 2,
+      "selected": false,
+      "sha256": "e5481d4f47d676bc7c7841f9c23460d1ab134215653e97014f0ae43a45dca0c6",
+      "source_path": "results/local/benchmark-publish-20260726T095526Z.json"
+    }
+  ],
+  "schema_version": 1,
+  "selected_report_index": 0,
+  "selection": "chronological-first",
+  "stability_threshold_fraction": 0.1
+}

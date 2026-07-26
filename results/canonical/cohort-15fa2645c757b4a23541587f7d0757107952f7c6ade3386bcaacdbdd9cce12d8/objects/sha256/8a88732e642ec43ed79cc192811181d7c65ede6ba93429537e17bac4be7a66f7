@@ -1,0 +1,714 @@
+{
+  "accepted_native": [
+    "core_hybrid.workload.score"
+  ],
+  "accepted_native_top_levels": [],
+  "contract_version": "2.27.0",
+  "diagnostics": [],
+  "embedding_candidates": [],
+  "host_source_plan": {
+    "availability": "available",
+    "execution_authority": "descriptive-only",
+    "graph": {
+      "cycles": [],
+      "external_references": [
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 0,
+          "imported": "rextio",
+          "importer": "core_hybrid.workload",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 13,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          },
+          "version": null
+        }
+      ],
+      "local_edges": [],
+      "modules": [
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [],
+          "is_package_init": false,
+          "license": null,
+          "module_name": "benchmark_case",
+          "path": "benchmark_case.py",
+          "provenance": {
+            "evidence": [
+              "sha256:91f9f499bb2f018194e282ce03692e422d97965c9f5c9d6816fb4c6d5f71059a"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "benchmark_case.py"
+            ]
+          },
+          "sha256": "91f9f499bb2f018194e282ce03692e422d97965c9f5c9d6816fb4c6d5f71059a",
+          "source_origin": "project",
+          "version": null
+        },
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [],
+          "is_package_init": true,
+          "license": null,
+          "module_name": "core_hybrid",
+          "path": "src/core_hybrid/__init__.py",
+          "provenance": {
+            "evidence": [
+              "sha256:71c7939965f04b2963667172dbc17284075fe7ba9670aa1509aab497fdcebe21"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "src/core_hybrid/__init__.py"
+            ]
+          },
+          "sha256": "71c7939965f04b2963667172dbc17284075fe7ba9670aa1509aab497fdcebe21",
+          "source_origin": "project",
+          "version": null
+        },
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [
+            {
+              "deferred": false,
+              "kind": "import",
+              "module": null,
+              "names": [
+                {
+                  "asname": null,
+                  "name": "rextio"
+                }
+              ],
+              "ordinal": 0,
+              "relative_level": 0,
+              "resolved_targets": [
+                "rextio"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 13,
+                  "line": 1
+                },
+                "start": {
+                  "column": 0,
+                  "line": 1
+                }
+              }
+            }
+          ],
+          "is_package_init": false,
+          "license": null,
+          "module_name": "core_hybrid.workload",
+          "path": "src/core_hybrid/workload.py",
+          "provenance": {
+            "evidence": [
+              "sha256:9b57b9aa8c8a746dfb892b872a7cacc1a9f82c05eb817e42f0671e6b8164e7a2"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "src/core_hybrid/workload.py"
+            ]
+          },
+          "sha256": "9b57b9aa8c8a746dfb892b872a7cacc1a9f82c05eb817e42f0671e6b8164e7a2",
+          "source_origin": "project",
+          "version": null
+        }
+      ],
+      "scc_membership": {
+        "benchmark_case": [
+          "benchmark_case"
+        ],
+        "core_hybrid": [
+          "core_hybrid"
+        ],
+        "core_hybrid.workload": [
+          "core_hybrid.workload"
+        ]
+      },
+      "strongly_connected_components": [
+        {
+          "cyclic": false,
+          "members": [
+            "benchmark_case"
+          ]
+        },
+        {
+          "cyclic": false,
+          "members": [
+            "core_hybrid"
+          ]
+        },
+        {
+          "cyclic": false,
+          "members": [
+            "core_hybrid.workload"
+          ]
+        }
+      ]
+    },
+    "module_initializers": [
+      {
+        "availability": "available",
+        "metadata_ranges": [],
+        "module_name": "benchmark_case",
+        "path": "benchmark_case.py",
+        "provenance": {
+          "evidence": [
+            "sha256:91f9f499bb2f018194e282ce03692e422d97965c9f5c9d6816fb4c6d5f71059a"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "benchmark_case.py"
+          ]
+        },
+        "segments": [
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "make_arguments"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "object",
+              "str",
+              "tuple"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "make_arguments"
+            ],
+            "kind": "definition-publication",
+            "may_bindings": [
+              "make_arguments"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "make_arguments"
+            ],
+            "must_bindings": [
+              "make_arguments"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "make_arguments"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 0,
+            "source_range": {
+              "end": {
+                "column": 25,
+                "line": 3
+              },
+              "start": {
+                "column": 0,
+                "line": 1
+              }
+            },
+            "statement_indexes": [
+              0
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "normalize"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "object",
+              "str"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "normalize"
+            ],
+            "kind": "definition-publication",
+            "may_bindings": [
+              "normalize"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "normalize"
+            ],
+            "must_bindings": [
+              "normalize"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "normalize"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 1,
+            "source_range": {
+              "end": {
+                "column": 16,
+                "line": 7
+              },
+              "start": {
+                "column": 0,
+                "line": 6
+              }
+            },
+            "statement_indexes": [
+              1
+            ]
+          }
+        ],
+        "source_sha256": "91f9f499bb2f018194e282ce03692e422d97965c9f5c9d6816fb4c6d5f71059a",
+        "unavailable_reason": null
+      },
+      {
+        "availability": "available",
+        "metadata_ranges": [
+          {
+            "end": {
+              "column": 43,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          }
+        ],
+        "module_name": "core_hybrid",
+        "path": "src/core_hybrid/__init__.py",
+        "provenance": {
+          "evidence": [
+            "sha256:71c7939965f04b2963667172dbc17284075fe7ba9670aa1509aab497fdcebe21"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "src/core_hybrid/__init__.py"
+          ]
+        },
+        "segments": [],
+        "source_sha256": "71c7939965f04b2963667172dbc17284075fe7ba9670aa1509aab497fdcebe21",
+        "unavailable_reason": null
+      },
+      {
+        "availability": "available",
+        "metadata_ranges": [],
+        "module_name": "core_hybrid.workload",
+        "path": "src/core_hybrid/workload.py",
+        "provenance": {
+          "evidence": [
+            "sha256:9b57b9aa8c8a746dfb892b872a7cacc1a9f82c05eb817e42f0671e6b8164e7a2"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "src/core_hybrid/workload.py"
+          ]
+        },
+        "segments": [
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "rextio"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "rextio"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "rextio"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "rextio"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "rextio"
+            ],
+            "must_bindings": [
+              "rextio"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "rextio"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 0,
+            "source_range": {
+              "end": {
+                "column": 13,
+                "line": 1
+              },
+              "start": {
+                "column": 0,
+                "line": 1
+              }
+            },
+            "statement_indexes": [
+              0
+            ]
+          },
+          {
+            "barrier_reason": "function definition header requires preserved Python execution",
+            "bindings": [
+              "score"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "int",
+              "list",
+              "rextio"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "score"
+            ],
+            "kind": "fallback-barrier",
+            "may_bindings": [
+              "score"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "score"
+            ],
+            "must_bindings": [
+              "score"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "score"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 1,
+            "source_range": {
+              "end": {
+                "column": 16,
+                "line": 14
+              },
+              "start": {
+                "column": 0,
+                "line": 5
+              }
+            },
+            "statement_indexes": [
+              1
+            ]
+          }
+        ],
+        "source_sha256": "9b57b9aa8c8a746dfb892b872a7cacc1a9f82c05eb817e42f0671e6b8164e7a2",
+        "unavailable_reason": null
+      }
+    ],
+    "unavailable_reason": null
+  },
+  "modules": [
+    {
+      "diagnostics": [],
+      "file_path": "cases/core-hybrid/benchmark_case.py",
+      "functions": [
+        {
+          "accepted": false,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                "int"
+              ],
+              "column": 55,
+              "in_loop": false,
+              "line": 2,
+              "target": "range"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/core-hybrid/benchmark_case.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": false,
+          "line": 1,
+          "marker_kind": "none",
+          "module_name": "benchmark_case",
+          "name": "make_arguments",
+          "name_range": {
+            "end": {
+              "column": 18,
+              "line": 1
+            },
+            "start": {
+              "column": 4,
+              "line": 1
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "not-candidate",
+          "native_target_language": null,
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [
+              "RXT003",
+              "RXT010"
+            ],
+            "diagnostics": [
+              {
+                "code": "RXT003",
+                "column": 0,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 1,
+                "message": "unsupported return type: tuple[object, ...]",
+                "suggestion": "Use a supported 0.1.6 scalar or collection type."
+              },
+              {
+                "code": "RXT010",
+                "column": 11,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 3,
+                "message": "tuple items must be int/float/bool/str/bytes, got list[int]",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              }
+            ],
+            "provenance": "auto",
+            "skip_reason": null,
+            "status": "ineligible"
+          },
+          "qualname": "benchmark_case.make_arguments",
+          "rejection_codes": [],
+          "route": "fallback-python",
+          "source_range": {
+            "end": {
+              "column": 25,
+              "line": 3
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          }
+        },
+        {
+          "accepted": false,
+          "boundary_call_targets": [],
+          "calls": [],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/core-hybrid/benchmark_case.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": false,
+          "line": 6,
+          "marker_kind": "none",
+          "module_name": "benchmark_case",
+          "name": "normalize",
+          "name_range": {
+            "end": {
+              "column": 13,
+              "line": 6
+            },
+            "start": {
+              "column": 4,
+              "line": 6
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "not-candidate",
+          "native_target_language": null,
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [
+              "RXT002",
+              "RXT003",
+              "RXT010"
+            ],
+            "diagnostics": [
+              {
+                "code": "RXT003",
+                "column": 0,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 6,
+                "message": "unsupported return type: object",
+                "suggestion": "Use a supported 0.1.6 scalar or collection type."
+              },
+              {
+                "code": "RXT002",
+                "column": 34,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 6,
+                "message": "unsupported argument type for value: object",
+                "suggestion": "Use a supported 0.1.6 scalar or collection type."
+              },
+              {
+                "code": "RXT010",
+                "column": 11,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 7,
+                "message": "name 'value' is not defined in this scope of the native function (module globals, closures, and names first bound inside a nested block then read after it are unsupported)",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              }
+            ],
+            "provenance": "auto",
+            "skip_reason": null,
+            "status": "ineligible"
+          },
+          "qualname": "benchmark_case.normalize",
+          "rejection_codes": [],
+          "route": "fallback-python",
+          "source_range": {
+            "end": {
+              "column": 16,
+              "line": 7
+            },
+            "start": {
+              "column": 0,
+              "line": 6
+            }
+          }
+        }
+      ],
+      "import_policies": [],
+      "imports": {},
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "benchmark_case",
+      "top_level": null
+    },
+    {
+      "diagnostics": [],
+      "file_path": "cases/core-hybrid/src/core_hybrid/__init__.py",
+      "functions": [],
+      "import_policies": [],
+      "imports": {},
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "core_hybrid",
+      "top_level": null
+    },
+    {
+      "diagnostics": [],
+      "file_path": "cases/core-hybrid/src/core_hybrid/workload.py",
+      "functions": [
+        {
+          "accepted": true,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 23,
+              "in_loop": false,
+              "line": 7,
+              "target": "range"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": true,
+          "external_accelerator": null,
+          "file_path": "cases/core-hybrid/src/core_hybrid/workload.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": true,
+          "line": 5,
+          "marker_kind": "native",
+          "module_name": "core_hybrid.workload",
+          "name": "score",
+          "name_range": {
+            "end": {
+              "column": 9,
+              "line": 5
+            },
+            "start": {
+              "column": 4,
+              "line": 5
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "accepted",
+          "native_target_language": "rust",
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [],
+            "diagnostics": [],
+            "provenance": "explicit-native",
+            "skip_reason": null,
+            "status": "eligible"
+          },
+          "qualname": "core_hybrid.workload.score",
+          "rejection_codes": [],
+          "route": "native-direct",
+          "source_range": {
+            "end": {
+              "column": 16,
+              "line": 14
+            },
+            "start": {
+              "column": 0,
+              "line": 5
+            }
+          }
+        }
+      ],
+      "import_policies": [
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external",
+          "package": "rextio",
+          "plugin": null,
+          "policy": "fallback",
+          "reason": "external package without an active plugin uses the default external import policy",
+          "target": "rextio",
+          "version": null,
+          "visible_name": "rextio"
+        }
+      ],
+      "imports": {
+        "rextio": "rextio"
+      },
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "core_hybrid.workload",
+      "top_level": null
+    }
+  ],
+  "native_candidates": [
+    "core_hybrid.workload.score"
+  ],
+  "native_top_levels": [],
+  "project_root": "cases/core-hybrid",
+  "rejected_native": [],
+  "rejected_native_top_levels": []
+}

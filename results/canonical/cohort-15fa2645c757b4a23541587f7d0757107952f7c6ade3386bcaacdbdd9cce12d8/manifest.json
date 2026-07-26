@@ -1,0 +1,598 @@
+{
+  "canonical_report_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/report.json",
+  "cases": {
+    "core-hybrid": {
+      "roles": {
+        "build_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/086a4f8963f40d47889c3e59a2419f3e24e5ce2069cc2acda932e67161faa3aa",
+          "kind": "run-output",
+          "logical_path": "cases/core-hybrid/.rextio/reports/portable/build.json",
+          "sha256": "086a4f8963f40d47889c3e59a2419f3e24e5ce2069cc2acda932e67161faa3aa",
+          "size_bytes": 71680
+        },
+        "check_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/8a88732e642ec43ed79cc192811181d7c65ede6ba93429537e17bac4be7a66f7",
+          "kind": "run-output",
+          "logical_path": "cases/core-hybrid/.rextio/reports/portable/check.json",
+          "sha256": "8a88732e642ec43ed79cc192811181d7c65ede6ba93429537e17bac4be7a66f7",
+          "size_bytes": 20082
+        },
+        "declared_native_artifact": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/1417ea65bfd3508609583c99a31b1107191e424a7d4627a803c76e78f4819327",
+          "kind": "run-output",
+          "logical_path": "cases/core-hybrid/.rextio/generated/python/_rextio_native.cpython-311-darwin.so",
+          "sha256": "1417ea65bfd3508609583c99a31b1107191e424a7d4627a803c76e78f4819327",
+          "size_bytes": 493728
+        },
+        "generated_python_fallback": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/9b57b9aa8c8a746dfb892b872a7cacc1a9f82c05eb817e42f0671e6b8164e7a2",
+          "kind": "run-output",
+          "logical_path": "cases/core-hybrid/.rextio/generated/python/core_hybrid/_fallback_workload.py",
+          "sha256": "9b57b9aa8c8a746dfb892b872a7cacc1a9f82c05eb817e42f0671e6b8164e7a2",
+          "size_bytes": 360
+        },
+        "generated_python_wrapper": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/35228e610ea08884d3adaaef55fd0f054db9827ff9a6c879214ac55eb51b700a",
+          "kind": "run-output",
+          "logical_path": "cases/core-hybrid/.rextio/generated/python/core_hybrid/workload.py",
+          "sha256": "35228e610ea08884d3adaaef55fd0f054db9827ff9a6c879214ac55eb51b700a",
+          "size_bytes": 5483
+        },
+        "generated_rust_lock": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/9cb4f867eb291562ec95a1f107358e0cce56d841d5b8a3c279516263817f8567",
+          "kind": "run-output",
+          "logical_path": "cases/core-hybrid/.rextio/generated/rust/Cargo.lock",
+          "sha256": "9cb4f867eb291562ec95a1f107358e0cce56d841d5b8a3c279516263817f8567",
+          "size_bytes": 12498
+        },
+        "generated_rust_manifest": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/521c1de626086f6022cb74f720b16cd1ff261b4cebb030dc010b9dff9a4194dd",
+          "kind": "run-output",
+          "logical_path": "cases/core-hybrid/.rextio/generated/rust/Cargo.toml",
+          "sha256": "521c1de626086f6022cb74f720b16cd1ff261b4cebb030dc010b9dff9a4194dd",
+          "size_bytes": 700
+        },
+        "generated_rust_source": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/55f433502abf556b700c2f2fe5c44dac63bb96a28247644eb0de1d7dceac6201",
+          "kind": "run-output",
+          "logical_path": "cases/core-hybrid/.rextio/generated/rust/src/lib.rs",
+          "sha256": "55f433502abf556b700c2f2fe5c44dac63bb96a28247644eb0de1d7dceac6201",
+          "size_bytes": 2048
+        },
+        "runtime_artifact": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/1417ea65bfd3508609583c99a31b1107191e424a7d4627a803c76e78f4819327",
+          "kind": "run-output",
+          "logical_path": "cases/core-hybrid/.rextio/build/python/_rextio_native.cpython-311-darwin.so",
+          "sha256": "1417ea65bfd3508609583c99a31b1107191e424a7d4627a803c76e78f4819327",
+          "size_bytes": 493728
+        }
+      }
+    },
+    "core-native-executable": {
+      "roles": {
+        "build_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/5049ffe58fd15769677abd3dfbaac831ad465bb5d9ab5c5fe2ccac131f754b20",
+          "kind": "run-output",
+          "logical_path": "cases/core-native-executable/.rextio/reports/portable/build.json",
+          "sha256": "5049ffe58fd15769677abd3dfbaac831ad465bb5d9ab5c5fe2ccac131f754b20",
+          "size_bytes": 74045
+        },
+        "check_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/5076e8ece0d2ac1b0f92cd1c278b992037324c14457ba026379f8540cf2d8b47",
+          "kind": "run-output",
+          "logical_path": "cases/core-native-executable/.rextio/reports/portable/check.json",
+          "sha256": "5076e8ece0d2ac1b0f92cd1c278b992037324c14457ba026379f8540cf2d8b47",
+          "size_bytes": 14288
+        },
+        "generated_executable_lock": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/715b828aa460fff8fb0d31cfa30e7066c6fcc6ab1cf05d99ba4df0f64c538b55",
+          "kind": "run-output",
+          "logical_path": "cases/core-native-executable/.rextio/generated/rust_bin/Cargo.lock",
+          "sha256": "715b828aa460fff8fb0d31cfa30e7066c6fcc6ab1cf05d99ba4df0f64c538b55",
+          "size_bytes": 10575
+        },
+        "generated_executable_manifest": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/061af9b8a94b83d688af753949423951e884e95a0737b2b041a414df877b701f",
+          "kind": "run-output",
+          "logical_path": "cases/core-native-executable/.rextio/generated/rust_bin/Cargo.toml",
+          "sha256": "061af9b8a94b83d688af753949423951e884e95a0737b2b041a414df877b701f",
+          "size_bytes": 600
+        },
+        "generated_executable_source": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/5ff6349353168521ccec66e088b2bbc71c3aeaa894edede7850d40589975bfee",
+          "kind": "run-output",
+          "logical_path": "cases/core-native-executable/.rextio/generated/rust_bin/src/main.rs",
+          "sha256": "5ff6349353168521ccec66e088b2bbc71c3aeaa894edede7850d40589975bfee",
+          "size_bytes": 3121
+        },
+        "generated_python_fallback": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/8557e8432fae8f2da03618ea1bac86a1da9d2078d4339ade9364cf19d91c3513",
+          "kind": "run-output",
+          "logical_path": "cases/core-native-executable/.rextio/generated/python/core_native_executable/_fallback_main.py",
+          "sha256": "8557e8432fae8f2da03618ea1bac86a1da9d2078d4339ade9364cf19d91c3513",
+          "size_bytes": 508
+        },
+        "generated_python_wrapper": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/efdceffeb9517c42c27306f713799d636d8b6b52f157a4b0e227e2e9e9b16ff9",
+          "kind": "run-output",
+          "logical_path": "cases/core-native-executable/.rextio/generated/python/core_native_executable/main.py",
+          "sha256": "efdceffeb9517c42c27306f713799d636d8b6b52f157a4b0e227e2e9e9b16ff9",
+          "size_bytes": 7247
+        },
+        "generated_rust_lock": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/9cb4f867eb291562ec95a1f107358e0cce56d841d5b8a3c279516263817f8567",
+          "kind": "run-output",
+          "logical_path": "cases/core-native-executable/.rextio/generated/rust/Cargo.lock",
+          "sha256": "9cb4f867eb291562ec95a1f107358e0cce56d841d5b8a3c279516263817f8567",
+          "size_bytes": 12498
+        },
+        "generated_rust_manifest": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/521c1de626086f6022cb74f720b16cd1ff261b4cebb030dc010b9dff9a4194dd",
+          "kind": "run-output",
+          "logical_path": "cases/core-native-executable/.rextio/generated/rust/Cargo.toml",
+          "sha256": "521c1de626086f6022cb74f720b16cd1ff261b4cebb030dc010b9dff9a4194dd",
+          "size_bytes": 700
+        },
+        "generated_rust_source": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/b595898e0b95c67953ca80555bc33a967682e5b5d6184ba3ee4c47928506bd83",
+          "kind": "run-output",
+          "logical_path": "cases/core-native-executable/.rextio/generated/rust/src/lib.rs",
+          "sha256": "b595898e0b95c67953ca80555bc33a967682e5b5d6184ba3ee4c47928506bd83",
+          "size_bytes": 2368
+        },
+        "runtime_artifact": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/be9694b7b5d355b32c5ff6f5ebd7e11ce599afa2cdf85fedc276a75b11f8d506",
+          "kind": "run-output",
+          "logical_path": "cases/core-native-executable/dist/core-native-executable",
+          "sha256": "be9694b7b5d355b32c5ff6f5ebd7e11ce599afa2cdf85fedc276a75b11f8d506",
+          "size_bytes": 426512
+        }
+      }
+    },
+    "networkx-dijkstra": {
+      "roles": {
+        "build_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/0a83a10dc38c78f6592d335eff6fc9ebf72c9a8d750e6a2da8f0d10a96d81e58",
+          "kind": "run-output",
+          "logical_path": "cases/networkx/.rextio/reports/portable/build.json",
+          "sha256": "0a83a10dc38c78f6592d335eff6fc9ebf72c9a8d750e6a2da8f0d10a96d81e58",
+          "size_bytes": 108546
+        },
+        "check_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/1bba7390ad1c88ca7914d1e36681e59a363d0e3c0d5ae39c222f59a63030b8c1",
+          "kind": "run-output",
+          "logical_path": "cases/networkx/.rextio/reports/portable/check.json",
+          "sha256": "1bba7390ad1c88ca7914d1e36681e59a363d0e3c0d5ae39c222f59a63030b8c1",
+          "size_bytes": 38485
+        },
+        "declared_native_artifact": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/2d87df257f8fa8c6b17082c014ee75396b411ea63d9df60c823cb97327f1b286",
+          "kind": "run-output",
+          "logical_path": "cases/networkx/.rextio/generated/python/_rextio_native.cpython-311-darwin.so",
+          "sha256": "2d87df257f8fa8c6b17082c014ee75396b411ea63d9df60c823cb97327f1b286",
+          "size_bytes": 518464
+        },
+        "generated_python_fallback": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/a7406d27d2e8de6925eab297662d8e889254efcd2cddf6cea5f78e527b6feb5f",
+          "kind": "run-output",
+          "logical_path": "cases/networkx/.rextio/generated/python/networkx_case/_fallback_workload.py",
+          "sha256": "a7406d27d2e8de6925eab297662d8e889254efcd2cddf6cea5f78e527b6feb5f",
+          "size_bytes": 334
+        },
+        "generated_python_wrapper": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/2d6c719ee7d3f745430efdb435b626ae2369da2ee52afc7ad8a6e77b9af6ef7c",
+          "kind": "run-output",
+          "logical_path": "cases/networkx/.rextio/generated/python/networkx_case/workload.py",
+          "sha256": "2d6c719ee7d3f745430efdb435b626ae2369da2ee52afc7ad8a6e77b9af6ef7c",
+          "size_bytes": 5325
+        },
+        "generated_rust_lock": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/67457e649c26168e5fee8210b26879c32580b071434b7b4311ad9e213f805e99",
+          "kind": "run-output",
+          "logical_path": "cases/networkx/.rextio/generated/rust/Cargo.lock",
+          "sha256": "67457e649c26168e5fee8210b26879c32580b071434b7b4311ad9e213f805e99",
+          "size_bytes": 13575
+        },
+        "generated_rust_manifest": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/3893543b4919d60d0018ca4a9419971fdebb89c557ee634b76ba89a823e6fab1",
+          "kind": "run-output",
+          "logical_path": "cases/networkx/.rextio/generated/rust/Cargo.toml",
+          "sha256": "3893543b4919d60d0018ca4a9419971fdebb89c557ee634b76ba89a823e6fab1",
+          "size_bytes": 720
+        },
+        "generated_rust_source": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/1c7009900e07b261087acf2659f4f87ee4e799c909f1bf5d4352a2d38043baa4",
+          "kind": "run-output",
+          "logical_path": "cases/networkx/.rextio/generated/rust/src/lib.rs",
+          "sha256": "1c7009900e07b261087acf2659f4f87ee4e799c909f1bf5d4352a2d38043baa4",
+          "size_bytes": 11178
+        },
+        "runtime_artifact": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/2d87df257f8fa8c6b17082c014ee75396b411ea63d9df60c823cb97327f1b286",
+          "kind": "run-output",
+          "logical_path": "cases/networkx/.rextio/build/python/_rextio_native.cpython-311-darwin.so",
+          "sha256": "2d87df257f8fa8c6b17082c014ee75396b411ea63d9df60c823cb97327f1b286",
+          "size_bytes": 518464
+        }
+      }
+    },
+    "numpy-blas-dot-negative-control": {
+      "roles": {
+        "build_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/d8312d51b3af677d1d2af89c136f15b9edc35ce08316c8f46e0e5a06d6350e3b",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/reports/portable/build.json",
+          "sha256": "d8312d51b3af677d1d2af89c136f15b9edc35ce08316c8f46e0e5a06d6350e3b",
+          "size_bytes": 126604
+        },
+        "check_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/7e55868ca4f42abb58c1a2d79c4daccb98c09dae0ce0e51411f8e5b9747dc543",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/reports/portable/check.json",
+          "sha256": "7e55868ca4f42abb58c1a2d79c4daccb98c09dae0ce0e51411f8e5b9747dc543",
+          "size_bytes": 55817
+        },
+        "declared_native_artifact": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/d5c7bc8dcfbb67663081437b1df8180a2357534ff276cd55a0bda90cb8d6703c",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/generated/python/_rextio_native.cpython-311-darwin.so",
+          "sha256": "d5c7bc8dcfbb67663081437b1df8180a2357534ff276cd55a0bda90cb8d6703c",
+          "size_bytes": 599008
+        },
+        "generated_python_fallback": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/e63148e054417c2b8af55b200dab147bd332ee8c596eef769da03ff8df2b814f",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/generated/python/numpy_case/_fallback_workload.py",
+          "sha256": "e63148e054417c2b8af55b200dab147bd332ee8c596eef769da03ff8df2b814f",
+          "size_bytes": 347
+        },
+        "generated_python_wrapper": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/70f65327fa29b1ef35c42ca6ee87d115b761c6adcd0bae540790780714365194",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/generated/python/numpy_case/workload.py",
+          "sha256": "70f65327fa29b1ef35c42ca6ee87d115b761c6adcd0bae540790780714365194",
+          "size_bytes": 7009
+        },
+        "generated_rust_lock": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/6532b10ef007bdaec35471b705665926b6b35ea2522822afdd50610a39e872a4",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/generated/rust/Cargo.lock",
+          "sha256": "6532b10ef007bdaec35471b705665926b6b35ea2522822afdd50610a39e872a4",
+          "size_bytes": 14503
+        },
+        "generated_rust_manifest": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/f2d1ad5fbe5c74690434e5ef46be69e15e2a5f6c0912951b4abf5b6b559a6795",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/generated/rust/Cargo.toml",
+          "sha256": "f2d1ad5fbe5c74690434e5ef46be69e15e2a5f6c0912951b4abf5b6b559a6795",
+          "size_bytes": 718
+        },
+        "generated_rust_source": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/3055621d8af843180674dab6e934fbb13b5daf198b145388420501c85ab521e9",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/generated/rust/src/lib.rs",
+          "sha256": "3055621d8af843180674dab6e934fbb13b5daf198b145388420501c85ab521e9",
+          "size_bytes": 8053
+        },
+        "runtime_artifact": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/d5c7bc8dcfbb67663081437b1df8180a2357534ff276cd55a0bda90cb8d6703c",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/build/python/_rextio_native.cpython-311-darwin.so",
+          "sha256": "d5c7bc8dcfbb67663081437b1df8180a2357534ff276cd55a0bda90cb8d6703c",
+          "size_bytes": 599008
+        }
+      }
+    },
+    "numpy-mixed-fusion": {
+      "roles": {
+        "build_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/d8312d51b3af677d1d2af89c136f15b9edc35ce08316c8f46e0e5a06d6350e3b",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/reports/portable/build.json",
+          "sha256": "d8312d51b3af677d1d2af89c136f15b9edc35ce08316c8f46e0e5a06d6350e3b",
+          "size_bytes": 126604
+        },
+        "check_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/7e55868ca4f42abb58c1a2d79c4daccb98c09dae0ce0e51411f8e5b9747dc543",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/reports/portable/check.json",
+          "sha256": "7e55868ca4f42abb58c1a2d79c4daccb98c09dae0ce0e51411f8e5b9747dc543",
+          "size_bytes": 55817
+        },
+        "declared_native_artifact": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/d5c7bc8dcfbb67663081437b1df8180a2357534ff276cd55a0bda90cb8d6703c",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/generated/python/_rextio_native.cpython-311-darwin.so",
+          "sha256": "d5c7bc8dcfbb67663081437b1df8180a2357534ff276cd55a0bda90cb8d6703c",
+          "size_bytes": 599008
+        },
+        "generated_python_fallback": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/e63148e054417c2b8af55b200dab147bd332ee8c596eef769da03ff8df2b814f",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/generated/python/numpy_case/_fallback_workload.py",
+          "sha256": "e63148e054417c2b8af55b200dab147bd332ee8c596eef769da03ff8df2b814f",
+          "size_bytes": 347
+        },
+        "generated_python_wrapper": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/70f65327fa29b1ef35c42ca6ee87d115b761c6adcd0bae540790780714365194",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/generated/python/numpy_case/workload.py",
+          "sha256": "70f65327fa29b1ef35c42ca6ee87d115b761c6adcd0bae540790780714365194",
+          "size_bytes": 7009
+        },
+        "generated_rust_lock": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/6532b10ef007bdaec35471b705665926b6b35ea2522822afdd50610a39e872a4",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/generated/rust/Cargo.lock",
+          "sha256": "6532b10ef007bdaec35471b705665926b6b35ea2522822afdd50610a39e872a4",
+          "size_bytes": 14503
+        },
+        "generated_rust_manifest": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/f2d1ad5fbe5c74690434e5ef46be69e15e2a5f6c0912951b4abf5b6b559a6795",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/generated/rust/Cargo.toml",
+          "sha256": "f2d1ad5fbe5c74690434e5ef46be69e15e2a5f6c0912951b4abf5b6b559a6795",
+          "size_bytes": 718
+        },
+        "generated_rust_source": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/3055621d8af843180674dab6e934fbb13b5daf198b145388420501c85ab521e9",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/generated/rust/src/lib.rs",
+          "sha256": "3055621d8af843180674dab6e934fbb13b5daf198b145388420501c85ab521e9",
+          "size_bytes": 8053
+        },
+        "runtime_artifact": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/d5c7bc8dcfbb67663081437b1df8180a2357534ff276cd55a0bda90cb8d6703c",
+          "kind": "run-output",
+          "logical_path": "cases/numpy/.rextio/build/python/_rextio_native.cpython-311-darwin.so",
+          "sha256": "d5c7bc8dcfbb67663081437b1df8180a2357534ff276cd55a0bda90cb8d6703c",
+          "size_bytes": 599008
+        }
+      }
+    },
+    "pandas-series-map": {
+      "roles": {
+        "build_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/447d0f72b63342df8f3a8ec4e4012f9cd5b85105e142da06d837a56d05ba06f4",
+          "kind": "run-output",
+          "logical_path": "cases/pandas/.rextio/reports/portable/build.json",
+          "sha256": "447d0f72b63342df8f3a8ec4e4012f9cd5b85105e142da06d837a56d05ba06f4",
+          "size_bytes": 357781
+        },
+        "check_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/90837cd412edbea69c416cfc2407efe0e1b3273cbba5997c1aaa3f747e30e4dc",
+          "kind": "run-output",
+          "logical_path": "cases/pandas/.rextio/reports/portable/check.json",
+          "sha256": "90837cd412edbea69c416cfc2407efe0e1b3273cbba5997c1aaa3f747e30e4dc",
+          "size_bytes": 57860
+        },
+        "declared_native_artifact": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/21b0987924d65ca429ee806796aee8e9731cf1fae34fc6ed9020d3356112bab8",
+          "kind": "run-output",
+          "logical_path": "cases/pandas/.rextio/generated/python/_rextio_native.cpython-311-darwin.so",
+          "sha256": "21b0987924d65ca429ee806796aee8e9731cf1fae34fc6ed9020d3356112bab8",
+          "size_bytes": 691104
+        },
+        "generated_python_fallback": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/4909d0cf981aff5cbc2f059be79f30722328c76271e643b6acaa54c2fa9713f3",
+          "kind": "run-output",
+          "logical_path": "cases/pandas/.rextio/generated/python/pandas_case/_fallback_workload.py",
+          "sha256": "4909d0cf981aff5cbc2f059be79f30722328c76271e643b6acaa54c2fa9713f3",
+          "size_bytes": 415
+        },
+        "generated_python_wrapper": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/1a6ced9de2c5570e83ed365d5c74df0fd39460c6f44bc8b486452ed2e0a583a5",
+          "kind": "run-output",
+          "logical_path": "cases/pandas/.rextio/generated/python/pandas_case/workload.py",
+          "sha256": "1a6ced9de2c5570e83ed365d5c74df0fd39460c6f44bc8b486452ed2e0a583a5",
+          "size_bytes": 10642
+        },
+        "generated_rust_lock": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/6532b10ef007bdaec35471b705665926b6b35ea2522822afdd50610a39e872a4",
+          "kind": "run-output",
+          "logical_path": "cases/pandas/.rextio/generated/rust/Cargo.lock",
+          "sha256": "6532b10ef007bdaec35471b705665926b6b35ea2522822afdd50610a39e872a4",
+          "size_bytes": 14503
+        },
+        "generated_rust_manifest": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/f2d1ad5fbe5c74690434e5ef46be69e15e2a5f6c0912951b4abf5b6b559a6795",
+          "kind": "run-output",
+          "logical_path": "cases/pandas/.rextio/generated/rust/Cargo.toml",
+          "sha256": "f2d1ad5fbe5c74690434e5ef46be69e15e2a5f6c0912951b4abf5b6b559a6795",
+          "size_bytes": 718
+        },
+        "generated_rust_source": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/6849107759cee018659d60bef9a9a43c045b3beaa86006456d0067eae99dbd2f",
+          "kind": "run-output",
+          "logical_path": "cases/pandas/.rextio/generated/rust/src/lib.rs",
+          "sha256": "6849107759cee018659d60bef9a9a43c045b3beaa86006456d0067eae99dbd2f",
+          "size_bytes": 85065
+        },
+        "runtime_artifact": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/21b0987924d65ca429ee806796aee8e9731cf1fae34fc6ed9020d3356112bab8",
+          "kind": "run-output",
+          "logical_path": "cases/pandas/.rextio/build/python/_rextio_native.cpython-311-darwin.so",
+          "sha256": "21b0987924d65ca429ee806796aee8e9731cf1fae34fc6ed9020d3356112bab8",
+          "size_bytes": 691104
+        }
+      }
+    },
+    "tensorflow-cpu-eager-chain": {
+      "roles": {
+        "build_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/4371acfb688afcddceef27320c8aab88cbefd16566cf5311bda2419ad244afa5",
+          "kind": "run-output",
+          "logical_path": "cases/tensorflow-cpu/.rextio/reports/portable/build.json",
+          "sha256": "4371acfb688afcddceef27320c8aab88cbefd16566cf5311bda2419ad244afa5",
+          "size_bytes": 414420
+        },
+        "check_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/3933292147bb0d51c415b33afb3cedf23e6d232499fe454fdb1f77051f71ccaf",
+          "kind": "run-output",
+          "logical_path": "cases/tensorflow-cpu/.rextio/reports/portable/check.json",
+          "sha256": "3933292147bb0d51c415b33afb3cedf23e6d232499fe454fdb1f77051f71ccaf",
+          "size_bytes": 54364
+        },
+        "declared_native_artifact": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/97daba8d54e067607b363bc9618001792d7ea360e1e9ab9246abbc9a191edae9",
+          "kind": "run-output",
+          "logical_path": "cases/tensorflow-cpu/.rextio/generated/python/_rextio_native.cpython-311-darwin.so",
+          "sha256": "97daba8d54e067607b363bc9618001792d7ea360e1e9ab9246abbc9a191edae9",
+          "size_bytes": 570960
+        },
+        "generated_python_fallback": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/bf0f840515a44c43bcbb51387724cc973b24916b93736c5d0d5b992a69d01ed1",
+          "kind": "run-output",
+          "logical_path": "cases/tensorflow-cpu/.rextio/generated/python/tensorflow_case/_fallback_workload.py",
+          "sha256": "bf0f840515a44c43bcbb51387724cc973b24916b93736c5d0d5b992a69d01ed1",
+          "size_bytes": 623
+        },
+        "generated_python_wrapper": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/64f42cc95fa712e11e92adcd73ac7bb4b0f2aadc317b0766d2286c58476cda31",
+          "kind": "run-output",
+          "logical_path": "cases/tensorflow-cpu/.rextio/generated/python/tensorflow_case/workload.py",
+          "sha256": "64f42cc95fa712e11e92adcd73ac7bb4b0f2aadc317b0766d2286c58476cda31",
+          "size_bytes": 5423
+        },
+        "generated_rust_lock": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/9cb4f867eb291562ec95a1f107358e0cce56d841d5b8a3c279516263817f8567",
+          "kind": "run-output",
+          "logical_path": "cases/tensorflow-cpu/.rextio/generated/rust/Cargo.lock",
+          "sha256": "9cb4f867eb291562ec95a1f107358e0cce56d841d5b8a3c279516263817f8567",
+          "size_bytes": 12498
+        },
+        "generated_rust_manifest": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/521c1de626086f6022cb74f720b16cd1ff261b4cebb030dc010b9dff9a4194dd",
+          "kind": "run-output",
+          "logical_path": "cases/tensorflow-cpu/.rextio/generated/rust/Cargo.toml",
+          "sha256": "521c1de626086f6022cb74f720b16cd1ff261b4cebb030dc010b9dff9a4194dd",
+          "size_bytes": 700
+        },
+        "generated_rust_source": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/d2d510bc968139ac0be3b944da1523e262c3ddd50598f8cbe2cab76682c92569",
+          "kind": "run-output",
+          "logical_path": "cases/tensorflow-cpu/.rextio/generated/rust/src/lib.rs",
+          "sha256": "d2d510bc968139ac0be3b944da1523e262c3ddd50598f8cbe2cab76682c92569",
+          "size_bytes": 59908
+        },
+        "runtime_artifact": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/97daba8d54e067607b363bc9618001792d7ea360e1e9ab9246abbc9a191edae9",
+          "kind": "run-output",
+          "logical_path": "cases/tensorflow-cpu/.rextio/build/python/_rextio_native.cpython-311-darwin.so",
+          "sha256": "97daba8d54e067607b363bc9618001792d7ea360e1e9ab9246abbc9a191edae9",
+          "size_bytes": 570960
+        }
+      }
+    },
+    "torch-cpu-deep-mlp": {
+      "roles": {
+        "build_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/a5859436be7ddc1b282632ae883ed63f9a6f8ceebe30e7b6504e9dd9b7463f90",
+          "kind": "run-output",
+          "logical_path": "cases/torch-cpu/.rextio/reports/portable/build.json",
+          "sha256": "a5859436be7ddc1b282632ae883ed63f9a6f8ceebe30e7b6504e9dd9b7463f90",
+          "size_bytes": 225740
+        },
+        "check_report": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/aca3cff22395e503b2b8eb55f9716e60839a58739e38d8249f0c8d057be8e782",
+          "kind": "run-output",
+          "logical_path": "cases/torch-cpu/.rextio/reports/portable/check.json",
+          "sha256": "aca3cff22395e503b2b8eb55f9716e60839a58739e38d8249f0c8d057be8e782",
+          "size_bytes": 49361
+        },
+        "declared_native_artifact": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/deb4c0755bb9de9a97f5f0b11305ade1226e8528f9c6103c6e150e039f974fc6",
+          "kind": "run-output",
+          "logical_path": "cases/torch-cpu/.rextio/generated/python/_rextio_native.cpython-311-darwin.so",
+          "sha256": "deb4c0755bb9de9a97f5f0b11305ade1226e8528f9c6103c6e150e039f974fc6",
+          "size_bytes": 665248
+        },
+        "generated_python_fallback": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/4c482d49c506aeaa212f0f0a7737490f75ae8fd99929b27f62083770c59bb013",
+          "kind": "run-output",
+          "logical_path": "cases/torch-cpu/.rextio/generated/python/torch_case/_fallback_workload.py",
+          "sha256": "4c482d49c506aeaa212f0f0a7737490f75ae8fd99929b27f62083770c59bb013",
+          "size_bytes": 503
+        },
+        "generated_python_wrapper": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/2b1f0daf712fc0f98bb76a74d997227c9d4735d3e4840533b88cb015599d185f",
+          "kind": "run-output",
+          "logical_path": "cases/torch-cpu/.rextio/generated/python/torch_case/workload.py",
+          "sha256": "2b1f0daf712fc0f98bb76a74d997227c9d4735d3e4840533b88cb015599d185f",
+          "size_bytes": 5413
+        },
+        "generated_rust_lock": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/26e33c4402e514d09e889cf527f040e0f6c31ff5a6ef01e61850f347f4367991",
+          "kind": "run-output",
+          "logical_path": "cases/torch-cpu/.rextio/generated/rust/Cargo.lock",
+          "sha256": "26e33c4402e514d09e889cf527f040e0f6c31ff5a6ef01e61850f347f4367991",
+          "size_bytes": 27094
+        },
+        "generated_rust_manifest": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/881374074fe2315c8f9c6d54f26db5c96bdbb28df7f0720683611fdb797f8aa8",
+          "kind": "run-output",
+          "logical_path": "cases/torch-cpu/.rextio/generated/rust/Cargo.toml",
+          "sha256": "881374074fe2315c8f9c6d54f26db5c96bdbb28df7f0720683611fdb797f8aa8",
+          "size_bytes": 763
+        },
+        "generated_rust_source": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/64fad67a8de644197356636adc61caa70e6037e7960e94a11e22086585bcb4c9",
+          "kind": "run-output",
+          "logical_path": "cases/torch-cpu/.rextio/generated/rust/src/lib.rs",
+          "sha256": "64fad67a8de644197356636adc61caa70e6037e7960e94a11e22086585bcb4c9",
+          "size_bytes": 10515
+        },
+        "runtime_artifact": {
+          "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/objects/sha256/deb4c0755bb9de9a97f5f0b11305ade1226e8528f9c6103c6e150e039f974fc6",
+          "kind": "run-output",
+          "logical_path": "cases/torch-cpu/.rextio/build/python/_rextio_native.cpython-311-darwin.so",
+          "sha256": "deb4c0755bb9de9a97f5f0b11305ade1226e8528f9c6103c6e150e039f974fc6",
+          "size_bytes": 665248
+        }
+      }
+    }
+  },
+  "cohort": {
+    "cohort_id": "15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8",
+    "report_count": 3,
+    "reports": [
+      {
+        "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/reports/01-40791f784ec914da57cd2ef218e21fe1e5c63ca39a2de89039cf455bb1f03a21.json",
+        "generated_at": "2026-07-26T09:22:19.517029+00:00",
+        "index": 0,
+        "selected": true,
+        "sha256": "40791f784ec914da57cd2ef218e21fe1e5c63ca39a2de89039cf455bb1f03a21",
+        "source_path": "results/local/benchmark-publish-20260726T092219Z.json"
+      },
+      {
+        "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/reports/02-978f8273f4f44039125c02ec844e111071d26f4e9bb3ad8a7f4007bc73e31c7d.json",
+        "generated_at": "2026-07-26T09:38:40.004058+00:00",
+        "index": 1,
+        "selected": false,
+        "sha256": "978f8273f4f44039125c02ec844e111071d26f4e9bb3ad8a7f4007bc73e31c7d",
+        "source_path": "results/local/benchmark-publish-20260726T093840Z.json"
+      },
+      {
+        "bundle_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/reports/03-e5481d4f47d676bc7c7841f9c23460d1ab134215653e97014f0ae43a45dca0c6.json",
+        "generated_at": "2026-07-26T09:55:26.116951+00:00",
+        "index": 2,
+        "selected": false,
+        "sha256": "e5481d4f47d676bc7c7841f9c23460d1ab134215653e97014f0ae43a45dca0c6",
+        "source_path": "results/local/benchmark-publish-20260726T095526Z.json"
+      }
+    ],
+    "selected_report_index": 0,
+    "selection": "chronological-first",
+    "stability_summary_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/stability.json",
+    "stability_summary_sha256": "8b59fa0cfa9c95ef4399e98ddcafaf831cc2b0e8df551330d062489cb333907d"
+  },
+  "file_count": 74,
+  "logical_bytes": 10938927,
+  "object_count": 53,
+  "report_markdown_path": "results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/report.md",
+  "report_markdown_sha256": "b2eed1a4abeba2baff6ec330552df718dba82b2f2e5848d5a3944514ada6abc7",
+  "run_commit": "ff7f4fea34199d850bed0446a8a223ef730ddf17",
+  "schema_version": 2,
+  "source_report_path": "results/local/benchmark-publish-20260726T092219Z.json",
+  "stored_bytes": 5947731
+}

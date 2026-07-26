@@ -1,0 +1,2026 @@
+{
+  "accepted_native_count": 1,
+  "artifact_distribution_authorization": {
+    "authority": "readiness-assessment-only",
+    "blockers": [
+      "component-license-policy-incomplete",
+      "native-runtime-resolution-incomplete",
+      "native-runtime-transitive-closure-incomplete",
+      "runtime-dynamic-loading-unverified",
+      "build-input-closure-incomplete",
+      "source-transformation-provenance-incomplete",
+      "builder-toolchain-identity-unbound",
+      "reproducibility-unverified",
+      "attestation-unsigned",
+      "sbom-composition-incomplete",
+      "scoped-source-transformation-verification-unavailable",
+      "scoped-component-license-policy-verification-unavailable",
+      "scoped-project-source-license-policy-verification-unavailable",
+      "scoped-analysis-input-verification-unavailable",
+      "artifact-policy-coverage-unavailable",
+      "scoped-artifact-class-policy-declaration-unavailable"
+    ],
+    "checks": [
+      {
+        "id": "artifact-subject-bound",
+        "status": "satisfied"
+      },
+      {
+        "id": "declared-input-snapshot-bound",
+        "status": "satisfied"
+      },
+      {
+        "id": "cargo-resolve-graph-bound",
+        "status": "satisfied"
+      },
+      {
+        "id": "direct-native-linkage-observed",
+        "status": "satisfied"
+      },
+      {
+        "id": "direct-native-path-resolution-bound",
+        "status": "satisfied"
+      },
+      {
+        "id": "bounded-static-native-runtime-graph-bound",
+        "status": "satisfied"
+      },
+      {
+        "id": "source-transformation-inventory-bound",
+        "status": "satisfied"
+      },
+      {
+        "id": "scoped-source-transformation-verified",
+        "status": "unavailable"
+      },
+      {
+        "id": "component-license-inventory-bound",
+        "status": "satisfied"
+      },
+      {
+        "id": "scoped-component-license-policy-verified",
+        "status": "unavailable"
+      },
+      {
+        "id": "scoped-project-source-license-policy-verified",
+        "status": "unavailable"
+      },
+      {
+        "id": "scoped-analysis-inputs-verified",
+        "status": "unavailable"
+      },
+      {
+        "id": "artifact-policy-coverage-bound",
+        "status": "unavailable"
+      },
+      {
+        "id": "scoped-artifact-class-policy-declaration-bound",
+        "status": "unavailable"
+      },
+      {
+        "id": "component-license-policy-complete",
+        "status": "blocked"
+      },
+      {
+        "id": "native-runtime-resolution-complete",
+        "status": "blocked"
+      },
+      {
+        "id": "native-runtime-transitive-closure-complete",
+        "status": "blocked"
+      },
+      {
+        "id": "runtime-dynamic-loading-verified",
+        "status": "blocked"
+      },
+      {
+        "id": "build-input-closure-complete",
+        "status": "blocked"
+      },
+      {
+        "id": "source-transformation-provenance-complete",
+        "status": "blocked"
+      },
+      {
+        "id": "builder-toolchain-identity-bound",
+        "status": "blocked"
+      },
+      {
+        "id": "reproducibility-verified",
+        "status": "blocked"
+      },
+      {
+        "id": "attestation-signed",
+        "status": "blocked"
+      },
+      {
+        "id": "sbom-composition-complete",
+        "status": "blocked"
+      }
+    ],
+    "complete": false,
+    "distribution_authorized": false,
+    "evidence_reason": null,
+    "evidence_status": "preview-ready",
+    "kind": "artifact-distribution-authorization",
+    "policy": "host-extension-wheel-cpython-v1",
+    "policy_version": 11,
+    "scope": "host-extension-wheel-cpython-v1",
+    "signed": false,
+    "status": "blocked"
+  },
+  "artifact_evidence": {
+    "authority": "evidence-only",
+    "cargo_dependencies": [
+      {
+        "dependency_ref": "urn:rextio:cargo:4ec5cc4b6dfdaeade983dc130960ec60",
+        "dependent_ref": "urn:rextio:cargo:0fa206cf018f47373f4d386e047101f8"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:5a4ce7afea5c800b85b842ef8819c2f8",
+        "dependent_ref": "urn:rextio:cargo:0fa206cf018f47373f4d386e047101f8"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:5c9ac3b2a6be909d2d39fb468e609dd8",
+        "dependent_ref": "urn:rextio:cargo:149666e879d9245f06fc27cf843f126b"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:6b0e2a5f458cdd2b9b2f3c041981f83e",
+        "dependent_ref": "urn:rextio:cargo:149666e879d9245f06fc27cf843f126b"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:ae39f90d6ff208d7c82104ce0487f691",
+        "dependent_ref": "urn:rextio:cargo:149666e879d9245f06fc27cf843f126b"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:fe2b4d8e124d784882c02c60dd17413f",
+        "dependent_ref": "urn:rextio:cargo:149666e879d9245f06fc27cf843f126b"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:9262d3cbddc61a8639aba249c6f6797f",
+        "dependent_ref": "urn:rextio:cargo:194a223280c90773f2932dc544abf73a"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:bef4605559af9b77aabd20eea4a9c0ae",
+        "dependent_ref": "urn:rextio:cargo:194a223280c90773f2932dc544abf73a"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:632f1060bd96ca9d1cc4761e5b03a1bb",
+        "dependent_ref": "urn:rextio:cargo:240a10930fcc6193f2a2025f9fdff02b"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:c8f99fb9f3cc9efbf65ef0fa72361d89",
+        "dependent_ref": "urn:rextio:cargo:240a10930fcc6193f2a2025f9fdff02b"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:2ecd04ddd87b7b7009b23d38f3f3b1e1",
+        "dependent_ref": "urn:rextio:cargo:318c70c18ea3bf6541db759e386e30aa"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:3f48a3b174f49478888becfa1811902b",
+        "dependent_ref": "urn:rextio:cargo:3ab6c9c931b18a15ac740066d051e390"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:5ce9f34d2b3c7dc7d0100de185f9b087",
+        "dependent_ref": "urn:rextio:cargo:3ab6c9c931b18a15ac740066d051e390"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:66b2640ddb5c62313c8faad922a8be01",
+        "dependent_ref": "urn:rextio:cargo:3ab6c9c931b18a15ac740066d051e390"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:9e957c084db3dc157879b31c9f236ce8",
+        "dependent_ref": "urn:rextio:cargo:3ab6c9c931b18a15ac740066d051e390"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:fb595aef9f430417dc22f896ff990339",
+        "dependent_ref": "urn:rextio:cargo:3ab6c9c931b18a15ac740066d051e390"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:194a223280c90773f2932dc544abf73a",
+        "dependent_ref": "urn:rextio:cargo:3f48a3b174f49478888becfa1811902b"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:9262d3cbddc61a8639aba249c6f6797f",
+        "dependent_ref": "urn:rextio:cargo:3f48a3b174f49478888becfa1811902b"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:94cbfb0061cd0f1e5ef72fbe606e765d",
+        "dependent_ref": "urn:rextio:cargo:3f48a3b174f49478888becfa1811902b"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:bef4605559af9b77aabd20eea4a9c0ae",
+        "dependent_ref": "urn:rextio:cargo:3f48a3b174f49478888becfa1811902b"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:cda9fd3d2884055f0bb23b8dc101d238",
+        "dependent_ref": "urn:rextio:cargo:3f48a3b174f49478888becfa1811902b"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:240a10930fcc6193f2a2025f9fdff02b",
+        "dependent_ref": "urn:rextio:cargo:4ec5cc4b6dfdaeade983dc130960ec60"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:9262d3cbddc61a8639aba249c6f6797f",
+        "dependent_ref": "urn:rextio:cargo:581fa3f0406ed9bb24f83e3f4d918867"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:240a10930fcc6193f2a2025f9fdff02b",
+        "dependent_ref": "urn:rextio:cargo:5a4ce7afea5c800b85b842ef8819c2f8"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:632f1060bd96ca9d1cc4761e5b03a1bb",
+        "dependent_ref": "urn:rextio:cargo:5a4ce7afea5c800b85b842ef8819c2f8"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:6ae3ffa95811404637b136dd19e66fd1",
+        "dependent_ref": "urn:rextio:cargo:5c9ac3b2a6be909d2d39fb468e609dd8"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:ae39f90d6ff208d7c82104ce0487f691",
+        "dependent_ref": "urn:rextio:cargo:5c9ac3b2a6be909d2d39fb468e609dd8"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:fe2b4d8e124d784882c02c60dd17413f",
+        "dependent_ref": "urn:rextio:cargo:5c9ac3b2a6be909d2d39fb468e609dd8"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:318c70c18ea3bf6541db759e386e30aa",
+        "dependent_ref": "urn:rextio:cargo:66b2640ddb5c62313c8faad922a8be01"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:d34b16be2edcf5d917f96f42ae32dead",
+        "dependent_ref": "urn:rextio:cargo:66b2640ddb5c62313c8faad922a8be01"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:0fa206cf018f47373f4d386e047101f8",
+        "dependent_ref": "urn:rextio:cargo:9e957c084db3dc157879b31c9f236ce8"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:58059121354538107817f00e8f9b4611",
+        "dependent_ref": "urn:rextio:cargo:9e957c084db3dc157879b31c9f236ce8"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:581fa3f0406ed9bb24f83e3f4d918867",
+        "dependent_ref": "urn:rextio:cargo:9e957c084db3dc157879b31c9f236ce8"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:6ae3ffa95811404637b136dd19e66fd1",
+        "dependent_ref": "urn:rextio:cargo:ae39f90d6ff208d7c82104ce0487f691"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:d2fe12bd768857941d84bac7fa83ac82",
+        "dependent_ref": "urn:rextio:cargo:bef4605559af9b77aabd20eea4a9c0ae"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:149666e879d9245f06fc27cf843f126b",
+        "dependent_ref": "urn:rextio:cargo:cda9fd3d2884055f0bb23b8dc101d238"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:5c9ac3b2a6be909d2d39fb468e609dd8",
+        "dependent_ref": "urn:rextio:cargo:cda9fd3d2884055f0bb23b8dc101d238"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:ae39f90d6ff208d7c82104ce0487f691",
+        "dependent_ref": "urn:rextio:cargo:cda9fd3d2884055f0bb23b8dc101d238"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:fe2b4d8e124d784882c02c60dd17413f",
+        "dependent_ref": "urn:rextio:cargo:cda9fd3d2884055f0bb23b8dc101d238"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:d9a1ae58a634c7fbcfb904c1aad9b6fd",
+        "dependent_ref": "urn:rextio:cargo:d34b16be2edcf5d917f96f42ae32dead"
+      },
+      {
+        "dependency_ref": "urn:rextio:cargo:ae39f90d6ff208d7c82104ce0487f691",
+        "dependent_ref": "urn:rextio:cargo:fe2b4d8e124d784882c02c60dd17413f"
+      }
+    ],
+    "cargo_packages": [
+      {
+        "bom_ref": "urn:rextio:cargo:2ecd04ddd87b7b7009b23d38f3f3b1e1",
+        "checksum": "f2032f911046de80f0a198e0901378627c33f59ea0ac00e363d481118bd70a53",
+        "features": [],
+        "kind": "registry",
+        "license": "Apache-2.0 OR MIT",
+        "name": "autocfg",
+        "purl": "pkg:cargo/autocfg@1.5.1",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "1.5.1"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:fb595aef9f430417dc22f896ff990339",
+        "checksum": "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6",
+        "features": [
+          "alloc",
+          "default",
+          "std"
+        ],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "base64",
+        "purl": "pkg:cargo/base64@0.22.1",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.22.1"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:4ec5cc4b6dfdaeade983dc130960ec60",
+        "checksum": "3078c7629b62d3f0439517fa394996acacc5cbc91c5a20d8c658e77abd503a71",
+        "features": [],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "block-buffer",
+        "purl": "pkg:cargo/block-buffer@0.10.4",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.10.4"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:58059121354538107817f00e8f9b4611",
+        "checksum": "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801",
+        "features": [],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "cfg-if",
+        "purl": "pkg:cargo/cfg-if@1.0.4",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "1.0.4"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:66b2640ddb5c62313c8faad922a8be01",
+        "checksum": "1aa79e62e7697b8e29b513a68abacf485adcd1fe8284a4316c5ae868e6633327",
+        "features": [
+          "alloc",
+          "clock",
+          "default",
+          "iana-time-zone",
+          "js-sys",
+          "now",
+          "oldtime",
+          "std",
+          "wasm-bindgen",
+          "wasmbind",
+          "winapi",
+          "windows-link"
+        ],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "chrono",
+        "purl": "pkg:cargo/chrono@0.4.45",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.4.45"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:d9a1ae58a634c7fbcfb904c1aad9b6fd",
+        "checksum": "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b",
+        "features": [
+          "default",
+          "link"
+        ],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "core-foundation-sys",
+        "purl": "pkg:cargo/core-foundation-sys@0.8.7",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.8.7"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:581fa3f0406ed9bb24f83e3f4d918867",
+        "checksum": "59ed5838eebb26a2bb2e58f6d5b5316989ae9d08bab10e0e6d103e656d1b0280",
+        "features": [],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "cpufeatures",
+        "purl": "pkg:cargo/cpufeatures@0.2.17",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.2.17"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:5a4ce7afea5c800b85b842ef8819c2f8",
+        "checksum": "78c8292055d1c1df0cce5d180393dc8cce0abec0a7102adb6c7b1eef6016d60a",
+        "features": [
+          "std"
+        ],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "crypto-common",
+        "purl": "pkg:cargo/crypto-common@0.1.7",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.1.7"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:0fa206cf018f47373f4d386e047101f8",
+        "checksum": "9ed9a281f7bc9b7576e61468ba615a66a5c8cfdff42420a70aa82701a3b1e292",
+        "features": [
+          "alloc",
+          "block-buffer",
+          "core-api",
+          "default",
+          "std"
+        ],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "digest",
+        "purl": "pkg:cargo/digest@0.10.7",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.10.7"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:240a10930fcc6193f2a2025f9fdff02b",
+        "checksum": "85649ca51fd72272d7821adaf274ad91c288277713d9c18820d8499a7ff69e9a",
+        "features": [
+          "more_lengths"
+        ],
+        "kind": "registry",
+        "license": "MIT",
+        "name": "generic-array",
+        "purl": "pkg:cargo/generic-array@0.14.7",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.14.7"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:6b0e2a5f458cdd2b9b2f3c041981f83e",
+        "checksum": "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea",
+        "features": [],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "heck",
+        "purl": "pkg:cargo/heck@0.5.0",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.5.0"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:d34b16be2edcf5d917f96f42ae32dead",
+        "checksum": "e31bc9ad994ba00e440a8aa5c9ef0ec67d5cb5e5cb0cc7f8b744a35b389cc470",
+        "features": [
+          "fallback"
+        ],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "iana-time-zone",
+        "purl": "pkg:cargo/iana-time-zone@0.1.65",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.1.65"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:9262d3cbddc61a8639aba249c6f6797f",
+        "checksum": "3eaf3ede3fee6db1a4c2ee091bf8a8b4dccdc6d17f656fb07896ee72867612f2",
+        "features": [
+          "default",
+          "std"
+        ],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "libc",
+        "purl": "pkg:cargo/libc@0.2.189",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.2.189"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:5ce9f34d2b3c7dc7d0100de185f9b087",
+        "checksum": "0ceec5bc11778974d1bcb055b18002eba7f4b3518b6a0081b3af5f21666da9ad",
+        "features": [],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "log",
+        "purl": "pkg:cargo/log@0.4.33",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.4.33"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:318c70c18ea3bf6541db759e386e30aa",
+        "checksum": "071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841",
+        "features": [],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "num-traits",
+        "purl": "pkg:cargo/num-traits@0.2.19",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.2.19"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:94cbfb0061cd0f1e5ef72fbe606e765d",
+        "checksum": "9f7c3e4beb33f85d45ae3e3a1792185706c8e16d043238c593331cc7cd313b50",
+        "features": [
+          "alloc",
+          "default",
+          "race",
+          "std"
+        ],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "once_cell",
+        "purl": "pkg:cargo/once_cell@1.21.4",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "1.21.4"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:ae39f90d6ff208d7c82104ce0487f691",
+        "checksum": "985e7ec9bb745e6ce6535b544d84d6cd6f7ad8bd711c398938ae983b91a766d9",
+        "features": [
+          "default",
+          "proc-macro"
+        ],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "proc-macro2",
+        "purl": "pkg:cargo/proc-macro2@1.0.107",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "1.0.107"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:3f48a3b174f49478888becfa1811902b",
+        "checksum": "cd274650b21d4bfc26a0a47587962c1edb425f69287324355cd040c3ea66071c",
+        "features": [
+          "default",
+          "extension-module",
+          "macros",
+          "pyo3-macros"
+        ],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "pyo3",
+        "purl": "pkg:cargo/pyo3@0.29.0",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.29.0"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:bef4605559af9b77aabd20eea4a9c0ae",
+        "checksum": "c5e2a7d2f0d013342f295c048ad19237add5154a55b1c5a254c0ec93d4109078",
+        "features": [
+          "default",
+          "extension-module"
+        ],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "pyo3-build-config",
+        "purl": "pkg:cargo/pyo3-build-config@0.29.0",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.29.0"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:194a223280c90773f2932dc544abf73a",
+        "checksum": "ca85c467da1bbc8d866eea5deff9cf29ea5f7785054a17da36e65bda9c05845b",
+        "features": [
+          "default",
+          "extension-module"
+        ],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "pyo3-ffi",
+        "purl": "pkg:cargo/pyo3-ffi@0.29.0",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.29.0"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:cda9fd3d2884055f0bb23b8dc101d238",
+        "checksum": "9ac53762fd065daa3194dd09337a38bd793a188100fd1a9304c4ab312d901771",
+        "features": [],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "pyo3-macros",
+        "purl": "pkg:cargo/pyo3-macros@0.29.0",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.29.0"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:149666e879d9245f06fc27cf843f126b",
+        "checksum": "4ca3a1557399783172dc5bf39cfca835157732532cba56b71d2292161e53b362",
+        "features": [],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "pyo3-macros-backend",
+        "purl": "pkg:cargo/pyo3-macros-backend@0.29.0",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.29.0"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:fe2b4d8e124d784882c02c60dd17413f",
+        "checksum": "1fbf4db142a473a8d80c26bbf18454ed458bf8d26c8219c331daecfdbd079001",
+        "features": [
+          "default",
+          "proc-macro"
+        ],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "quote",
+        "purl": "pkg:cargo/quote@1.0.47",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "1.0.47"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:3ab6c9c931b18a15ac740066d051e390",
+        "checksum": null,
+        "features": [],
+        "kind": "path-root",
+        "license": null,
+        "name": "rextio_generated_native",
+        "purl": "pkg:cargo/rextio_generated_native@0.1.0?kind=path-root",
+        "source_fingerprint": null,
+        "version": "0.1.0"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:9e957c084db3dc157879b31c9f236ce8",
+        "checksum": "a7507d819769d01a365ab707794a4084392c824f54a7a6a7862f8c3d0892b283",
+        "features": [
+          "default",
+          "std"
+        ],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "sha2",
+        "purl": "pkg:cargo/sha2@0.10.9",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.10.9"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:5c9ac3b2a6be909d2d39fb468e609dd8",
+        "checksum": "872831b642d1a07999a962a351ed35b955ea2cfc8f3862091e2a240a84f17297",
+        "features": [
+          "clone-impls",
+          "default",
+          "derive",
+          "extra-traits",
+          "full",
+          "parsing",
+          "printing",
+          "proc-macro",
+          "visit",
+          "visit-mut"
+        ],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "syn",
+        "purl": "pkg:cargo/syn@2.0.119",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "2.0.119"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:d2fe12bd768857941d84bac7fa83ac82",
+        "checksum": "adb6935a6f5c20170eeceb1a3835a49e12e19d792f6dd344ccc76a985ca5a6ca",
+        "features": [
+          "default"
+        ],
+        "kind": "registry",
+        "license": "Apache-2.0 WITH LLVM-exception",
+        "name": "target-lexicon",
+        "purl": "pkg:cargo/target-lexicon@0.13.5",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.13.5"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:632f1060bd96ca9d1cc4761e5b03a1bb",
+        "checksum": "b6f5e870be6c3b371b77fe0ee0bafb859fa4964b4404c27de1d380043c4dda20",
+        "features": [],
+        "kind": "registry",
+        "license": "MIT OR Apache-2.0",
+        "name": "typenum",
+        "purl": "pkg:cargo/typenum@1.20.1",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "1.20.1"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:6ae3ffa95811404637b136dd19e66fd1",
+        "checksum": "e6e4313cd5fcd3dad5cafa179702e2b244f760991f45397d14d4ebf38247da75",
+        "features": [],
+        "kind": "registry",
+        "license": "(MIT OR Apache-2.0) AND Unicode-3.0",
+        "name": "unicode-ident",
+        "purl": "pkg:cargo/unicode-ident@1.0.24",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "1.0.24"
+      },
+      {
+        "bom_ref": "urn:rextio:cargo:c8f99fb9f3cc9efbf65ef0fa72361d89",
+        "checksum": "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a",
+        "features": [],
+        "kind": "registry",
+        "license": "MIT/Apache-2.0",
+        "name": "version_check",
+        "purl": "pkg:cargo/version_check@0.9.5",
+        "source_fingerprint": "c19b7c6f923b580ac259164a89f2577984ad5ab09ee9d583b888f934adbbe8d0",
+        "version": "0.9.5"
+      }
+    ],
+    "complete": false,
+    "component_license_inventory": {
+      "authority": "observation-only",
+      "complete": false,
+      "kind": "component-license-inventory",
+      "record_count": 30,
+      "records": [
+        {
+          "bom_ref": "urn:rextio:cargo:0fa206cf018f47373f4d386e047101f8",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "digest",
+          "version": "0.10.7"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:149666e879d9245f06fc27cf843f126b",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "pyo3-macros-backend",
+          "version": "0.29.0"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:194a223280c90773f2932dc544abf73a",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "pyo3-ffi",
+          "version": "0.29.0"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:240a10930fcc6193f2a2025f9fdff02b",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT",
+          "name": "generic-array",
+          "version": "0.14.7"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:2ecd04ddd87b7b7009b23d38f3f3b1e1",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "Apache-2.0 OR MIT",
+          "name": "autocfg",
+          "version": "1.5.1"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:318c70c18ea3bf6541db759e386e30aa",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "num-traits",
+          "version": "0.2.19"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:3ab6c9c931b18a15ac740066d051e390",
+          "kind": "path-root",
+          "license_observation": "missing",
+          "license_observed": null,
+          "name": "rextio_generated_native",
+          "version": "0.1.0"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:3f48a3b174f49478888becfa1811902b",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "pyo3",
+          "version": "0.29.0"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:4ec5cc4b6dfdaeade983dc130960ec60",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "block-buffer",
+          "version": "0.10.4"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:58059121354538107817f00e8f9b4611",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "cfg-if",
+          "version": "1.0.4"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:581fa3f0406ed9bb24f83e3f4d918867",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "cpufeatures",
+          "version": "0.2.17"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:5a4ce7afea5c800b85b842ef8819c2f8",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "crypto-common",
+          "version": "0.1.7"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:5c9ac3b2a6be909d2d39fb468e609dd8",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "syn",
+          "version": "2.0.119"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:5ce9f34d2b3c7dc7d0100de185f9b087",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "log",
+          "version": "0.4.33"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:632f1060bd96ca9d1cc4761e5b03a1bb",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "typenum",
+          "version": "1.20.1"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:66b2640ddb5c62313c8faad922a8be01",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "chrono",
+          "version": "0.4.45"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:6ae3ffa95811404637b136dd19e66fd1",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "(MIT OR Apache-2.0) AND Unicode-3.0",
+          "name": "unicode-ident",
+          "version": "1.0.24"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:6b0e2a5f458cdd2b9b2f3c041981f83e",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "heck",
+          "version": "0.5.0"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:9262d3cbddc61a8639aba249c6f6797f",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "libc",
+          "version": "0.2.189"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:94cbfb0061cd0f1e5ef72fbe606e765d",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "once_cell",
+          "version": "1.21.4"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:9e957c084db3dc157879b31c9f236ce8",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "sha2",
+          "version": "0.10.9"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:ae39f90d6ff208d7c82104ce0487f691",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "proc-macro2",
+          "version": "1.0.107"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:bef4605559af9b77aabd20eea4a9c0ae",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "pyo3-build-config",
+          "version": "0.29.0"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:c8f99fb9f3cc9efbf65ef0fa72361d89",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT/Apache-2.0",
+          "name": "version_check",
+          "version": "0.9.5"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:cda9fd3d2884055f0bb23b8dc101d238",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "pyo3-macros",
+          "version": "0.29.0"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:d2fe12bd768857941d84bac7fa83ac82",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "Apache-2.0 WITH LLVM-exception",
+          "name": "target-lexicon",
+          "version": "0.13.5"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:d34b16be2edcf5d917f96f42ae32dead",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "iana-time-zone",
+          "version": "0.1.65"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:d9a1ae58a634c7fbcfb904c1aad9b6fd",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "core-foundation-sys",
+          "version": "0.8.7"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:fb595aef9f430417dc22f896ff990339",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "base64",
+          "version": "0.22.1"
+        },
+        {
+          "bom_ref": "urn:rextio:cargo:fe2b4d8e124d784882c02c60dd17413f",
+          "kind": "registry",
+          "license_observation": "declared-unvalidated",
+          "license_observed": "MIT OR Apache-2.0",
+          "name": "quote",
+          "version": "1.0.47"
+        }
+      ],
+      "schema_version": 1,
+      "scope": "reachable-cargo-packages"
+    },
+    "composition": "incomplete",
+    "distribution_authorized": false,
+    "inputs": [
+      {
+        "logical_path": ".rextio/generated/rust/Cargo.lock",
+        "role": "generated-cargo-lock",
+        "sha256": "9cb4f867eb291562ec95a1f107358e0cce56d841d5b8a3c279516263817f8567",
+        "size": 12498
+      },
+      {
+        "logical_path": ".rextio/generated/python/benchmark_case.py",
+        "role": "generated-python-input",
+        "sha256": "91f9f499bb2f018194e282ce03692e422d97965c9f5c9d6816fb4c6d5f71059a",
+        "size": 236
+      },
+      {
+        "logical_path": ".rextio/generated/python/core_hybrid/__init__.py",
+        "role": "generated-python-input",
+        "sha256": "71c7939965f04b2963667172dbc17284075fe7ba9670aa1509aab497fdcebe21",
+        "size": 45
+      },
+      {
+        "logical_path": ".rextio/generated/python/core_hybrid/_fallback_workload.py",
+        "role": "generated-python-input",
+        "sha256": "9b57b9aa8c8a746dfb892b872a7cacc1a9f82c05eb817e42f0671e6b8164e7a2",
+        "size": 360
+      },
+      {
+        "logical_path": ".rextio/generated/python/core_hybrid/workload.py",
+        "role": "generated-python-input",
+        "sha256": "35228e610ea08884d3adaaef55fd0f054db9827ff9a6c879214ac55eb51b700a",
+        "size": 5483
+      },
+      {
+        "logical_path": ".rextio/generated/python/rextio/__about__.py",
+        "role": "generated-python-input",
+        "sha256": "67a7352dc7344f558185845335a63ffabad6738c46c61a1088af0f8fa6b30a00",
+        "size": 337
+      },
+      {
+        "logical_path": ".rextio/generated/python/rextio/__init__.py",
+        "role": "generated-python-input",
+        "sha256": "9124b9f218798e0e9ebceeec48ff980da909de5a78ec9885c4b33d1b009282c4",
+        "size": 3117
+      },
+      {
+        "logical_path": ".rextio/generated/python/rextio/runtime/__init__.py",
+        "role": "generated-python-input",
+        "sha256": "0031636eeafa52a4668f2221a0685b4f646fbf2ab12578c7c79703b9de535823",
+        "size": 53
+      },
+      {
+        "logical_path": ".rextio/generated/python/rextio/runtime/boundary_call.py",
+        "role": "generated-python-input",
+        "sha256": "31f40a9ce3b09d190c3cf8a805310568ba1ec2d7758fd3447373e78ccfd7db4f",
+        "size": 2403
+      },
+      {
+        "logical_path": ".rextio/generated/python/rextio/runtime/boundary_fallback.py",
+        "role": "generated-python-input",
+        "sha256": "660d31ce333c0b7bfd9bee14c6b1a63811baa6a9b577f87f826a4f300f8513ea",
+        "size": 3202
+      },
+      {
+        "logical_path": ".rextio/generated/python/rextio/runtime/flags.py",
+        "role": "generated-python-input",
+        "sha256": "64c7fcefb5dda4e9e81364e4ed78a0d0345b630db867ef848bd8737c6311921b",
+        "size": 1532
+      },
+      {
+        "logical_path": ".rextio/generated/python/rextio/runtime/native_loader.py",
+        "role": "generated-python-input",
+        "sha256": "d536b7bfae0d88aea58b2f60a7b37f611b276204f5bdeef6e187df764a86f0f4",
+        "size": 3472
+      },
+      {
+        "logical_path": ".rextio/generated/python/rextio/runtime/original_registry.py",
+        "role": "generated-python-input",
+        "sha256": "92b439466f33bed0834c2c116e3571e69d8fee4f521a92df5dd561944e21ed47",
+        "size": 1662
+      },
+      {
+        "logical_path": ".rextio/generated/rust/.cargo/config.toml",
+        "role": "generated-rust-input",
+        "sha256": "4ba4a49931e52ecc88d8ec036d123b630b4b4f0dac140a66c7a6dd2efbd7ef6e",
+        "size": 256
+      },
+      {
+        "logical_path": ".rextio/generated/rust/Cargo.toml",
+        "role": "generated-rust-input",
+        "sha256": "521c1de626086f6022cb74f720b16cd1ff261b4cebb030dc010b9dff9a4194dd",
+        "size": 700
+      },
+      {
+        "logical_path": ".rextio/generated/rust/pyproject.toml",
+        "role": "generated-rust-input",
+        "sha256": "0fb67471bd85892c448b7a9511b5c1d287975b68054c95d7c900452a35853876",
+        "size": 209
+      },
+      {
+        "logical_path": ".rextio/generated/rust/src/lib.rs",
+        "role": "generated-rust-input",
+        "sha256": "55f433502abf556b700c2f2fe5c44dac63bb96a28247644eb0de1d7dceac6201",
+        "size": 2048
+      },
+      {
+        "logical_path": "benchmark_case.py",
+        "role": "project-python-source",
+        "sha256": "91f9f499bb2f018194e282ce03692e422d97965c9f5c9d6816fb4c6d5f71059a",
+        "size": 236
+      },
+      {
+        "logical_path": "src/core_hybrid/__init__.py",
+        "role": "project-python-source",
+        "sha256": "71c7939965f04b2963667172dbc17284075fe7ba9670aa1509aab497fdcebe21",
+        "size": 45
+      },
+      {
+        "logical_path": "src/core_hybrid/workload.py",
+        "role": "project-python-source",
+        "sha256": "9b57b9aa8c8a746dfb892b872a7cacc1a9f82c05eb817e42f0671e6b8164e7a2",
+        "size": 360
+      }
+    ],
+    "kind": "host-extension-wheel",
+    "limitations": [
+      "preview-only",
+      "composition-incomplete",
+      "unsigned",
+      "not-reproducible-claim",
+      "not-hermetic-claim",
+      "not-completeness-claim",
+      "not-external-source-authorization",
+      "direct-native-linkage-only",
+      "one-hop-static-native-path-resolution-only",
+      "bounded-static-native-runtime-graph-only",
+      "no-loader-environment-selection-claim",
+      "no-transitive-dylib-closure",
+      "no-runtime-dlopen-inventory",
+      "no-recursive-package-inventory",
+      "evidence-only-authority"
+    ],
+    "native_runtime_inventory": {
+      "architecture": "aarch64",
+      "dependencies": [
+        {
+          "bom_ref": "urn:rextio:native-dep:d7b92b879ca07cf1b911aedc0b351ae9",
+          "name": "libiconv.2.dylib",
+          "origin": "system"
+        },
+        {
+          "bom_ref": "urn:rextio:native-dep:e15cd9b72bba39b815217f5bd6b13468",
+          "name": "libSystem.B.dylib",
+          "origin": "system"
+        }
+      ],
+      "dependency_count": 2,
+      "format": "mach-o",
+      "inspector": "otool",
+      "runtime_dlopen": false,
+      "scope": "direct-only",
+      "subject_basename": "_rextio_native.cpython-311-darwin.so",
+      "subject_sha256": "1417ea65bfd3508609583c99a31b1107191e424a7d4627a803c76e78f4819327",
+      "subject_size": 493728,
+      "transitive_closure": false,
+      "wheel_member": "_rextio_native.cpython-311-darwin.so",
+      "wheel_member_sha256": "1417ea65bfd3508609583c99a31b1107191e424a7d4627a803c76e78f4819327",
+      "wheel_member_size": 493728
+    },
+    "native_runtime_path_resolution": {
+      "authority": "observation-only",
+      "complete": false,
+      "kind": "native-runtime-path-resolution-inventory",
+      "record_count": 2,
+      "records": [
+        {
+          "dependency_bom_ref": "urn:rextio:native-dep:d7b92b879ca07cf1b911aedc0b351ae9",
+          "dependency_name": "libiconv.2.dylib",
+          "dependency_origin": "system",
+          "mechanism": "macho-system",
+          "resolution": "system-logical",
+          "sha256": null,
+          "size": null,
+          "wheel_member": null
+        },
+        {
+          "dependency_bom_ref": "urn:rextio:native-dep:e15cd9b72bba39b815217f5bd6b13468",
+          "dependency_name": "libSystem.B.dylib",
+          "dependency_origin": "system",
+          "mechanism": "macho-system",
+          "resolution": "system-logical",
+          "sha256": null,
+          "size": null,
+          "wheel_member": null
+        }
+      ],
+      "schema_version": 1,
+      "scope": "direct-native-dependencies",
+      "subject_sha256": "1417ea65bfd3508609583c99a31b1107191e424a7d4627a803c76e78f4819327",
+      "subject_wheel_member": "_rextio_native.cpython-311-darwin.so"
+    },
+    "native_runtime_transitive_closure": {
+      "actual_loader_selection": false,
+      "architecture": "aarch64",
+      "authority": "observation-only",
+      "bounded_graph_observed": true,
+      "complete": false,
+      "edge_count": 2,
+      "edges": [
+        {
+          "dependency_name": "libSystem.B.dylib",
+          "mechanism": "macho-system",
+          "source_ref": "urn:rextio:native-runtime-node:07ce54150328d55e8f770b55dc2f4751",
+          "target_ref": "urn:rextio:native-runtime-node:055b77e2dd5adfa76e7a6fc22d010ae4"
+        },
+        {
+          "dependency_name": "libiconv.2.dylib",
+          "mechanism": "macho-system",
+          "source_ref": "urn:rextio:native-runtime-node:07ce54150328d55e8f770b55dc2f4751",
+          "target_ref": "urn:rextio:native-runtime-node:ace47a8c77785234fe118599d8a89a31"
+        }
+      ],
+      "format": "mach-o",
+      "kind": "native-runtime-transitive-closure-inventory",
+      "limits": {
+        "candidate_attempts": 2048,
+        "candidates_per_dependency": 64,
+        "depth": 8,
+        "edges": 512,
+        "inspector_invocations": 128,
+        "inspector_output_bytes": 2097152,
+        "nodes": 128,
+        "serialized_chars": 524288
+      },
+      "max_depth_observed": 1,
+      "node_count": 3,
+      "nodes": [
+        {
+          "format": "mach-o",
+          "kind": "system-logical",
+          "name": "libSystem.B.dylib",
+          "node_ref": "urn:rextio:native-runtime-node:055b77e2dd5adfa76e7a6fc22d010ae4",
+          "sha256": null,
+          "size": null,
+          "terminal": true,
+          "wheel_member": null
+        },
+        {
+          "format": "mach-o",
+          "kind": "wheel-member",
+          "name": "_rextio_native.cpython-311-darwin.so",
+          "node_ref": "urn:rextio:native-runtime-node:07ce54150328d55e8f770b55dc2f4751",
+          "sha256": "1417ea65bfd3508609583c99a31b1107191e424a7d4627a803c76e78f4819327",
+          "size": 493728,
+          "terminal": false,
+          "wheel_member": "_rextio_native.cpython-311-darwin.so"
+        },
+        {
+          "format": "mach-o",
+          "kind": "system-logical",
+          "name": "libiconv.2.dylib",
+          "node_ref": "urn:rextio:native-runtime-node:ace47a8c77785234fe118599d8a89a31",
+          "sha256": null,
+          "size": null,
+          "terminal": true,
+          "wheel_member": null
+        }
+      ],
+      "root_node_ref": "urn:rextio:native-runtime-node:07ce54150328d55e8f770b55dc2f4751",
+      "runtime_dlopen": false,
+      "schema_version": 1,
+      "scope": "bounded-static-packaged-native-runtime-graph",
+      "subject_sha256": "1417ea65bfd3508609583c99a31b1107191e424a7d4627a803c76e78f4819327",
+      "subject_size": 493728,
+      "subject_wheel_member": "_rextio_native.cpython-311-darwin.so",
+      "transitive_closure_complete": false
+    },
+    "preview": true,
+    "provenance": {
+      "format": "in-toto-Statement",
+      "logical_path": "dist/core_hybrid-0.1.0-cp311-cp311-macosx_11_0_arm64.whl.intoto.json",
+      "predicate_type": "https://slsa.dev/provenance/v1",
+      "sha256": "4dcb49ee7289928c589345acc08cc6fca982bb79274f3a0b3e4635eb65989913",
+      "signed": false,
+      "size": 39536,
+      "statement_type": "https://in-toto.io/Statement/v1"
+    },
+    "sbom": {
+      "aggregate": "incomplete",
+      "format": "CycloneDX",
+      "logical_path": "dist/core_hybrid-0.1.0-cp311-cp311-macosx_11_0_arm64.whl.cdx.json",
+      "sha256": "10831285582abd83f322d769af16be74ee7430da04a3e7a6e7e7ec565f3d6d58",
+      "signed": false,
+      "size": 70076,
+      "spec_version": "1.6"
+    },
+    "signature_status": "unsigned",
+    "signed": false,
+    "source_transformation_inventory": {
+      "authority": "observation-only",
+      "complete": false,
+      "kind": "source-transformation-inventory",
+      "record_count": 1,
+      "records": [
+        {
+          "function_module": "core_hybrid.workload",
+          "function_qualname": "core_hybrid.workload.score",
+          "generated_rust": {
+            "logical_path": ".rextio/generated/rust/src/lib.rs",
+            "role": "generated-rust-input",
+            "sha256": "55f433502abf556b700c2f2fe5c44dac63bb96a28247644eb0de1d7dceac6201",
+            "size": 2048
+          },
+          "generator_backend": "rextio-core-rust-pyo3-v1",
+          "plugin_ids": [],
+          "semantic_ast_sha256": "8a52a23a291e329ee79cad1788e6527c2bf2b5fbe252d69c891fc70276aab146",
+          "source_path": "src/core_hybrid/workload.py",
+          "source_range": {
+            "end": {
+              "column": 16,
+              "line": 14
+            },
+            "start": {
+              "column": 0,
+              "line": 5
+            }
+          },
+          "source_sha256": "9b57b9aa8c8a746dfb892b872a7cacc1a9f82c05eb817e42f0671e6b8164e7a2"
+        }
+      ],
+      "schema_version": 1,
+      "scope": "accepted-project-native-functions"
+    },
+    "status": "preview-ready",
+    "subject": {
+      "logical_path": "dist/core_hybrid-0.1.0-cp311-cp311-macosx_11_0_arm64.whl",
+      "role": "host-extension-wheel",
+      "sha256": "f370831a59985d11367eca1fedb071bc740c784106037017ecff63a49ec4872b",
+      "size": 213104
+    },
+    "target_triple": "aarch64-apple-darwin",
+    "wheel_entries": [
+      {
+        "compressed_size": 202130,
+        "name": "_rextio_native.cpython-311-darwin.so",
+        "sha256": "1417ea65bfd3508609583c99a31b1107191e424a7d4627a803c76e78f4819327",
+        "uncompressed_size": 493728
+      },
+      {
+        "compressed_size": 160,
+        "name": "benchmark_case.py",
+        "sha256": "91f9f499bb2f018194e282ce03692e422d97965c9f5c9d6816fb4c6d5f71059a",
+        "uncompressed_size": 236
+      },
+      {
+        "compressed_size": 87,
+        "name": "core_hybrid-0.1.0.dist-info/METADATA",
+        "sha256": "f351a81fc427b7a44b9986a94f4f6f0c95ad02c7071d56808f589dfbc30636e9",
+        "uncompressed_size": 98
+      },
+      {
+        "compressed_size": 790,
+        "name": "core_hybrid-0.1.0.dist-info/RECORD",
+        "sha256": "654078975af863e935afdc3a3f728ca66838743800140fe12d2aca9767c8c285",
+        "uncompressed_size": 1302
+      },
+      {
+        "compressed_size": 92,
+        "name": "core_hybrid-0.1.0.dist-info/WHEEL",
+        "sha256": "e9a596bfa5477458ae52f0dc390c87df86a8908f39c32ee6079083419e2058c1",
+        "uncompressed_size": 95
+      },
+      {
+        "compressed_size": 47,
+        "name": "core_hybrid/__init__.py",
+        "sha256": "71c7939965f04b2963667172dbc17284075fe7ba9670aa1509aab497fdcebe21",
+        "uncompressed_size": 45
+      },
+      {
+        "compressed_size": 177,
+        "name": "core_hybrid/_fallback_workload.py",
+        "sha256": "9b57b9aa8c8a746dfb892b872a7cacc1a9f82c05eb817e42f0671e6b8164e7a2",
+        "uncompressed_size": 360
+      },
+      {
+        "compressed_size": 1124,
+        "name": "core_hybrid/workload.py",
+        "sha256": "35228e610ea08884d3adaaef55fd0f054db9827ff9a6c879214ac55eb51b700a",
+        "uncompressed_size": 5483
+      },
+      {
+        "compressed_size": 231,
+        "name": "rextio/__about__.py",
+        "sha256": "67a7352dc7344f558185845335a63ffabad6738c46c61a1088af0f8fa6b30a00",
+        "uncompressed_size": 337
+      },
+      {
+        "compressed_size": 1172,
+        "name": "rextio/__init__.py",
+        "sha256": "9124b9f218798e0e9ebceeec48ff980da909de5a78ec9885c4b33d1b009282c4",
+        "uncompressed_size": 3117
+      },
+      {
+        "compressed_size": 53,
+        "name": "rextio/runtime/__init__.py",
+        "sha256": "0031636eeafa52a4668f2221a0685b4f646fbf2ab12578c7c79703b9de535823",
+        "uncompressed_size": 53
+      },
+      {
+        "compressed_size": 1109,
+        "name": "rextio/runtime/boundary_call.py",
+        "sha256": "31f40a9ce3b09d190c3cf8a805310568ba1ec2d7758fd3447373e78ccfd7db4f",
+        "uncompressed_size": 2403
+      },
+      {
+        "compressed_size": 1041,
+        "name": "rextio/runtime/boundary_fallback.py",
+        "sha256": "660d31ce333c0b7bfd9bee14c6b1a63811baa6a9b577f87f826a4f300f8513ea",
+        "uncompressed_size": 3202
+      },
+      {
+        "compressed_size": 672,
+        "name": "rextio/runtime/flags.py",
+        "sha256": "64c7fcefb5dda4e9e81364e4ed78a0d0345b630db867ef848bd8737c6311921b",
+        "uncompressed_size": 1532
+      },
+      {
+        "compressed_size": 1295,
+        "name": "rextio/runtime/native_loader.py",
+        "sha256": "d536b7bfae0d88aea58b2f60a7b37f611b276204f5bdeef6e187df764a86f0f4",
+        "uncompressed_size": 3472
+      },
+      {
+        "compressed_size": 780,
+        "name": "rextio/runtime/original_registry.py",
+        "sha256": "92b439466f33bed0834c2c116e3571e69d8fee4f521a92df5dd561944e21ed47",
+        "uncompressed_size": 1662
+      }
+    ]
+  },
+  "artifact_profiles": [
+    {
+      "abi_requirements": [
+        {
+          "features": [],
+          "name": "cpython",
+          "version": null
+        }
+      ],
+      "device_requirements": [],
+      "fallback": null,
+      "kind": "host-extension",
+      "packaging_backend": "wheel",
+      "provenance": {
+        "evidence": [],
+        "producer": "rextio",
+        "source_references": []
+      },
+      "python_fallback_backend": "cpython",
+      "runtime_requirements": [
+        {
+          "features": [],
+          "name": "cpython",
+          "version": null
+        }
+      ],
+      "target_triple": "aarch64-apple-darwin"
+    }
+  ],
+  "boundary_fallback_threshold": 1000,
+  "build_python": "cases/core-hybrid/.rextio/build/python",
+  "contract_version": "2.27.0",
+  "embedding_candidate_count": 0,
+  "executable_build": {
+    "backend": null,
+    "command": null,
+    "entrypoint": null,
+    "message": "No executable entrypoint was requested.",
+    "path": null,
+    "status": "skipped",
+    "stderr": "",
+    "stdout": ""
+  },
+  "fallback": "cpython",
+  "fallback_build": {
+    "backend": "cpython",
+    "command": [],
+    "compiled_artifacts": [],
+    "message": "CPython fallback package tree was copied.",
+    "status": "built",
+    "stderr": "",
+    "stdout": ""
+  },
+  "generated_native": "cases/core-hybrid/.rextio/generated/rust",
+  "generated_python": "cases/core-hybrid/.rextio/generated/python",
+  "generated_rust": "cases/core-hybrid/.rextio/generated/rust",
+  "native_build": {
+    "artifact_path": "cases/core-hybrid/.rextio/generated/rust/target/release/lib_rextio_native.dylib",
+    "command": [
+      "<home>/.cargo/bin/cargo",
+      "build",
+      "--release",
+      "--manifest-path",
+      "cases/core-hybrid/.rextio/generated/rust/Cargo.toml"
+    ],
+    "installed_path": "cases/core-hybrid/.rextio/generated/python/_rextio_native.cpython-311-darwin.so",
+    "message": "Generated Rust native module built with Cargo.",
+    "status": "built",
+    "stderr": "    Updating crates.io index\n     Locking 53 packages to latest compatible versions\n      Adding base64 v0.22.1 (available: v0.23.0)\n      Adding generic-array v0.14.7 (available: v0.14.9)\n      Adding sha2 v0.10.9 (available: v0.11.0)\n   Compiling target-lexicon v0.13.5\n   Compiling version_check v0.9.5\n   Compiling proc-macro2 v1.0.107\n   Compiling unicode-ident v1.0.24\n   Compiling libc v0.2.189\n   Compiling quote v1.0.47\n   Compiling typenum v1.20.1\n   Compiling autocfg v1.5.1\n   Compiling heck v0.5.0\n   Compiling core-foundation-sys v0.8.7\n   Compiling once_cell v1.21.4\n   Compiling cfg-if v1.0.4\n   Compiling iana-time-zone v0.1.65\n   Compiling base64 v0.22.1\n   Compiling log v0.4.33\n   Compiling generic-array v0.14.7\n   Compiling num-traits v0.2.19\n   Compiling syn v2.0.119\n   Compiling chrono v0.4.45\n   Compiling pyo3-build-config v0.29.0\n   Compiling pyo3-ffi v0.29.0\n   Compiling pyo3 v0.29.0\n   Compiling pyo3-macros-backend v0.29.0\n   Compiling crypto-common v0.1.7\n   Compiling block-buffer v0.10.4\n   Compiling digest v0.10.7\n   Compiling cpufeatures v0.2.17\n   Compiling sha2 v0.10.9\n   Compiling pyo3-macros v0.29.0\n   Compiling rextio_generated_native v0.1.0 (<repository>/cases/core-hybrid/.rextio/generated/rust)\nwarning: variable does not need to be mutable\n  --> src/lib.rs:45:17\n   |\n45 |             let mut mixed = __rextio_checked_add(__rextio_checked_add(value, bias)?, round_index)?;\n   |                 ----^^^^^\n   |                 |\n   |                 help: remove this `mut`\n   |\n   = note: `#[warn(unused_mut)]` (part of `#[warn(unused)]`) on by default\n\nwarning: function `rextio_call_python_runtime` is never used\n  --> src/lib.rs:27:4\n   |\n27 | fn rextio_call_python_runtime(\n   |    ^^^^^^^^^^^^^^^^^^^^^^^^^^\n   |\n   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default\n\nwarning: `rextio_generated_native` (lib) generated 2 warnings (run `cargo fix --lib -p rextio_generated_native` to apply 1 suggestion)\n    Finished `release` profile [optimized] target(s) in 7.05s\n",
+    "stdout": "",
+    "tool": "cargo"
+  },
+  "plan": {
+    "artifact_profiles": [
+      {
+        "abi_requirements": [
+          {
+            "features": [],
+            "name": "cpython",
+            "version": null
+          }
+        ],
+        "device_requirements": [],
+        "fallback": null,
+        "kind": "host-extension",
+        "packaging_backend": "wheel",
+        "provenance": {
+          "evidence": [],
+          "producer": "rextio",
+          "source_references": []
+        },
+        "python_fallback_backend": "cpython",
+        "runtime_requirements": [
+          {
+            "features": [],
+            "name": "cpython",
+            "version": null
+          }
+        ],
+        "target_triple": "aarch64-apple-darwin"
+      }
+    ],
+    "fallback": {
+      "backend": "cpython",
+      "modules": [
+        {
+          "accepted_native": [],
+          "accepted_native_top_level": null,
+          "module": "benchmark_case",
+          "needs_wrapper": false
+        },
+        {
+          "accepted_native": [],
+          "accepted_native_top_level": null,
+          "module": "core_hybrid",
+          "needs_wrapper": false
+        },
+        {
+          "accepted_native": [
+            "core_hybrid.workload.score"
+          ],
+          "accepted_native_top_level": null,
+          "module": "core_hybrid.workload",
+          "needs_wrapper": true
+        }
+      ]
+    },
+    "host_source_plan": {
+      "availability": "available",
+      "execution_authority": "descriptive-only",
+      "graph": {
+        "cycles": [],
+        "external_references": [
+          {
+            "deferred": false,
+            "distribution": null,
+            "import_ordinal": 0,
+            "imported": "rextio",
+            "importer": "core_hybrid.workload",
+            "license": null,
+            "ownership": "external",
+            "resolution_error": null,
+            "source_range": {
+              "end": {
+                "column": 13,
+                "line": 1
+              },
+              "start": {
+                "column": 0,
+                "line": 1
+              }
+            },
+            "version": null
+          }
+        ],
+        "local_edges": [],
+        "modules": [
+          {
+            "dependency_depth": 0,
+            "distribution": null,
+            "imports": [],
+            "is_package_init": false,
+            "license": null,
+            "module_name": "benchmark_case",
+            "path": "benchmark_case.py",
+            "provenance": {
+              "evidence": [
+                "sha256:91f9f499bb2f018194e282ce03692e422d97965c9f5c9d6816fb4c6d5f71059a"
+              ],
+              "producer": "rextio",
+              "source_references": [
+                "benchmark_case.py"
+              ]
+            },
+            "sha256": "91f9f499bb2f018194e282ce03692e422d97965c9f5c9d6816fb4c6d5f71059a",
+            "source_origin": "project",
+            "version": null
+          },
+          {
+            "dependency_depth": 0,
+            "distribution": null,
+            "imports": [],
+            "is_package_init": true,
+            "license": null,
+            "module_name": "core_hybrid",
+            "path": "src/core_hybrid/__init__.py",
+            "provenance": {
+              "evidence": [
+                "sha256:71c7939965f04b2963667172dbc17284075fe7ba9670aa1509aab497fdcebe21"
+              ],
+              "producer": "rextio",
+              "source_references": [
+                "src/core_hybrid/__init__.py"
+              ]
+            },
+            "sha256": "71c7939965f04b2963667172dbc17284075fe7ba9670aa1509aab497fdcebe21",
+            "source_origin": "project",
+            "version": null
+          },
+          {
+            "dependency_depth": 0,
+            "distribution": null,
+            "imports": [
+              {
+                "deferred": false,
+                "kind": "import",
+                "module": null,
+                "names": [
+                  {
+                    "asname": null,
+                    "name": "rextio"
+                  }
+                ],
+                "ordinal": 0,
+                "relative_level": 0,
+                "resolved_targets": [
+                  "rextio"
+                ],
+                "source_range": {
+                  "end": {
+                    "column": 13,
+                    "line": 1
+                  },
+                  "start": {
+                    "column": 0,
+                    "line": 1
+                  }
+                }
+              }
+            ],
+            "is_package_init": false,
+            "license": null,
+            "module_name": "core_hybrid.workload",
+            "path": "src/core_hybrid/workload.py",
+            "provenance": {
+              "evidence": [
+                "sha256:9b57b9aa8c8a746dfb892b872a7cacc1a9f82c05eb817e42f0671e6b8164e7a2"
+              ],
+              "producer": "rextio",
+              "source_references": [
+                "src/core_hybrid/workload.py"
+              ]
+            },
+            "sha256": "9b57b9aa8c8a746dfb892b872a7cacc1a9f82c05eb817e42f0671e6b8164e7a2",
+            "source_origin": "project",
+            "version": null
+          }
+        ],
+        "scc_membership": {
+          "benchmark_case": [
+            "benchmark_case"
+          ],
+          "core_hybrid": [
+            "core_hybrid"
+          ],
+          "core_hybrid.workload": [
+            "core_hybrid.workload"
+          ]
+        },
+        "strongly_connected_components": [
+          {
+            "cyclic": false,
+            "members": [
+              "benchmark_case"
+            ]
+          },
+          {
+            "cyclic": false,
+            "members": [
+              "core_hybrid"
+            ]
+          },
+          {
+            "cyclic": false,
+            "members": [
+              "core_hybrid.workload"
+            ]
+          }
+        ]
+      },
+      "module_initializers": [
+        {
+          "availability": "available",
+          "metadata_ranges": [],
+          "module_name": "benchmark_case",
+          "path": "benchmark_case.py",
+          "provenance": {
+            "evidence": [
+              "sha256:91f9f499bb2f018194e282ce03692e422d97965c9f5c9d6816fb4c6d5f71059a"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "benchmark_case.py"
+            ]
+          },
+          "segments": [
+            {
+              "barrier_reason": null,
+              "bindings": [
+                "make_arguments"
+              ],
+              "deleted_bindings": [],
+              "dependencies": [
+                "object",
+                "str",
+                "tuple"
+              ],
+              "disposition": "python-preserved",
+              "exports": [
+                "make_arguments"
+              ],
+              "kind": "definition-publication",
+              "may_bindings": [
+                "make_arguments"
+              ],
+              "may_deletions": [],
+              "may_exports": [
+                "make_arguments"
+              ],
+              "must_bindings": [
+                "make_arguments"
+              ],
+              "must_deletions": [],
+              "must_exports": [
+                "make_arguments"
+              ],
+              "namespace_unknown": false,
+              "ordinal": 0,
+              "source_range": {
+                "end": {
+                  "column": 25,
+                  "line": 3
+                },
+                "start": {
+                  "column": 0,
+                  "line": 1
+                }
+              },
+              "statement_indexes": [
+                0
+              ]
+            },
+            {
+              "barrier_reason": null,
+              "bindings": [
+                "normalize"
+              ],
+              "deleted_bindings": [],
+              "dependencies": [
+                "object",
+                "str"
+              ],
+              "disposition": "python-preserved",
+              "exports": [
+                "normalize"
+              ],
+              "kind": "definition-publication",
+              "may_bindings": [
+                "normalize"
+              ],
+              "may_deletions": [],
+              "may_exports": [
+                "normalize"
+              ],
+              "must_bindings": [
+                "normalize"
+              ],
+              "must_deletions": [],
+              "must_exports": [
+                "normalize"
+              ],
+              "namespace_unknown": false,
+              "ordinal": 1,
+              "source_range": {
+                "end": {
+                  "column": 16,
+                  "line": 7
+                },
+                "start": {
+                  "column": 0,
+                  "line": 6
+                }
+              },
+              "statement_indexes": [
+                1
+              ]
+            }
+          ],
+          "source_sha256": "91f9f499bb2f018194e282ce03692e422d97965c9f5c9d6816fb4c6d5f71059a",
+          "unavailable_reason": null
+        },
+        {
+          "availability": "available",
+          "metadata_ranges": [
+            {
+              "end": {
+                "column": 43,
+                "line": 1
+              },
+              "start": {
+                "column": 0,
+                "line": 1
+              }
+            }
+          ],
+          "module_name": "core_hybrid",
+          "path": "src/core_hybrid/__init__.py",
+          "provenance": {
+            "evidence": [
+              "sha256:71c7939965f04b2963667172dbc17284075fe7ba9670aa1509aab497fdcebe21"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "src/core_hybrid/__init__.py"
+            ]
+          },
+          "segments": [],
+          "source_sha256": "71c7939965f04b2963667172dbc17284075fe7ba9670aa1509aab497fdcebe21",
+          "unavailable_reason": null
+        },
+        {
+          "availability": "available",
+          "metadata_ranges": [],
+          "module_name": "core_hybrid.workload",
+          "path": "src/core_hybrid/workload.py",
+          "provenance": {
+            "evidence": [
+              "sha256:9b57b9aa8c8a746dfb892b872a7cacc1a9f82c05eb817e42f0671e6b8164e7a2"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "src/core_hybrid/workload.py"
+            ]
+          },
+          "segments": [
+            {
+              "barrier_reason": null,
+              "bindings": [
+                "rextio"
+              ],
+              "deleted_bindings": [],
+              "dependencies": [
+                "rextio"
+              ],
+              "disposition": "python-preserved",
+              "exports": [
+                "rextio"
+              ],
+              "kind": "import",
+              "may_bindings": [
+                "rextio"
+              ],
+              "may_deletions": [],
+              "may_exports": [
+                "rextio"
+              ],
+              "must_bindings": [
+                "rextio"
+              ],
+              "must_deletions": [],
+              "must_exports": [
+                "rextio"
+              ],
+              "namespace_unknown": false,
+              "ordinal": 0,
+              "source_range": {
+                "end": {
+                  "column": 13,
+                  "line": 1
+                },
+                "start": {
+                  "column": 0,
+                  "line": 1
+                }
+              },
+              "statement_indexes": [
+                0
+              ]
+            },
+            {
+              "barrier_reason": "function definition header requires preserved Python execution",
+              "bindings": [
+                "score"
+              ],
+              "deleted_bindings": [],
+              "dependencies": [
+                "int",
+                "list",
+                "rextio"
+              ],
+              "disposition": "python-preserved",
+              "exports": [
+                "score"
+              ],
+              "kind": "fallback-barrier",
+              "may_bindings": [
+                "score"
+              ],
+              "may_deletions": [],
+              "may_exports": [
+                "score"
+              ],
+              "must_bindings": [
+                "score"
+              ],
+              "must_deletions": [],
+              "must_exports": [
+                "score"
+              ],
+              "namespace_unknown": false,
+              "ordinal": 1,
+              "source_range": {
+                "end": {
+                  "column": 16,
+                  "line": 14
+                },
+                "start": {
+                  "column": 0,
+                  "line": 5
+                }
+              },
+              "statement_indexes": [
+                1
+              ]
+            }
+          ],
+          "source_sha256": "9b57b9aa8c8a746dfb892b872a7cacc1a9f82c05eb817e42f0671e6b8164e7a2",
+          "unavailable_reason": null
+        }
+      ],
+      "unavailable_reason": null
+    },
+    "native": {
+      "accepted": [
+        "core_hybrid.workload.score"
+      ],
+      "accepted_top_levels": [],
+      "embedding": [],
+      "rejected": [],
+      "rejected_top_levels": []
+    }
+  },
+  "rejected_native_count": 0,
+  "rust_crate_build": {
+    "artifact_path": null,
+    "command": [],
+    "crate_path": null,
+    "message": "Rust-importable crate was not requested.",
+    "status": "skipped",
+    "stderr": "",
+    "stdout": ""
+  },
+  "status": "built",
+  "target": {
+    "plugins": {
+      "active": [],
+      "discovered": [
+        {
+          "api_version": "1.3",
+          "artifact_capability_declared": false,
+          "entry_point": "rextio.plugins:rextio-pandas",
+          "id": "rextio-pandas",
+          "lowering_provided": true,
+          "name": "pandas Series.map (rextio-pandas 0.1.2)",
+          "package": "rextio-pandas",
+          "packages": [
+            "pandas"
+          ],
+          "rules_provided": true,
+          "source": "entry-point",
+          "source_language": "python",
+          "target_build_options": {},
+          "target_language": "rust",
+          "target_versions": [],
+          "version": "0.1.2"
+        },
+        {
+          "api_version": "1.3",
+          "artifact_capability_declared": false,
+          "entry_point": "rextio.plugins:rextio-networkx",
+          "id": "rextio-networkx",
+          "lowering_provided": true,
+          "name": "NetworkX to petgraph (rextio-networkx 0.1.1)",
+          "package": "rextio-networkx",
+          "packages": [
+            "networkx",
+            "rextio_networkx"
+          ],
+          "rules_provided": true,
+          "source": "entry-point",
+          "source_language": "python",
+          "target_build_options": {},
+          "target_language": "rust",
+          "target_versions": [],
+          "version": "0.1.1"
+        },
+        {
+          "api_version": "1.5",
+          "artifact_capability_declared": false,
+          "entry_point": "rextio.plugins:rextio-numpy",
+          "id": "rextio-numpy",
+          "lowering_provided": true,
+          "name": "NumPy to Rust (rextio-numpy 0.1.2)",
+          "package": "rextio-numpy",
+          "packages": [
+            "numpy"
+          ],
+          "rules_provided": true,
+          "source": "entry-point",
+          "source_language": "python",
+          "target_build_options": {},
+          "target_language": "rust",
+          "target_versions": [],
+          "version": "0.1.2"
+        }
+      ],
+      "enabled": []
+    },
+    "spec": {
+      "build_options": {},
+      "implemented": true,
+      "language": "rust",
+      "version": null
+    }
+  },
+  "wheel_build": {
+    "message": "Generated hybrid artifact wheel.",
+    "path": "cases/core-hybrid/dist/core_hybrid-0.1.0-cp311-cp311-macosx_11_0_arm64.whl",
+    "status": "built"
+  }
+}

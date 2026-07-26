@@ -1,0 +1,1626 @@
+{
+  "accepted_native": [
+    "torch_case.workload.inference"
+  ],
+  "accepted_native_top_levels": [],
+  "contract_version": "2.27.0",
+  "diagnostics": [],
+  "embedding_candidates": [],
+  "host_source_plan": {
+    "availability": "available",
+    "execution_authority": "descriptive-only",
+    "graph": {
+      "cycles": [],
+      "external_references": [
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 1,
+          "imported": "rextio_benchmark.canonical",
+          "importer": "benchmark_case",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 47,
+              "line": 3
+            },
+            "start": {
+              "column": 0,
+              "line": 3
+            }
+          },
+          "version": null
+        },
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 0,
+          "imported": "torch",
+          "importer": "benchmark_case",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 12,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          },
+          "version": null
+        },
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 0,
+          "imported": "rextio_torch.types",
+          "importer": "torch_case.workload",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 61,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          },
+          "version": null
+        }
+      ],
+      "local_edges": [],
+      "modules": [
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [
+            {
+              "deferred": false,
+              "kind": "import",
+              "module": null,
+              "names": [
+                {
+                  "asname": null,
+                  "name": "torch"
+                }
+              ],
+              "ordinal": 0,
+              "relative_level": 0,
+              "resolved_targets": [
+                "torch"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 12,
+                  "line": 1
+                },
+                "start": {
+                  "column": 0,
+                  "line": 1
+                }
+              }
+            },
+            {
+              "deferred": false,
+              "kind": "from-import",
+              "module": "rextio_benchmark.canonical",
+              "names": [
+                {
+                  "asname": null,
+                  "name": "sequence"
+                }
+              ],
+              "ordinal": 1,
+              "relative_level": 0,
+              "resolved_targets": [
+                "rextio_benchmark.canonical.sequence"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 47,
+                  "line": 3
+                },
+                "start": {
+                  "column": 0,
+                  "line": 3
+                }
+              }
+            }
+          ],
+          "is_package_init": false,
+          "license": null,
+          "module_name": "benchmark_case",
+          "path": "benchmark_case.py",
+          "provenance": {
+            "evidence": [
+              "sha256:0db752b40001c732b6ad990ea2a97bb8d10b329563371c7b06d66ea1c1a5bfc0"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "benchmark_case.py"
+            ]
+          },
+          "sha256": "0db752b40001c732b6ad990ea2a97bb8d10b329563371c7b06d66ea1c1a5bfc0",
+          "source_origin": "project",
+          "version": null
+        },
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [],
+          "is_package_init": true,
+          "license": null,
+          "module_name": "torch_case",
+          "path": "src/torch_case/__init__.py",
+          "provenance": {
+            "evidence": [
+              "sha256:dec5021e88d3ea344b8bcb993707935a3a51aa0302c90b9ffea5840bc4e9f039"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "src/torch_case/__init__.py"
+            ]
+          },
+          "sha256": "dec5021e88d3ea344b8bcb993707935a3a51aa0302c90b9ffea5840bc4e9f039",
+          "source_origin": "project",
+          "version": null
+        },
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [
+            {
+              "deferred": false,
+              "kind": "from-import",
+              "module": "rextio_torch.types",
+              "names": [
+                {
+                  "asname": null,
+                  "name": "TensorF32Cpu1D"
+                },
+                {
+                  "asname": null,
+                  "name": "TensorF32Cpu2D"
+                }
+              ],
+              "ordinal": 0,
+              "relative_level": 0,
+              "resolved_targets": [
+                "rextio_torch.types.TensorF32Cpu1D",
+                "rextio_torch.types.TensorF32Cpu2D"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 61,
+                  "line": 1
+                },
+                "start": {
+                  "column": 0,
+                  "line": 1
+                }
+              }
+            }
+          ],
+          "is_package_init": false,
+          "license": null,
+          "module_name": "torch_case.workload",
+          "path": "src/torch_case/workload.py",
+          "provenance": {
+            "evidence": [
+              "sha256:4c482d49c506aeaa212f0f0a7737490f75ae8fd99929b27f62083770c59bb013"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "src/torch_case/workload.py"
+            ]
+          },
+          "sha256": "4c482d49c506aeaa212f0f0a7737490f75ae8fd99929b27f62083770c59bb013",
+          "source_origin": "project",
+          "version": null
+        }
+      ],
+      "scc_membership": {
+        "benchmark_case": [
+          "benchmark_case"
+        ],
+        "torch_case": [
+          "torch_case"
+        ],
+        "torch_case.workload": [
+          "torch_case.workload"
+        ]
+      },
+      "strongly_connected_components": [
+        {
+          "cyclic": false,
+          "members": [
+            "benchmark_case"
+          ]
+        },
+        {
+          "cyclic": false,
+          "members": [
+            "torch_case"
+          ]
+        },
+        {
+          "cyclic": false,
+          "members": [
+            "torch_case.workload"
+          ]
+        }
+      ]
+    },
+    "module_initializers": [
+      {
+        "availability": "available",
+        "metadata_ranges": [],
+        "module_name": "benchmark_case",
+        "path": "benchmark_case.py",
+        "provenance": {
+          "evidence": [
+            "sha256:0db752b40001c732b6ad990ea2a97bb8d10b329563371c7b06d66ea1c1a5bfc0"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "benchmark_case.py"
+          ]
+        },
+        "segments": [
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "torch"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "torch"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "torch"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "torch"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "torch"
+            ],
+            "must_bindings": [
+              "torch"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "torch"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 0,
+            "source_range": {
+              "end": {
+                "column": 12,
+                "line": 1
+              },
+              "start": {
+                "column": 0,
+                "line": 1
+              }
+            },
+            "statement_indexes": [
+              0
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "sequence"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "rextio_benchmark.canonical"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "sequence"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "sequence"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "sequence"
+            ],
+            "must_bindings": [
+              "sequence"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "sequence"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 1,
+            "source_range": {
+              "end": {
+                "column": 47,
+                "line": 3
+              },
+              "start": {
+                "column": 0,
+                "line": 3
+              }
+            },
+            "statement_indexes": [
+              1
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "make_arguments"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "object",
+              "str",
+              "tuple"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "make_arguments"
+            ],
+            "kind": "definition-publication",
+            "may_bindings": [
+              "make_arguments"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "make_arguments"
+            ],
+            "must_bindings": [
+              "make_arguments"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "make_arguments"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 2,
+            "source_range": {
+              "end": {
+                "column": 33,
+                "line": 11
+              },
+              "start": {
+                "column": 0,
+                "line": 6
+              }
+            },
+            "statement_indexes": [
+              2
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "normalize"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "object",
+              "str"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "normalize"
+            ],
+            "kind": "definition-publication",
+            "may_bindings": [
+              "normalize"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "normalize"
+            ],
+            "must_bindings": [
+              "normalize"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "normalize"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 3,
+            "source_range": {
+              "end": {
+                "column": 5,
+                "line": 23
+              },
+              "start": {
+                "column": 0,
+                "line": 14
+              }
+            },
+            "statement_indexes": [
+              3
+            ]
+          }
+        ],
+        "source_sha256": "0db752b40001c732b6ad990ea2a97bb8d10b329563371c7b06d66ea1c1a5bfc0",
+        "unavailable_reason": null
+      },
+      {
+        "availability": "available",
+        "metadata_ranges": [
+          {
+            "end": {
+              "column": 41,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          }
+        ],
+        "module_name": "torch_case",
+        "path": "src/torch_case/__init__.py",
+        "provenance": {
+          "evidence": [
+            "sha256:dec5021e88d3ea344b8bcb993707935a3a51aa0302c90b9ffea5840bc4e9f039"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "src/torch_case/__init__.py"
+          ]
+        },
+        "segments": [],
+        "source_sha256": "dec5021e88d3ea344b8bcb993707935a3a51aa0302c90b9ffea5840bc4e9f039",
+        "unavailable_reason": null
+      },
+      {
+        "availability": "available",
+        "metadata_ranges": [],
+        "module_name": "torch_case.workload",
+        "path": "src/torch_case/workload.py",
+        "provenance": {
+          "evidence": [
+            "sha256:4c482d49c506aeaa212f0f0a7737490f75ae8fd99929b27f62083770c59bb013"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "src/torch_case/workload.py"
+          ]
+        },
+        "segments": [
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "TensorF32Cpu1D",
+              "TensorF32Cpu2D"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "rextio_torch.types"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "TensorF32Cpu1D",
+              "TensorF32Cpu2D"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "TensorF32Cpu1D",
+              "TensorF32Cpu2D"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "TensorF32Cpu1D",
+              "TensorF32Cpu2D"
+            ],
+            "must_bindings": [
+              "TensorF32Cpu1D",
+              "TensorF32Cpu2D"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "TensorF32Cpu1D",
+              "TensorF32Cpu2D"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 0,
+            "source_range": {
+              "end": {
+                "column": 61,
+                "line": 1
+              },
+              "start": {
+                "column": 0,
+                "line": 1
+              }
+            },
+            "statement_indexes": [
+              0
+            ]
+          },
+          {
+            "barrier_reason": "function definition annotations require preserved Python source-order evaluation",
+            "bindings": [
+              "inference"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "TensorF32Cpu1D",
+              "TensorF32Cpu2D",
+              "int"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "inference"
+            ],
+            "kind": "fallback-barrier",
+            "may_bindings": [
+              "inference"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "inference"
+            ],
+            "must_bindings": [
+              "inference"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "inference"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 1,
+            "source_range": {
+              "end": {
+                "column": 44,
+                "line": 19
+              },
+              "start": {
+                "column": 0,
+                "line": 4
+              }
+            },
+            "statement_indexes": [
+              1
+            ]
+          }
+        ],
+        "source_sha256": "4c482d49c506aeaa212f0f0a7737490f75ae8fd99929b27f62083770c59bb013",
+        "unavailable_reason": null
+      }
+    ],
+    "unavailable_reason": null
+  },
+  "modules": [
+    {
+      "diagnostics": [],
+      "file_path": "cases/torch-cpu/benchmark_case.py",
+      "functions": [
+        {
+          "accepted": false,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                "int"
+              ],
+              "column": 4,
+              "in_loop": false,
+              "line": 7,
+              "target": "torch.manual_seed"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 8,
+              "in_loop": false,
+              "line": 8,
+              "target": "torch.randn"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 13,
+              "in_loop": false,
+              "line": 9,
+              "target": "torch.randn"
+            },
+            {
+              "arg_types": [
+                null,
+                "float",
+                "int"
+              ],
+              "column": 11,
+              "in_loop": false,
+              "line": 10,
+              "target": "torch.linspace"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/torch-cpu/benchmark_case.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": false,
+          "line": 6,
+          "marker_kind": "none",
+          "module_name": "benchmark_case",
+          "name": "make_arguments",
+          "name_range": {
+            "end": {
+              "column": 18,
+              "line": 6
+            },
+            "start": {
+              "column": 4,
+              "line": 6
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "not-candidate",
+          "native_target_language": null,
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [
+              "RXT003",
+              "RXT010"
+            ],
+            "diagnostics": [
+              {
+                "code": "RXT003",
+                "column": 0,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 6,
+                "message": "unsupported return type: tuple[object, ...]",
+                "suggestion": "Use a supported 0.1.6 scalar or collection type."
+              },
+              {
+                "code": "RXT010",
+                "column": 4,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 7,
+                "message": "expression statements are supported only for list.append, print, and logging calls in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 8,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 8,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 37,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 8,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 13,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 9,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 41,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 9,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 11,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 10,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 47,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 10,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              }
+            ],
+            "provenance": "auto",
+            "skip_reason": null,
+            "status": "ineligible"
+          },
+          "qualname": "benchmark_case.make_arguments",
+          "rejection_codes": [],
+          "route": "fallback-python",
+          "source_range": {
+            "end": {
+              "column": 33,
+              "line": 11
+            },
+            "start": {
+              "column": 0,
+              "line": 6
+            }
+          }
+        },
+        {
+          "accepted": false,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                null,
+                null
+              ],
+              "column": 11,
+              "in_loop": false,
+              "line": 15,
+              "target": "isinstance"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 14,
+              "in_loop": false,
+              "line": 16,
+              "target": "TypeError"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 48,
+              "in_loop": false,
+              "line": 16,
+              "target": "type"
+            },
+            {
+              "arg_types": [],
+              "column": 15,
+              "in_loop": false,
+              "line": 17,
+              "target": "<dynamic>"
+            },
+            {
+              "arg_types": [],
+              "column": 15,
+              "in_loop": false,
+              "line": 17,
+              "target": "value.detach"
+            },
+            {
+              "arg_types": [],
+              "column": 11,
+              "in_loop": false,
+              "line": 18,
+              "target": "rextio_benchmark.canonical.sequence"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 14,
+              "in_loop": false,
+              "line": 20,
+              "target": "tuple"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 14,
+              "in_loop": false,
+              "line": 21,
+              "target": "str"
+            },
+            {
+              "arg_types": [],
+              "column": 15,
+              "in_loop": false,
+              "line": 22,
+              "target": "<dynamic>"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 15,
+              "in_loop": false,
+              "line": 22,
+              "target": "detached.reshape"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/torch-cpu/benchmark_case.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": false,
+          "line": 14,
+          "marker_kind": "none",
+          "module_name": "benchmark_case",
+          "name": "normalize",
+          "name_range": {
+            "end": {
+              "column": 13,
+              "line": 14
+            },
+            "start": {
+              "column": 4,
+              "line": 14
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "not-candidate",
+          "native_target_language": null,
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [
+              "RXT002",
+              "RXT003",
+              "RXT010"
+            ],
+            "diagnostics": [
+              {
+                "code": "RXT003",
+                "column": 0,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 14,
+                "message": "unsupported return type: object",
+                "suggestion": "Use a supported 0.1.6 scalar or collection type."
+              },
+              {
+                "code": "RXT002",
+                "column": 34,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 14,
+                "message": "unsupported argument type for value: object",
+                "suggestion": "Use a supported 0.1.6 scalar or collection type."
+              },
+              {
+                "code": "RXT010",
+                "column": 22,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 15,
+                "message": "name 'value' is not defined in this scope of the native function (module globals, closures, and names first bound inside a nested block then read after it are unsupported)",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 29,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 15,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 8,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 16,
+                "message": "explicit exception flow is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 24,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 16,
+                "message": "f-strings are not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 11,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 18,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 20,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 20,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 18,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 21,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              }
+            ],
+            "provenance": "auto",
+            "skip_reason": null,
+            "status": "ineligible"
+          },
+          "qualname": "benchmark_case.normalize",
+          "rejection_codes": [],
+          "route": "fallback-python",
+          "source_range": {
+            "end": {
+              "column": 5,
+              "line": 23
+            },
+            "start": {
+              "column": 0,
+              "line": 14
+            }
+          }
+        }
+      ],
+      "import_policies": [
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external",
+          "package": "rextio_benchmark",
+          "plugin": null,
+          "policy": "fallback",
+          "reason": "external package without an active plugin uses the default external import policy",
+          "target": "rextio_benchmark.canonical.sequence",
+          "version": null,
+          "visible_name": "sequence"
+        },
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external-plugin",
+          "package": "torch",
+          "plugin": "rextio-torch",
+          "policy": "plugin",
+          "reason": "active plugin 'rextio-torch' declares support for this package",
+          "target": "torch",
+          "version": null,
+          "visible_name": "torch"
+        }
+      ],
+      "imports": {
+        "sequence": "rextio_benchmark.canonical.sequence",
+        "torch": "torch"
+      },
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "benchmark_case",
+      "top_level": null
+    },
+    {
+      "diagnostics": [],
+      "file_path": "cases/torch-cpu/src/torch_case/__init__.py",
+      "functions": [],
+      "import_policies": [],
+      "imports": {},
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "torch_case",
+      "top_level": null
+    },
+    {
+      "diagnostics": [],
+      "file_path": "cases/torch-cpu/src/torch_case/workload.py",
+      "functions": [
+        {
+          "accepted": true,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 17,
+              "in_loop": false,
+              "line": 12,
+              "target": "range"
+            },
+            {
+              "arg_types": [],
+              "column": 21,
+              "in_loop": true,
+              "line": 15,
+              "target": "even.relu"
+            },
+            {
+              "arg_types": [],
+              "column": 21,
+              "in_loop": true,
+              "line": 18,
+              "target": "odd.sigmoid"
+            },
+            {
+              "arg_types": [],
+              "column": 11,
+              "in_loop": false,
+              "line": 19,
+              "target": "hidden.mean"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/torch-cpu/src/torch_case/workload.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": true,
+          "line": 4,
+          "marker_kind": "none",
+          "module_name": "torch_case.workload",
+          "name": "inference",
+          "name_range": {
+            "end": {
+              "column": 13,
+              "line": 4
+            },
+            "start": {
+              "column": 4,
+              "line": 4
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "accepted",
+          "native_target_language": "rust",
+          "plugin_claims": [
+            {
+              "column": 19,
+              "end_column": 34,
+              "end_line": 14,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                    "target": ""
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 1,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "binop",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                "target": "@"
+              },
+              "kind": "binop",
+              "line": 14,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-torch/tensor-f32-cpu-2d",
+                "rextio-torch/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-torch",
+              "result_type": "rextio-torch/tensor-f32-cpu-2d",
+              "rule_id": "rextio-torch/tensor-matmul-f32-cpu-2d",
+              "target": "@"
+            },
+            {
+              "column": 19,
+              "end_column": 41,
+              "end_line": 14,
+              "expression": {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 0,
+                        "leaf_kind": "name",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                        "target": ""
+                      },
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 1,
+                        "leaf_kind": "name",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                        "target": ""
+                      }
+                    ],
+                    "keywords": [],
+                    "kind": "binop",
+                    "leaf_index": null,
+                    "leaf_kind": null,
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                    "target": "@"
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 2,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-torch/tensor-f32-cpu-1d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "binop",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                "target": "+"
+              },
+              "kind": "binop",
+              "line": 14,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-torch/tensor-f32-cpu-2d",
+                "rextio-torch/tensor-f32-cpu-1d"
+              ],
+              "plugin_id": "rextio-torch",
+              "result_type": "rextio-torch/tensor-f32-cpu-2d",
+              "rule_id": "rextio-torch/tensor-add-f32-cpu-2d-1d-broadcast",
+              "target": "+"
+            },
+            {
+              "column": 21,
+              "end_column": 32,
+              "end_line": 15,
+              "expression": {
+                "children": [],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                "target": "even.relu"
+              },
+              "kind": "call",
+              "line": 15,
+              "operand_types": [],
+              "plugin_id": "rextio-torch",
+              "receiver": {
+                "arg_type": "rextio-torch/tensor-f32-cpu-2d",
+                "expr_kind": "name",
+                "is_safe": true,
+                "schema": null
+              },
+              "result_type": "rextio-torch/tensor-f32-cpu-2d",
+              "rule_id": "rextio-torch/tensor-relu-f32-cpu-2d",
+              "target": "even.relu"
+            },
+            {
+              "column": 18,
+              "end_column": 33,
+              "end_line": 17,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                    "target": ""
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 1,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "binop",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                "target": "@"
+              },
+              "kind": "binop",
+              "line": 17,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-torch/tensor-f32-cpu-2d",
+                "rextio-torch/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-torch",
+              "result_type": "rextio-torch/tensor-f32-cpu-2d",
+              "rule_id": "rextio-torch/tensor-matmul-f32-cpu-2d",
+              "target": "@"
+            },
+            {
+              "column": 18,
+              "end_column": 40,
+              "end_line": 17,
+              "expression": {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 0,
+                        "leaf_kind": "name",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                        "target": ""
+                      },
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 1,
+                        "leaf_kind": "name",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                        "target": ""
+                      }
+                    ],
+                    "keywords": [],
+                    "kind": "binop",
+                    "leaf_index": null,
+                    "leaf_kind": null,
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                    "target": "@"
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 2,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-torch/tensor-f32-cpu-1d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "binop",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                "target": "+"
+              },
+              "kind": "binop",
+              "line": 17,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-torch/tensor-f32-cpu-2d",
+                "rextio-torch/tensor-f32-cpu-1d"
+              ],
+              "plugin_id": "rextio-torch",
+              "result_type": "rextio-torch/tensor-f32-cpu-2d",
+              "rule_id": "rextio-torch/tensor-add-f32-cpu-2d-1d-broadcast",
+              "target": "+"
+            },
+            {
+              "column": 21,
+              "end_column": 34,
+              "end_line": 18,
+              "expression": {
+                "children": [],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-torch/tensor-f32-cpu-2d",
+                "target": "odd.sigmoid"
+              },
+              "kind": "call",
+              "line": 18,
+              "operand_types": [],
+              "plugin_id": "rextio-torch",
+              "receiver": {
+                "arg_type": "rextio-torch/tensor-f32-cpu-2d",
+                "expr_kind": "name",
+                "is_safe": true,
+                "schema": null
+              },
+              "result_type": "rextio-torch/tensor-f32-cpu-2d",
+              "rule_id": "rextio-torch/tensor-sigmoid-f32-cpu-2d",
+              "target": "odd.sigmoid"
+            },
+            {
+              "column": 11,
+              "end_column": 44,
+              "end_line": 19,
+              "expression": {
+                "children": [],
+                "keywords": [
+                  {
+                    "arg_type": "int",
+                    "literal": {
+                      "is_literal": true,
+                      "value": 1,
+                      "value_kind": "int"
+                    },
+                    "name": "dim"
+                  },
+                  {
+                    "arg_type": "bool",
+                    "literal": {
+                      "is_literal": true,
+                      "value": false,
+                      "value_kind": "bool"
+                    },
+                    "name": "keepdim"
+                  }
+                ],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-torch/tensor-f32-cpu-1d",
+                "target": "hidden.mean"
+              },
+              "keywords": [
+                {
+                  "arg_type": "int",
+                  "literal": {
+                    "is_literal": true,
+                    "value": 1,
+                    "value_kind": "int"
+                  },
+                  "name": "dim"
+                },
+                {
+                  "arg_type": "bool",
+                  "literal": {
+                    "is_literal": true,
+                    "value": false,
+                    "value_kind": "bool"
+                  },
+                  "name": "keepdim"
+                }
+              ],
+              "kind": "call",
+              "line": 19,
+              "operand_types": [],
+              "plugin_id": "rextio-torch",
+              "receiver": {
+                "arg_type": "rextio-torch/tensor-f32-cpu-2d",
+                "expr_kind": "name",
+                "is_safe": true,
+                "schema": null
+              },
+              "result_type": "rextio-torch/tensor-f32-cpu-1d",
+              "rule_id": "rextio-torch/tensor-mean-dim1-f32-cpu-2d",
+              "target": "hidden.mean"
+            }
+          ],
+          "plugin_type_keys": [
+            "rextio-torch/tensor-f32-cpu-1d",
+            "rextio-torch/tensor-f32-cpu-2d"
+          ],
+          "promotion_assessment": {
+            "diagnostic_codes": [],
+            "diagnostics": [],
+            "provenance": "plugin-managed",
+            "skip_reason": null,
+            "status": "eligible"
+          },
+          "qualname": "torch_case.workload.inference",
+          "rejection_codes": [],
+          "route": "native-plugin:rextio-torch",
+          "source_range": {
+            "end": {
+              "column": 44,
+              "line": 19
+            },
+            "start": {
+              "column": 0,
+              "line": 4
+            }
+          }
+        }
+      ],
+      "import_policies": [
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external",
+          "package": "rextio_torch",
+          "plugin": null,
+          "policy": "fallback",
+          "reason": "external package without an active plugin uses the default external import policy",
+          "target": "rextio_torch.types.TensorF32Cpu1D",
+          "version": null,
+          "visible_name": "TensorF32Cpu1D"
+        },
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external",
+          "package": "rextio_torch",
+          "plugin": null,
+          "policy": "fallback",
+          "reason": "external package without an active plugin uses the default external import policy",
+          "target": "rextio_torch.types.TensorF32Cpu2D",
+          "version": null,
+          "visible_name": "TensorF32Cpu2D"
+        }
+      ],
+      "imports": {
+        "TensorF32Cpu1D": "rextio_torch.types.TensorF32Cpu1D",
+        "TensorF32Cpu2D": "rextio_torch.types.TensorF32Cpu2D"
+      },
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "torch_case.workload",
+      "top_level": null
+    }
+  ],
+  "native_candidates": [
+    "torch_case.workload.inference"
+  ],
+  "native_top_levels": [],
+  "project_root": "cases/torch-cpu",
+  "rejected_native": [],
+  "rejected_native_top_levels": []
+}
