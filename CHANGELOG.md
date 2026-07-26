@@ -34,9 +34,16 @@ replace the released 0.1.0 Mac CPU cohort.
 - Correct headline `numpy-mixed-fusion` to pass `phase=0` so the timed path is
   the fused expression `(left + right) * (left - right)`.
 - README block generator and all five locales state candidate version and
-  commit caveats when reports carry the candidate plugin pins.
+  commit caveats only from verified bound report policy/provenance (never from
+  version strings alone).
 - Historical canonical verification accepts the frozen 0.1.0 complete-case set
   so old reports remain verifiable after the diagnostic case is added.
+- Canonical verification treats bundled run-output evidence as authoritative
+  over live ignored `.rextio` paths; candidate reports bind policy id
+  `candidate-plugin-0.1.3-pre-measurement` plus exact PEP 610 / lock pins;
+  quality CI uses full-history checkout and verifies the frozen released
+  canonical report; candidate verification re-runs generated expectations
+  against bundled check/source evidence.
 
 ### Non-claims
 

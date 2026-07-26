@@ -16,10 +16,18 @@ from .models import BenchmarkCase, load_cases, paired_orders
 from .output_table import validate_output_table
 from .portability import require_portable
 from .processes import THREAD_ENVIRONMENT
+from .provenance import (
+    bound_candidate_pins_from_report,
+    candidate_plugins_in_versions,
+    is_released_frozen_report,
+    lock_or_manifest_binds_pin,
+    report_package_versions,
+)
 from .report import render_markdown
 from .statistics import paired_bootstrap_interval, paired_speedups, summarize
 from .verification import (
     GateError,
+    enforce_generated_expectations,
     outputs_close,
     resolve_logical_path,
     sha256_file,
@@ -119,7 +127,14 @@ def _verify_evidence(
     run_commit: str | None,
     *,
     bundle_evidence: dict[str, Any] | None = None,
-) -> None:
+) -> dict[str, Path]:
+    """Verify evidence digests and return resolved run-output paths.
+
+    When ``bundle_evidence`` supplies a role, the content-addressed bundled
+    object is authoritative for that run-output: live ignored ``.rextio``
+    paths must not win, mutate digests, or be preferred for semantic reads.
+    Run-input roles remain bound to the recorded measurement commit.
+    """
     evidence = gate["evidence"]
     _require(gate["artifact_role"] in evidence, "artifact role is missing")
     _require(
@@ -158,6 +173,9 @@ def _verify_evidence(
             _require(blob is not None, f"run input is absent from commit: {logical}")
             actual = hashlib.sha256(blob).hexdigest()
             _require(actual == record["sha256"], f"run-commit digest changed: {role}")
+        elif record["kind"] == "run-output" and bundled_path is not None:
+            # Bundled run outputs are authoritative even when a live path exists.
+            resolved_outputs[role] = bundled_path
         elif path.is_file():
             _require(
                 sha256_file(path) == record["sha256"],
@@ -201,6 +219,7 @@ def _verify_evidence(
             == Path(declaration["declared_path"]).parts[-4:],
             "native artifact differs from build.json declaration",
         )
+    return resolved_outputs
 
 
 def _load_canonical_bundle(
@@ -560,6 +579,100 @@ def _verify_environment(
         )
 
 
+def _verify_candidate_policy_and_provenance(
+    report: dict[str, Any],
+    repository_root: Path,
+) -> None:
+    """Fail closed for candidate reports; leave released 0.1.0 untouched."""
+    if is_released_frozen_report(report):
+        return
+    versions = report_package_versions(report)
+    present = candidate_plugins_in_versions(versions)
+    policy = report.get("policy")
+    provenance = report.get("package_provenance")
+    if not present and policy is None and provenance is None:
+        return
+    if not present:
+        raise GateError("candidate policy/provenance present without candidate package versions")
+    if policy is None or provenance is None:
+        raise GateError(
+            "current candidate report requires policy and package_provenance bindings"
+        )
+    bound = bound_candidate_pins_from_report(report)
+    if set(bound) != set(present):
+        raise GateError("candidate policy pins do not match report package versions")
+    for name, pin in bound.items():
+        if versions.get(name) != pin["version"]:
+            raise GateError(f"{name}: packages version does not match policy pin")
+    # Cross-check hashed profile locks/manifests (run-inputs) bind the same source.
+    # Each candidate pin must be bound by at least one profile lock and one
+    # profile manifest from cases that declare that package version.
+    for name, pin in bound.items():
+        lock_bound = False
+        manifest_bound = False
+        saw_package = False
+        for case_report in report["cases"]:
+            packages = case_report.get("packages") or {}
+            if packages.get(name) != pin["version"]:
+                continue
+            saw_package = True
+            gate = case_report.get("gate") or {}
+            evidence = gate.get("evidence") or {}
+            for role in ("profile_lock", "profile_manifest"):
+                record = evidence.get(role)
+                if record is None:
+                    continue
+                text: str | None = None
+                run_commit = report["repository"]["commit"]
+                if record["kind"] == "run-input" and run_commit:
+                    blob = _git_blob(repository_root, run_commit, record["path"])
+                    if blob is not None:
+                        text = blob.decode("utf-8")
+                if text is None:
+                    path = resolve_logical_path(record["path"], repository_root)
+                    if path.is_file():
+                        text = path.read_text(encoding="utf-8")
+                if text is None:
+                    continue
+                if lock_or_manifest_binds_pin(text, name, pin):
+                    if role == "profile_lock":
+                        lock_bound = True
+                    else:
+                        manifest_bound = True
+        _require(saw_package, f"candidate pin {name} absent from case packages")
+        _require(
+            lock_bound,
+            f"no profile_lock binds {name} to policy revision {pin['rev']}",
+        )
+        _require(
+            manifest_bound,
+            f"no profile_manifest binds {name} to policy revision {pin['rev']}",
+        )
+
+
+def _replay_generated_expectations(
+    case: BenchmarkCase,
+    resolved_outputs: dict[str, Path],
+) -> None:
+    """Re-run generated_expectations against resolved (bundled or live) evidence."""
+    expectations = case.raw.get("generated_expectations")
+    if not expectations:
+        return
+    check_path = resolved_outputs.get("check_report")
+    rust_path = resolved_outputs.get("generated_rust_source")
+    _require(check_path is not None, f"{case.benchmark_id}: check_report evidence missing")
+    _require(
+        rust_path is not None,
+        f"{case.benchmark_id}: generated_rust_source evidence missing",
+    )
+    check = json.loads(check_path.read_text(encoding="utf-8"))
+    enforce_generated_expectations(
+        case,
+        check,
+        generated_rust_source=rust_path,
+    )
+
+
 def _verify_case_measurements(
     case: BenchmarkCase,
     case_report: dict[str, Any],
@@ -728,6 +841,8 @@ def verify_report(report_path: Path, repository_root: Path) -> dict[str, Any]:
         identifier_set == set(expected_cases),
         "report case set differs from manifests",
     )
+    _verify_candidate_policy_and_provenance(report, repository_root)
+    replay_expectations = not is_released_frozen_report(report)
     for case_report in report["cases"]:
         case = known[case_report["id"]]
         if not case_report["eligible"]:
@@ -738,7 +853,7 @@ def verify_report(report_path: Path, repository_root: Path) -> dict[str, Any]:
         _require(gate["route"] == case.expected_route, f"{case.benchmark_id} route mismatch")
         _require(gate["native_status"] == "accepted", f"{case.benchmark_id} not accepted")
         _require(gate["native_build_status"] == "built", f"{case.benchmark_id} not built")
-        _verify_evidence(
+        resolved_outputs = _verify_evidence(
             gate,
             repository_root,
             report["repository"]["commit"],
@@ -748,6 +863,8 @@ def verify_report(report_path: Path, repository_root: Path) -> dict[str, Any]:
                 else None
             ),
         )
+        if replay_expectations:
+            _replay_generated_expectations(case, resolved_outputs)
         _verify_case_measurements(
             case,
             case_report,

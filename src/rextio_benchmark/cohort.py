@@ -81,12 +81,46 @@ CANDIDATE_COHORT_POLICY: dict[str, Any] = {
     ),
 }
 
+# Exact case_id -> package versions from the frozen released canonical report
+# (cohort-15fa…/report.json). Used as the fail-closed released-shape fingerprint.
+_BASE_RELEASED_PACKAGES: dict[str, str] = {
+    "networkx": "3.5",
+    "numpy": "2.3.5",
+    "pandas": "2.3.3",
+    "rextio": "0.1.6",
+    "rextio-networkx": "0.1.1",
+    "rextio-numpy": "0.1.2",
+    "rextio-pandas": "0.1.2",
+}
+RELEASED_CPU_0_1_0_CASE_PACKAGES: dict[str, dict[str, str]] = {
+    "core-hybrid": dict(_BASE_RELEASED_PACKAGES),
+    "core-native-executable": dict(_BASE_RELEASED_PACKAGES),
+    "networkx-dijkstra": dict(_BASE_RELEASED_PACKAGES),
+    "numpy-blas-dot-negative-control": dict(_BASE_RELEASED_PACKAGES),
+    "numpy-mixed-fusion": dict(_BASE_RELEASED_PACKAGES),
+    "pandas-series-map": dict(_BASE_RELEASED_PACKAGES),
+    "tensorflow-cpu-eager-chain": {
+        "numpy": "2.4.6",
+        "rextio": "0.1.6",
+        "rextio-tensorflow": "0.1.2",
+        "tensorflow": "2.21.0",
+    },
+    "torch-cpu-deep-mlp": {
+        "networkx": "3.6.1",
+        "numpy": "2.4.6",
+        "rextio": "0.1.6",
+        "rextio-torch": "0.1.2",
+        "torch": "2.11.0",
+    },
+}
+
 # Byte-frozen published cohorts remain verifiable against their original case set.
 FROZEN_CANONICAL_COHORTS: dict[str, dict[str, Any]] = {
     "15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8": {
         "policy_id": "released-cpu-0.1.0",
         "policy_version": POLICY_VERSION,
         "complete_case_ids": frozenset(RELEASED_CPU_COMPLETE_CASE_IDS),
+        "case_packages": RELEASED_CPU_0_1_0_CASE_PACKAGES,
         "measurement_commit": "ff7f4fea34199d850bed0446a8a223ef730ddf17",
         "evidence_commit": "e62a3f8fb1637f52288873fb077ba4efba0ead59",
     },
@@ -175,6 +209,8 @@ def validate_cohort(reports: Sequence[dict[str, Any]]) -> dict[str, Any]:
         "packages": _package_versions(first),
         "case_ids": [case["id"] for case in first["cases"]],
         "evidence": _evidence_declarations(first),
+        "policy": first.get("policy"),
+        "package_provenance": first.get("package_provenance"),
     }
     for report in reports[1:]:
         candidate = {
@@ -185,9 +221,19 @@ def validate_cohort(reports: Sequence[dict[str, Any]]) -> dict[str, Any]:
             "packages": _package_versions(report),
             "case_ids": [case["id"] for case in report["cases"]],
             "evidence": _evidence_declarations(report),
+            "policy": report.get("policy"),
+            "package_provenance": report.get("package_provenance"),
         }
         if candidate != identities:
             raise GateError("cohort reports differ in frozen run identity")
+
+    # When candidate policy is present, freeze-validate pins and provenance shape.
+    policy = identities["policy"]
+    package_provenance = identities["package_provenance"]
+    if policy is not None or package_provenance is not None:
+        from .provenance import bound_candidate_pins_from_report
+
+        bound_candidate_pins_from_report(first)
 
     stability: dict[str, Any] = {}
     for case_id in identities["case_ids"]:
@@ -216,7 +262,7 @@ def validate_cohort(reports: Sequence[dict[str, Any]]) -> dict[str, Any]:
             "headline_gate": headline_gate,
             "within_threshold": within_threshold,
         }
-    return {
+    summary: dict[str, Any] = {
         "schema_version": 1,
         "policy_version": POLICY_VERSION,
         "selection": "chronological-first",
@@ -226,6 +272,14 @@ def validate_cohort(reports: Sequence[dict[str, Any]]) -> dict[str, Any]:
         "stability_threshold_fraction": STABILITY_THRESHOLD,
         "cases": stability,
     }
+    # Persist candidate policy id + exact pins into the stability record that is
+    # subsequently manifest-bound. Omitted for released reports so frozen bytes match.
+    if isinstance(policy, dict) and policy.get("policy_id"):
+        summary["policy_id"] = policy["policy_id"]
+        plugins = policy.get("candidate_plugins")
+        if isinstance(plugins, dict):
+            summary["candidate_plugins"] = plugins
+    return summary
 
 
 def tree_fingerprint(root: Any) -> tuple[str, int]:

@@ -65,6 +65,52 @@
       }
     },
     "build": {"type": ["object", "null"]},
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy_id", "policy_version", "candidate_plugins"],
+      "properties": {
+        "policy_id": {"type": "string", "minLength": 1},
+        "policy_version": {"type": "integer", "minimum": 1},
+        "status": {"type": "string", "minLength": 1},
+        "candidate_plugins": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["version", "git_url", "rev"],
+            "properties": {
+              "version": {"type": "string", "minLength": 1},
+              "git_url": {"type": "string", "minLength": 1},
+              "rev": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{40}$"
+              }
+            }
+          }
+        }
+      }
+    },
+    "package_provenance": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["version", "url", "vcs", "commit_id"],
+        "properties": {
+          "version": {"type": "string", "minLength": 1},
+          "url": {"type": "string", "minLength": 1},
+          "vcs": {"const": "git"},
+          "commit_id": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40}$"
+          },
+          "requested_revision": {"type": "string", "minLength": 1}
+        }
+      }
+    },
     "canonical_bundle": {
       "type": "object",
       "additionalProperties": false,

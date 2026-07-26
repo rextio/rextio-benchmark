@@ -315,6 +315,8 @@ def test_readme_blocks_keep_row_order_links_and_slow_values() -> None:
 
 
 def test_readme_blocks_state_candidate_commit_caveats() -> None:
+    from rextio_benchmark.cohort import CANDIDATE_COHORT_POLICY, CANDIDATE_PLUGIN_PINS
+
     report = _report("2026-07-26T00:00:00+00:00")
     for case in report["cases"]:
         case["packages"] = {
@@ -325,6 +327,29 @@ def test_readme_blocks_state_candidate_commit_caveats() -> None:
     report["canonical_bundle"] = {
         "manifest_path": "results/canonical/cohort/manifest.json",
         "report_markdown_path": "results/canonical/cohort/report.md",
+    }
+    report["policy"] = {
+        "policy_id": CANDIDATE_COHORT_POLICY["policy_id"],
+        "policy_version": CANDIDATE_COHORT_POLICY["policy_version"],
+        "status": "pre-measurement",
+        "candidate_plugins": {
+            name: {
+                "version": pin["version"],
+                "git_url": pin["git_url"],
+                "rev": pin["rev"],
+            }
+            for name, pin in CANDIDATE_PLUGIN_PINS.items()
+        },
+    }
+    report["package_provenance"] = {
+        name: {
+            "version": pin["version"],
+            "url": pin["git_url"],
+            "vcs": "git",
+            "commit_id": pin["rev"],
+            "requested_revision": pin["rev"],
+        }
+        for name, pin in CANDIDATE_PLUGIN_PINS.items()
     }
     blocks = generate_blocks(
         report,

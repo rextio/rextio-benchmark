@@ -10,6 +10,7 @@ from typing import Any
 from .case_runner import MODE_SETTINGS, run_executable_case, run_module_case
 from .models import load_cases, profile_python
 from .portability import portable_value, require_portable
+from .provenance import assemble_candidate_policy_binding
 
 
 def _command_text(command: list[str], cwd: Path) -> str | None:
@@ -95,6 +96,21 @@ def run_suite(repository_root: Path, mode: str) -> tuple[dict[str, Any], Path]:
             }
         cases.append(result)
 
+    versions: dict[str, str] = {}
+    merged_provenance: dict[str, dict[str, str]] = {}
+    for case in cases:
+        for name, version in (case.get("packages") or {}).items():
+            prior = versions.get(name)
+            if prior is not None and prior != version:
+                raise RuntimeError(f"package version conflict for {name}: {prior} vs {version}")
+            versions[name] = version
+        # Measurement-only capture: strip so case schema stays version-string packages.
+        for name, record in (case.pop("package_provenance", None) or {}).items():
+            prior_record = merged_provenance.get(name)
+            if prior_record is not None and prior_record != record:
+                raise RuntimeError(f"package provenance conflict for {name}")
+            merged_provenance[name] = record
+
     blockers = []
     if mode == "quick":
         blockers.append("quick-mode-is-never-publishable")
@@ -107,8 +123,17 @@ def run_suite(repository_root: Path, mode: str) -> tuple[dict[str, Any], Path]:
         for case in cases
         for blocker in case.get("blockers", [])
     )
+    policy = None
+    package_provenance = None
+    try:
+        policy, package_provenance = assemble_candidate_policy_binding(
+            versions,
+            merged_provenance,
+        )
+    except Exception as error:
+        blockers.append(f"candidate-provenance: {error}")
     publishable = mode == "publish" and not blockers and all(case["eligible"] for case in cases)
-    report = {
+    report: dict[str, Any] = {
         "schema_version": 1,
         "generated_at": datetime.now(UTC).isoformat(),
         "mode": mode,
@@ -130,6 +155,9 @@ def run_suite(repository_root: Path, mode: str) -> tuple[dict[str, Any], Path]:
         "build": _build_receipt(repository_root),
         "cases": cases,
     }
+    if policy is not None and package_provenance is not None:
+        report["policy"] = policy
+        report["package_provenance"] = package_provenance
     require_portable(report, repository_root)
     timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     path = repository_root / "results" / "local" / f"benchmark-{mode}-{timestamp}.json"

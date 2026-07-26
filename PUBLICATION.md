@@ -87,9 +87,16 @@ measurement commit on one unchanged host. Every attempt must:
 2. contain the complete case set for the active cohort policy with no blocker
    or ineligible case;
 3. use identical schema, benchmark configuration, measurement commit, system
-   identity, toolchain, package versions, and all hashed evidence declarations;
+   identity, toolchain, package versions, optional candidate
+   policy/package_provenance bindings, and all hashed evidence declarations;
    and
 4. contain finite positive timing samples and verifier-recomputed statistics.
+
+Candidate cohorts additionally require report-level `policy` with policy id
+`candidate-plugin-0.1.3-pre-measurement` and `package_provenance` captured from
+installed PEP 610 `direct_url.json`, cross-checked against the exact pins and
+the hashed profile lock/manifest run-inputs. The stability summary persists
+`policy_id` and `candidate_plugins` for those cohorts.
 
 For every case, take the three reports' `paired.median_speedup` values and
 report each deviation from the three-run median. The 10 percent publication
@@ -127,15 +134,22 @@ to make those two commit identities equal.
 
 Bundling may run at that clean descendant policy/evidence commit. The recorded
 measurement commit must remain its ancestor; run-inputs are verified from that
-commit's Git blobs and every current run-output byte must still match its
-recorded digest. Dirty or unrelated checkouts are rejected.
+commit's Git blobs. For canonical bundles, run-output roles are resolved from
+content-addressed bundled objects even when mutable live ignored `.rextio`
+paths exist and differ. Dirty or unrelated checkouts are rejected for new
+publication; quality CI uses full-history checkout and re-verifies the frozen
+released canonical report. Candidate verification additionally re-runs
+`generated_expectations` against the resolved bundled portable `check.json`
+and generated Rust source (not live files). Those expectations are not applied
+retroactively to the released 0.1.0 cohort.
 
 Generate Core README blocks only from that verified canonical report with
 `rextio_benchmark readme-blocks`. The generator fixes the six rows above,
 retains ratios below 1×, emits identical numbers and commit-pinned links in
-all five localized blocks, and, when candidate plugin versions are present,
-states the candidate version and Git-commit caveats. It never invents numbers
-and never inserts diagnostic cases into the headline table.
+all five localized blocks, and labels `candidate@REV` / candidate caveats only
+from verified bound report policy and package provenance (never from version
+strings alone). It never invents numbers and never inserts diagnostic cases
+into the headline table.
 Normalized outputs are stored once per case in the report's content-addressed
 `output_table`. Publication verification recomputes every table address,
 rejects dangling or unreferenced entries, and independently applies the

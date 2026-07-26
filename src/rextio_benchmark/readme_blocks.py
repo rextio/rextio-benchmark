@@ -15,14 +15,6 @@ HEADLINE_ROWS = (
     ("TensorFlow CPU eager chain", "tensorflow-cpu-eager-chain"),
 )
 
-# Commit-pinned unreleased candidates. Not PyPI 0.1.3 releases.
-# Imported lazily in formatting to avoid import cycles with cohort.py.
-def _candidate_plugin_pins() -> dict[str, dict[str, str]]:
-    from .cohort import CANDIDATE_PLUGIN_PINS
-
-    return CANDIDATE_PLUGIN_PINS
-
-
 LOCALES = {
     "README.md": {
         "heading": "Verified CPU benchmark snapshot",
@@ -124,24 +116,19 @@ LOCALES = {
 _COMMIT = re.compile(r"^[0-9a-f]{40}$")
 
 
-def _format_versions(versions: dict[str, str]) -> str:
-    pins = _candidate_plugin_pins()
+def _format_versions(
+    versions: dict[str, str],
+    bound_pins: dict[str, dict[str, str]],
+) -> str:
     parts: list[str] = []
     for name in sorted(versions):
         version = versions[name]
-        pin = pins.get(name)
+        pin = bound_pins.get(name)
         if pin is not None and version == pin["version"]:
             parts.append(f"{name} {version} candidate@{pin['rev'][:12]}")
         else:
             parts.append(f"{name} {version}")
     return ", ".join(parts)
-
-
-def _report_uses_candidate_plugins(versions: dict[str, str]) -> bool:
-    pins = _candidate_plugin_pins()
-    return any(
-        name in versions and versions[name] == pin["version"] for name, pin in pins.items()
-    )
 
 
 def generate_blocks(
@@ -182,8 +169,28 @@ def generate_blocks(
         for name, version in case["packages"].items()
         if name == "rextio" or name.startswith("rextio-")
     }
-    version_text = _format_versions(versions)
-    uses_candidates = _report_uses_candidate_plugins(versions)
+    # Candidate@REV labels and caveats come only from verified bound policy/provenance.
+    # Version strings alone never imply candidacy (fail closed if versions claim pins
+    # without binding).
+    from .provenance import (
+        bound_candidate_pins_from_report,
+        candidate_plugins_in_versions,
+    )
+
+    present = candidate_plugins_in_versions(versions)
+    if present and (report.get("policy") is None or report.get("package_provenance") is None):
+        raise GateError(
+            "README blocks for candidate versions require bound policy and package_provenance"
+        )
+    bound_pins = bound_candidate_pins_from_report(report)
+    # Fail closed both ways: candidate versions without pins, and pins without
+    # matching package versions (including present={} with nonempty bound pins).
+    if set(bound_pins) != set(present):
+        raise GateError(
+            "README candidate policy pins do not match report package versions"
+        )
+    version_text = _format_versions(versions, bound_pins)
+    uses_candidates = bool(bound_pins)
     outputs = {}
     for filename, locale in LOCALES.items():
         domain, source, native, ratio = locale["columns"]
