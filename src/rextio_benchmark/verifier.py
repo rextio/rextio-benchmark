@@ -464,9 +464,14 @@ def _verify_environment(
         ).as_posix()
         for lane, modules in active.items():
             _require(
-                set(modules) == set(case.required_modules),
-                f"{lane} active module set differs",
+                set(modules) <= set(case.required_modules),
+                f"{lane} active module set contains undeclared modules",
             )
+            if lane in {"rextio-fallback", "rextio-native"}:
+                _require(
+                    "rextio" in modules,
+                    f"{lane} generated rextio runtime is inactive",
+                )
             for module_name, record in modules.items():
                 for key in ("file", "root"):
                     _require(

@@ -172,6 +172,56 @@ def test_active_module_provenance_allows_only_lane_specific_roots(
         )
 
 
+def test_declared_modules_may_be_inactive_but_generated_core_is_required(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    worker = importlib.import_module("rextio_benchmark.worker")
+    site_packages = tmp_path / "venv" / "lib" / "python3.11" / "site-packages"
+    installed: dict[str, dict[str, str]] = {}
+    for name in ("rextio", "rextio_numpy"):
+        module_file = site_packages / name / "__init__.py"
+        module_file.parent.mkdir(parents=True, exist_ok=True)
+        module_file.write_text("", encoding="utf-8")
+        installed[name] = {
+            "file": str(module_file.resolve()),
+            "site_packages": str(site_packages.resolve()),
+        }
+        monkeypatch.delitem(sys.modules, name, raising=False)
+    generated_root = tmp_path / "case" / ".rextio" / "build" / "python"
+
+    assert worker._active_module_provenance(
+        ("rextio", "rextio_numpy"),
+        lane="python-source",
+        import_root=tmp_path / "case" / "src",
+        installed=installed,
+    ) == {}
+
+    generated_file = generated_root / "rextio" / "__init__.py"
+    generated_file.parent.mkdir(parents=True)
+    generated_file.write_text("", encoding="utf-8")
+    generated_module = ModuleType("rextio")
+    generated_module.__file__ = str(generated_file)
+    monkeypatch.setitem(sys.modules, "rextio", generated_module)
+    assert set(
+        worker._active_module_provenance(
+            ("rextio", "rextio_numpy"),
+            lane="rextio-native",
+            import_root=generated_root,
+            installed=installed,
+        )
+    ) == {"rextio"}
+
+    monkeypatch.delitem(sys.modules, "rextio")
+    with pytest.raises(RuntimeError, match="generated rextio runtime was not imported"):
+        worker._active_module_provenance(
+            ("rextio", "rextio_numpy"),
+            lane="rextio-native",
+            import_root=generated_root,
+            installed=installed,
+        )
+
+
 def test_generated_worker_uses_bundled_runtime_without_pinning_installed_core(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
@@ -234,13 +284,19 @@ def test_portable_and_verified_active_provenance_is_lane_specific(
     profile = repository_root / "profiles" / "base" / ".venv"
     site_packages = profile / "lib" / "python3.11" / "site-packages"
     installed_file = site_packages / "rextio" / "__init__.py"
+    installed_plugin_file = site_packages / "rextio_numpy" / "__init__.py"
     generated_root = (
         repository_root / "cases" / "fixture" / ".rextio" / "build" / "python"
     )
     generated_file = generated_root / "rextio" / "__init__.py"
-    for path in (installed_file, generated_file):
+    for path in (installed_file, installed_plugin_file, generated_file):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("", encoding="utf-8")
+    fixture_root = repository_root / "cases" / "fixture"
+    (fixture_root / "rextio.toml").write_text(
+        '[plugins]\nenabled = ["rextio-numpy"]\n',
+        encoding="utf-8",
+    )
     raw = {
         **THREAD_ENVIRONMENT,
         "effective_threads": {},
@@ -248,16 +304,14 @@ def test_portable_and_verified_active_provenance_is_lane_specific(
             "rextio": {
                 "file": str(installed_file),
                 "site_packages": str(site_packages),
-            }
+            },
+            "rextio_numpy": {
+                "file": str(installed_plugin_file),
+                "site_packages": str(site_packages),
+            },
         },
         "active_module_provenance": {
-            "python-source": {
-                "rextio": {
-                    "file": str(installed_file),
-                    "root": str(site_packages),
-                    "kind": "installed",
-                }
-            },
+            "python-source": {},
             "rextio-fallback": {
                 "rextio": {
                     "file": str(generated_file),
@@ -285,7 +339,7 @@ def test_portable_and_verified_active_provenance_is_lane_specific(
         **{
             **case.__dict__,
             "project": "fixture",
-            "project_root": repository_root / "cases" / "fixture",
+            "project_root": fixture_root,
         }
     )
 

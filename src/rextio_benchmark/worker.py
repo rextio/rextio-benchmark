@@ -150,7 +150,13 @@ def _active_module_provenance(
     resolved_import_root = import_root.resolve()
     for name in required_modules:
         module = sys.modules.get(name)
-        module_path_text = getattr(module, "__file__", None) if module is not None else None
+        if module is None:
+            if name == "rextio" and lane in {"rextio-fallback", "rextio-native"}:
+                raise RuntimeError(
+                    "generated rextio runtime was not imported by workload"
+                )
+            continue
+        module_path_text = getattr(module, "__file__", None)
         if not module_path_text:
             raise RuntimeError(f"required module {name!r} was not imported by workload")
         module_path = Path(module_path_text).resolve()
