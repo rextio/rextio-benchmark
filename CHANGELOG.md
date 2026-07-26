@@ -70,6 +70,12 @@ commit-pinned candidate builds**, not PyPI 0.1.3 releases.
 - Register the measured candidate cohort as a byte-frozen historical nine-case
   set before expanding the live manifests, so both published cohorts continue
   to verify without rewriting any evidence.
+- Register the measured 12-case boundary/pre-post cohort
+  `cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec`
+  as a third byte-frozen canonical bundle, with its measurement commit,
+  evidence commit, file count, and tree fingerprint checked in CI.
+- Document the clean evidence sequence: commit the bundle first, verify from a
+  clean evidence commit, and only then update registry and publication docs.
 
 ### Measured candidate results (no cherry-picking)
 
@@ -84,6 +90,19 @@ Chronological-first canonical report: Core 7.989583 ms → 0.140795 ms
 0.390064 ms → 0.384463 ms (1.014×), TensorFlow 0.650397 ms → 0.653509 ms
 (0.997×). Diagnostics: Core executable **16.658×**, NumPy phase1 **0.514×**
 (not a fusion claim), NumPy `dot` negative control **0.241×**.
+
+### Measured boundary/pre-post candidate results (no cherry-picking)
+
+The later 12-case cohort was measured from commit `92ef027` and published as
+evidence commit `0fed54c`. Chronological-first headline speedups are Core
+**57.729×**, NumPy mixed fusion **2.425×**, NetworkX **3.719×**, pandas
+**66.143×**, Torch deep MLP **1.018×**, and TensorFlow eager chain **1.040×**.
+Their three-run medians are **57.729×**, **2.523×**, **3.679×**, **66.143×**,
+**1.017×**, and **1.040×**, respectively; all six passed the 10% stability
+gate. Non-headline, non-gating diagnostics: NumPy direct sink **0.305×**,
+Torch pre/post **1.158×** (median **1.156×**), and TensorFlow pre/post
+**0.494×** (median **0.495×**). These candidate observations are not release,
+support, or individual-change causal A/B claims.
 
 ### Non-claims
 

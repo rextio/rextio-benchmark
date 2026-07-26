@@ -37,9 +37,9 @@ CANDIDATE_PLUGIN_013_COMPLETE_CASE_IDS = frozenset(
     }
 )
 
-# Unmeasured next candidate definition. The existing nine-case candidate
-# cohort remains historical and is registered below before these diagnostics
-# expand the live manifest set.
+# The third candidate policy was frozen before measurement. Its report retains
+# that immutable pre-measurement status, while the resulting 12-case canonical
+# bundle is registered below. The earlier nine-case candidate stays historical.
 NEXT_CANDIDATE_COMPLETE_CASE_IDS = frozenset(
     {
         *CANDIDATE_PLUGIN_013_COMPLETE_CASE_IDS,
@@ -113,9 +113,9 @@ NEXT_CANDIDATE_COHORT_POLICY: dict[str, Any] = {
     "diagnostic_case_ids": sorted(DIAGNOSTIC_CASE_IDS),
     "target_config": "profiles/next-candidate.toml",
     "notes": (
-        "Unmeasured diagnostic expansion for the NumPy F64_1D direct boundary "
-        "and Torch/TensorFlow CPU small-batch pre/post paths. Every integration "
-        "target and active profile is exact-bound; no measurement has started."
+        "Pre-measurement diagnostic definition for the NumPy F64_1D direct "
+        "boundary and Torch/TensorFlow CPU small-batch pre/post paths. The "
+        "bound policy metadata is immutable after the measured cohort exists."
     ),
 }
 
@@ -169,6 +169,16 @@ FROZEN_CANONICAL_COHORTS: dict[str, dict[str, Any]] = {
         "measurement_commit": "afd73d76107f9b7f352c8f5bb8a0ed382051f8bc",
         "evidence_commit": "fced0b803b823e7855ec6c52277a58aebb0aa8b9",
     },
+    "15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec": {
+        # The policy identifier is intentionally retained exactly as it was
+        # bound into the pre-measurement reports.  The bundle below is the
+        # subsequently measured, chronological-first cohort for that policy.
+        "policy_id": "candidate-boundary-prepost-0.1.1",
+        "policy_version": POLICY_VERSION,
+        "complete_case_ids": frozenset(NEXT_CANDIDATE_COMPLETE_CASE_IDS),
+        "measurement_commit": "92ef027cea25f9d6bf1d730de4c226d40016ba6e",
+        "evidence_commit": "0fed54c64283aaa08dfef0c9973e1d522d52bf1b",
+    },
 }
 
 # Sorted path:sha256 fingerprint of the frozen released cohort tree contents.
@@ -187,6 +197,17 @@ CANDIDATE_CANONICAL_COHORT_TREE_SHA256 = (
     "d318c50496662908b057d2282e0934fdefc5d9a726e20567ab5d4f5b3a8c1cb7"
 )
 CANDIDATE_CANONICAL_COHORT_FILE_COUNT = 60
+
+BOUNDARY_PREPOST_CANONICAL_COHORT_DIR = (
+    "results/canonical/cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec"
+)
+BOUNDARY_PREPOST_CANONICAL_COHORT_TREE_SHA256 = (
+    "e67c4843f652a7d756d3a17857625a799e0ee548563b71fd4f49291a04f8b4f5"
+)
+# The canonical manifest's logical object count is distinct from the number of
+# Git-tracked files in the frozen bundle tree; immutability checks use the
+# latter, just like the two earlier cohort constants.
+BOUNDARY_PREPOST_CANONICAL_COHORT_FILE_COUNT = 60
 
 
 def _evidence_declarations(report: dict[str, Any]) -> dict[str, Any]:

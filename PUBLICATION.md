@@ -114,11 +114,11 @@ control **0.241×**. Bundle path:
 Do not rewrite, re-hash, re-measure, rename, or delete that directory. Do not
 replace the frozen released 0.1.0 figures with these candidate numbers.
 
-## Boundary/pre-post diagnostic cohort (unmeasured and ready)
+## Boundary/pre-post diagnostic cohort (third frozen policy; measured)
 
-The next bounded candidate definition is distinct from both byte-frozen
-cohorts above. It adds three **non-headline diagnostics** and does not change
-the six frozen README rows:
+This bounded candidate definition is distinct from the two earlier byte-frozen
+cohorts. It adds three **non-headline, non-gating diagnostics** and does not
+change the six frozen README rows:
 
 | Diagnostic | Timed boundary |
 | --- | --- |
@@ -126,20 +126,59 @@ the six frozen README rows:
 | `torch-cpu-small-batch-prepost` | Batch-1 normalization, two small linears, four scalar-controlled activation rounds, softmax, exact int64 labels |
 | `tensorflow-cpu-small-batch-prepost` | Batch-1 eager normalization, two small matmuls, four scalar-controlled activation rounds, softmax, exact int64 labels |
 
-Policy id `candidate-boundary-prepost-0.1.1` is currently `pre-measurement`.
+The report retains the immutable policy id `candidate-boundary-prepost-0.1.1`
+and its `pre-measurement` status field because those values were bound before
+timing; the resulting cohort is now measured and canonical.
 `profiles/next-candidate.toml` records the
 exact final Core 0.1.7 integration merge
 `b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97` and TensorFlow 0.1.3 integration
 merge `1fdb2e1cd91d058a056db76c2e0a15d52c855053`. NumPy 0.1.3 is pinned to
 `cf461e6775780a598517980c555a1aec079285d8`, and Torch 0.1.3 is pinned to
 `1e92b24b154c7266dc37d19533fc3e17a8b05f9a`. Every active CPU profile selects
-every declared version from its exact Git source. The separate
-chronological-first cohort is ready for an independent final audit before any
-measurement begins.
+every declared version from its exact Git source.
 
-No run has been selected, no performance number exists, and this definition
-does not authorize a canonical run, release, tag, merge, or headline change.
-The earlier candidate cohort
+| Field | Value |
+| --- | --- |
+| Published cohort | `cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec` |
+| Measurement commit | `92ef027cea25f9d6bf1d730de4c226d40016ba6e` |
+| Evidence commit | `0fed54c64283aaa08dfef0c9973e1d522d52bf1b` |
+| Selection | chronological-first, exactly three publish reports |
+| Headline stability | 10% on the six frozen README rows only (**passed**) |
+| Complete cases | earlier nine-case candidate set plus all three diagnostics above |
+
+### Measured boundary/pre-post headline results (no cherry-picking)
+
+Three-run medians and maximum relative deviations (all six rows within 10%):
+
+| Domain | 3-run median | Max deviation |
+| --- | ---: | ---: |
+| Core hybrid | 57.729× | 1.31% |
+| NumPy mixed fusion | 2.523× | 3.88% |
+| NetworkX Dijkstra | 3.679× | 1.09% |
+| pandas Series.map | 66.143× | 0.92% |
+| PyTorch CPU deep MLP | 1.017× | 0.41% |
+| TensorFlow CPU eager chain | 1.040× | 0.38% |
+
+Chronological-first canonical report timings (selected first report):
+
+| Domain | Source → native | Speedup |
+| --- | ---: | ---: |
+| Core hybrid | 7.988211 ms → 0.138802 ms | 57.729× |
+| NumPy mixed fusion | 0.051241 ms → 0.019296 ms | 2.425× |
+| NetworkX Dijkstra | 50.836724 ms → 13.651031 ms | 3.719× |
+| pandas Series.map | 179.817448 ms → 2.700109 ms | 66.143× |
+| PyTorch CPU deep MLP | 0.391130 ms → 0.385014 ms | 1.018× |
+| TensorFlow CPU eager chain | 0.648913 ms → 0.622690 ms | 1.040× |
+
+Published non-headline diagnostics from that first report: Core executable
+**15.977×**, NumPy phase1 non-fused **0.248×** (not a fusion claim), NumPy
+`dot` negative control **0.587×**, NumPy F64 direct sink **0.305×**, Torch
+small-batch pre/post **1.158×** (three-run median **1.156×**), and TensorFlow
+small-batch pre/post **0.494×** (three-run median **0.495×**). These are
+diagnostic observations, not release, support, or individual-change causal
+A/B claims. Do not rewrite, re-hash, re-measure, rename, or delete that
+directory. This evidence does not authorize a release, tag, merge, or
+headline-scope change. The earlier candidate cohort
 `cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a`
 remains byte-immutable and verifiable against its historical nine-case set.
 
@@ -157,11 +196,12 @@ measurement commit on one unchanged host. Every attempt must:
    and
 4. contain finite positive timing samples and verifier-recomputed statistics.
 
-Candidate cohorts additionally require report-level `policy` with policy id
-`candidate-plugin-0.1.3-pre-measurement` and `package_provenance` captured from
-installed PEP 610 `direct_url.json`, cross-checked against the exact pins and
-the hashed profile lock/manifest run-inputs. The stability summary persists
-`policy_id` and `candidate_plugins` for those cohorts.
+Candidate cohorts additionally require report-level `policy` and
+`package_provenance` captured from installed PEP 610 `direct_url.json`,
+cross-checked against the exact policy pins and hashed profile lock/manifest
+run-inputs. The second cohort uses `candidate-plugin-0.1.3-pre-measurement`;
+the third uses `candidate-boundary-prepost-0.1.1` and binds the four candidate
+packages. The stability summary persists the policy id and bound pins.
 
 For every case, take the three reports' `paired.median_speedup` values and
 report each deviation from the three-run median. The 10 percent publication
@@ -202,9 +242,11 @@ measurement commit must remain its ancestor; run-inputs are verified from that
 commit's Git blobs. For canonical bundles, run-output roles are resolved from
 content-addressed bundled objects even when mutable live ignored `.rextio`
 paths exist and differ. Dirty or unrelated checkouts are rejected for new
-publication; quality CI uses full-history checkout and re-verifies both the
-frozen released 0.1.0 canonical report and the measured candidate plugin 0.1.3
-canonical report. Candidate verification additionally re-runs
+publication. The required evidence sequence is: commit only the new cohort
+bundle, run its verifier from that clean evidence commit, then make registry
+or documentation changes. An untracked cohort must not be mistaken for clean
+canonical evidence. Quality CI uses full-history checkout and re-verifies all
+three frozen canonical reports. Candidate verification additionally re-runs
 `generated_expectations` against the resolved bundled portable `check.json`
 and generated Rust source (not live files). Those expectations are not applied
 retroactively to the released 0.1.0 cohort.

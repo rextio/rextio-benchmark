@@ -5,6 +5,9 @@ import json
 from pathlib import Path
 
 from rextio_benchmark.cohort import (
+    BOUNDARY_PREPOST_CANONICAL_COHORT_DIR,
+    BOUNDARY_PREPOST_CANONICAL_COHORT_FILE_COUNT,
+    BOUNDARY_PREPOST_CANONICAL_COHORT_TREE_SHA256,
     CANDIDATE_CANONICAL_COHORT_DIR,
     CANDIDATE_CANONICAL_COHORT_FILE_COUNT,
     CANDIDATE_CANONICAL_COHORT_TREE_SHA256,
@@ -31,6 +34,8 @@ RELEASED_COHORT_ID = "15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9c
 RELEASED_MEASUREMENT_COMMIT = "ff7f4fea34199d850bed0446a8a223ef730ddf17"
 CANDIDATE_COHORT_ID = "becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a"
 CANDIDATE_MEASUREMENT_COMMIT = "afd73d76107f9b7f352c8f5bb8a0ed382051f8bc"
+BOUNDARY_PREPOST_COHORT_ID = "15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec"
+BOUNDARY_PREPOST_MEASUREMENT_COMMIT = "92ef027cea25f9d6bf1d730de4c226d40016ba6e"
 
 
 def test_candidate_policy_is_pre_measurement_and_complete() -> None:
@@ -157,6 +162,17 @@ def test_historical_cohorts_keep_their_complete_case_sets() -> None:
     )
     assert raw_candidate == CANDIDATE_PLUGIN_013_COMPLETE_CASE_IDS
 
+    boundary_prepost = expected_complete_case_ids(
+        {"canonical_bundle": {"cohort_id": BOUNDARY_PREPOST_COHORT_ID}},
+        current_case_ids=NEXT_CANDIDATE_COMPLETE_CASE_IDS,
+    )
+    assert boundary_prepost == NEXT_CANDIDATE_COMPLETE_CASE_IDS
+    raw_boundary_prepost = expected_complete_case_ids(
+        {"repository": {"commit": BOUNDARY_PREPOST_MEASUREMENT_COMMIT}},
+        current_case_ids=NEXT_CANDIDATE_COMPLETE_CASE_IDS,
+    )
+    assert raw_boundary_prepost == NEXT_CANDIDATE_COMPLETE_CASE_IDS
+
     # Unknown / current commit is fail-closed onto the live 12-case set.
     live = expected_complete_case_ids(
         {},
@@ -192,6 +208,13 @@ def test_candidate_canonical_cohort_directory_is_byte_immutable() -> None:
     digest, count = tree_fingerprint(cohort_root)
     assert count == CANDIDATE_CANONICAL_COHORT_FILE_COUNT
     assert digest == CANDIDATE_CANONICAL_COHORT_TREE_SHA256
+
+
+def test_boundary_prepost_canonical_cohort_directory_is_byte_immutable() -> None:
+    cohort_root = ROOT / BOUNDARY_PREPOST_CANONICAL_COHORT_DIR
+    digest, count = tree_fingerprint(cohort_root)
+    assert count == BOUNDARY_PREPOST_CANONICAL_COHORT_FILE_COUNT
+    assert digest == BOUNDARY_PREPOST_CANONICAL_COHORT_TREE_SHA256
 
 
 def test_new_diagnostic_manifests_use_exact_validation_without_headline_changes() -> None:

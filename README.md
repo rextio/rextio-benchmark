@@ -44,31 +44,33 @@ with no cherry-picking.
 ### Unreleased plugin 0.1.3 candidate (measured)
 
 Three-run chronological-first cohort
-[`cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a`](results/canonical/cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a/)
+[`cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec`](results/canonical/cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec/)
 on **Mac16,11 / Apple M4 Pro**, **2026-07-26**, CPython **3.11.9**, measured
 from clean commit
-[`afd73d76107f9b7f352c8f5bb8a0ed382051f8bc`](https://github.com/rextio/rextio-benchmark/commit/afd73d76107f9b7f352c8f5bb8a0ed382051f8bc).
-Policy id remains `candidate-plugin-0.1.3-pre-measurement` (frozen name) with
-measured-candidate publication status. Plugins:
+[`92ef027cea25f9d6bf1d730de4c226d40016ba6e`](https://github.com/rextio/rextio-benchmark/commit/92ef027cea25f9d6bf1d730de4c226d40016ba6e).
+The immutable policy id is `candidate-boundary-prepost-0.1.1` (a frozen
+pre-measurement name); this is its subsequently measured candidate cohort.
+The unreleased exact Git candidates are:
 
-- `rextio-numpy==0.1.3` candidate@`7316c47393a8` (Git rev
-  `7316c47393a86f1c701049b878d01e8d8f561cdb`) — **not** a PyPI 0.1.3 release
-- `rextio-tensorflow==0.1.3` candidate@`346ca58148ed` (Git rev
-  `346ca58148ed2563d4c7547dd8443d60cd4f905b`) — **not** a PyPI 0.1.3 release
-- released pins otherwise: `rextio==0.1.6`, `rextio-networkx==0.1.1`,
-  `rextio-pandas==0.1.2`, `rextio-torch==0.1.2`
+- `rextio==0.1.7` candidate@`b8b8ed11f6b7`
+- `rextio-numpy==0.1.3` candidate@`cf461e677578`
+- `rextio-torch==0.1.3` candidate@`1e92b24b154c`
+- `rextio-tensorflow==0.1.3` candidate@`1fdb2e1cd91`
+
+They are candidate Git revisions, not corresponding PyPI releases. NetworkX
+0.1.1 and pandas 0.1.2 remain released pins.
 
 **Three-run medians** (headline rows; maximum relative deviation from the
 three-run median; 10% stability gate):
 
 | Domain | 3-run median speedup | Max deviation |
 | --- | ---: | ---: |
-| Core hybrid | 57.392× | 0.46% |
-| NumPy mixed fusion | 0.289× | 4.38% |
-| NetworkX Dijkstra | 3.694× | 4.71% |
-| pandas Series.map | 66.091× | 1.39% |
-| PyTorch CPU deep MLP | 1.014× | 0.81% |
-| TensorFlow CPU eager chain | 0.994× | 0.39% |
+| Core hybrid | 57.729× | 1.31% |
+| NumPy mixed fusion | 2.523× | 3.88% |
+| NetworkX Dijkstra | 3.679× | 1.09% |
+| pandas Series.map | 66.143× | 0.92% |
+| PyTorch CPU deep MLP | 1.017× | 0.41% |
+| TensorFlow CPU eager chain | 1.040× | 0.38% |
 
 All six headline rows passed the 10% stability veto.
 
@@ -77,20 +79,23 @@ by speedup):
 
 | Domain | Python source | Rextio native | Speedup |
 | --- | ---: | ---: | ---: |
-| Core hybrid | 7.989583 ms | 0.140795 ms | 57.392× |
-| NumPy mixed fusion | 0.052636 ms | 0.174234 ms | 0.302× |
-| NetworkX Dijkstra | 53.579948 ms | 13.893143 ms | 3.868× |
-| pandas Series.map | 179.848385 ms | 2.790601 ms | 65.172× |
-| PyTorch CPU deep MLP | 0.390064 ms | 0.384463 ms | 1.014× |
-| TensorFlow CPU eager chain | 0.650397 ms | 0.653509 ms | 0.997× |
+| Core hybrid | 7.988211 ms | 0.138802 ms | 57.729× |
+| NumPy mixed fusion | 0.051241 ms | 0.019296 ms | 2.425× |
+| NetworkX Dijkstra | 50.836724 ms | 13.651031 ms | 3.719× |
+| pandas Series.map | 179.817448 ms | 2.700109 ms | 66.143× |
+| PyTorch CPU deep MLP | 0.391130 ms | 0.385014 ms | 1.018× |
+| TensorFlow CPU eager chain | 0.648913 ms | 0.622690 ms | 1.040× |
 
-**Published diagnostics** (full report only; never README headline substitutes),
-from the same chronological-first report: Core executable **16.658×**, NumPy
-phase1 non-fused branch **0.514×** (not a fusion claim), NumPy `dot` BLAS
-negative control **0.241×**.
+**Published diagnostics** (full report only; never README headline substitutes
+or stability gates), from the same chronological-first report: Core executable
+**15.977×**, NumPy phase1 non-fused branch **0.248×** (not a fusion claim),
+NumPy `dot` BLAS negative control **0.587×**, NumPy F64 direct-sink boundary
+**0.305×**, Torch small-batch pre/post **1.158×** (three-run median
+**1.156×**), and TensorFlow small-batch pre/post **0.494×** (three-run median
+**0.495×**).
 
-[Canonical report](results/canonical/cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a/report.md)
-· [stability summary](results/canonical/cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a/stability.json)
+[Canonical report](results/canonical/cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec/report.md)
+· [stability summary](results/canonical/cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec/stability.json)
 · [PUBLICATION.md](PUBLICATION.md)
 
 ### Released 0.1.0 (historical, frozen)
@@ -211,17 +216,16 @@ NetworkX, and pandas use `profiles/base`; Torch and TensorFlow use isolated
 locked profiles so their ABI and runtime requirements cannot contaminate each
 other.
 
-The three new diagnostics belong to the separate unmeasured policy
-`candidate-boundary-prepost-0.1.1`; they do not alter the six frozen headline
-rows. Activation is deliberately fail-closed through
+The three new diagnostics belong to the separately measured
+`candidate-boundary-prepost-0.1.1` cohort; they do not alter the six frozen
+headline rows or become headline claims. Activation is deliberately fail-closed through
 `profiles/next-candidate.toml`. Core 0.1.7 is pinned there to
 `b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97`, NumPy 0.1.3 to
 `cf461e6775780a598517980c555a1aec079285d8`, and TensorFlow 0.1.3 to
 `1fdb2e1cd91d058a056db76c2e0a15d52c855053`, and Torch 0.1.3 to
 `1e92b24b154c7266dc37d19533fc3e17a8b05f9a`. Every revision is a full commit,
 and the affected CPU profile manifests select those exact Git sources. The
-policy is ready for an independently audited chronological-first run; no run
-has been started or selected.
+policy was measured as the chronological-first three-run cohort linked above.
 
 ## Measurement contract
 

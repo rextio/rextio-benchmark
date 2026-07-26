@@ -51,4 +51,9 @@ jobs:
         run: >
           profiles/base/.venv/bin/python -m rextio_benchmark verify
           results/canonical/cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a/report.json
-
+      - name: Verify measured boundary and pre/post canonical report
+        env:
+          PYTHONPATH: src
+        run: >
+          profiles/base/.venv/bin/python -m rextio_benchmark verify
+          results/canonical/cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec/report.json
