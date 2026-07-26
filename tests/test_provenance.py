@@ -895,20 +895,43 @@ def test_bundled_semantic_replay_uses_resolved_paths_not_live(
         )
 
 
-def test_installed_base_profile_numpy_provenance_when_present() -> None:
-    """If the base profile has candidate numpy installed, capture exact rev."""
+@pytest.mark.parametrize(
+    ("profile", "package", "dist_info"),
+    [
+        ("base", "rextio", "rextio-0.1.7.dist-info"),
+        ("base", "rextio-numpy", "rextio_numpy-0.1.3.dist-info"),
+        ("torch-cpu", "rextio-torch", "rextio_torch-0.1.3.dist-info"),
+        (
+            "tensorflow-cpu",
+            "rextio-tensorflow",
+            "rextio_tensorflow-0.1.3.dist-info",
+        ),
+    ],
+)
+def test_installed_current_profile_candidate_provenance_when_present(
+    profile: str,
+    package: str,
+    dist_info: str,
+) -> None:
+    """Installed live profiles must match the next policy, not frozen old pins."""
+    current_pins = integration_target_pins(
+        parse_integration_targets(
+            (ROOT / TARGET_CONFIG_PATH).read_text(encoding="utf-8")
+        )
+    )
+    expected = current_pins[package]
     direct = (
         ROOT
-        / "profiles/base/.venv/lib/python3.11/site-packages"
-        / "rextio_numpy-0.1.3.dist-info"
+        / f"profiles/{profile}/.venv/lib/python3.11/site-packages"
+        / dist_info
         / "direct_url.json"
     )
     if not direct.is_file():
-        pytest.skip("candidate rextio-numpy not installed in base profile")
+        pytest.skip(f"candidate {package} not installed in {profile} profile")
     # Import against the profile is not guaranteed in the test interpreter; read file.
     document = json.loads(direct.read_text(encoding="utf-8"))
-    assert document["url"].rstrip("/") == NUMPY_PIN["git_url"]
-    assert document["vcs_info"]["commit_id"] == NUMPY_PIN["rev"]
+    assert document["url"].rstrip("/") == expected["git_url"]
+    assert document["vcs_info"]["commit_id"] == expected["rev"]
 
 
 def test_candidate_plugins_in_versions_is_version_scoped() -> None:
