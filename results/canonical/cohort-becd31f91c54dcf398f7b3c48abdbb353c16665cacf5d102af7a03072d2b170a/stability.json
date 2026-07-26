@@ -1,0 +1,195 @@
+{
+  "candidate_plugins": {
+    "rextio-numpy": {
+      "git_url": "https://github.com/rextio/rextio-numpy",
+      "rev": "7316c47393a86f1c701049b878d01e8d8f561cdb",
+      "version": "0.1.3"
+    },
+    "rextio-tensorflow": {
+      "git_url": "https://github.com/rextio/rextio-tensorflow",
+      "rev": "346ca58148ed2563d4c7547dd8443d60cd4f905b",
+      "version": "0.1.3"
+    }
+  },
+  "cases": {
+    "core-hybrid": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.00461247449182202,
+      "median_speedups": [
+        57.39203321702378,
+        57.16323827560818,
+        57.656752506271104
+      ],
+      "relative_deviations": [
+        0.0,
+        0.003986527895787016,
+        0.00461247449182202
+      ],
+      "three_run_median": 57.39203321702378,
+      "within_threshold": true
+    },
+    "core-native-executable": {
+      "headline_gate": false,
+      "maximum_relative_deviation": 0.029216707641025942,
+      "median_speedups": [
+        16.65810264194713,
+        16.01856721609912,
+        16.18522369319835
+      ],
+      "relative_deviations": [
+        0.029216707641025942,
+        0.010296828777798283,
+        0.0
+      ],
+      "three_run_median": 16.18522369319835,
+      "within_threshold": true
+    },
+    "networkx-dijkstra": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.04707348972953836,
+      "median_speedups": [
+        3.86791755408343,
+        3.632600708349571,
+        3.6940268204885243
+      ],
+      "relative_deviations": [
+        0.04707348972953836,
+        0.016628496522618587,
+        0.0
+      ],
+      "three_run_median": 3.6940268204885243,
+      "within_threshold": true
+    },
+    "numpy-blas-dot-negative-control": {
+      "headline_gate": false,
+      "maximum_relative_deviation": 0.05274414619905005,
+      "median_speedups": [
+        0.24063339155851204,
+        0.22334072240142314,
+        0.2357765555158601
+      ],
+      "relative_deviations": [
+        0.02059931714595446,
+        0.05274414619905005,
+        0.0
+      ],
+      "three_run_median": 0.2357765555158601,
+      "within_threshold": true
+    },
+    "numpy-mixed-fusion": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.04379455529771417,
+      "median_speedups": [
+        0.30196109692843953,
+        0.2889429775654897,
+        0.2892916957612538
+      ],
+      "relative_deviations": [
+        0.04379455529771417,
+        0.0012054206908582916,
+        0.0
+      ],
+      "three_run_median": 0.2892916957612538,
+      "within_threshold": true
+    },
+    "numpy-mixed-nonfused-phase1": {
+      "headline_gate": false,
+      "maximum_relative_deviation": 0.05501536125992501,
+      "median_speedups": [
+        0.5143687789595959,
+        0.48576789807262755,
+        0.48754624609951097
+      ],
+      "relative_deviations": [
+        0.05501536125992501,
+        0.0036475473682971485,
+        0.0
+      ],
+      "three_run_median": 0.48754624609951097,
+      "within_threshold": true
+    },
+    "pandas-series-map": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.013899164555830122,
+      "median_speedups": [
+        65.17240453359058,
+        66.09101441865724,
+        66.1156682849165
+      ],
+      "relative_deviations": [
+        0.013899164555830122,
+        0.0,
+        0.0003730290187874214
+      ],
+      "three_run_median": 66.09101441865724,
+      "within_threshold": true
+    },
+    "tensorflow-cpu-eager-chain": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.003923920454841189,
+      "median_speedups": [
+        0.9974476072825432,
+        0.9935490000384055,
+        0.9929652790522379
+      ],
+      "relative_deviations": [
+        0.003923920454841189,
+        0.0,
+        0.0005875110197333938
+      ],
+      "three_run_median": 0.9935490000384055,
+      "within_threshold": true
+    },
+    "torch-cpu-deep-mlp": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.008072474631778417,
+      "median_speedups": [
+        1.0142928338885255,
+        1.0224806870592853,
+        1.0134643051334464
+      ],
+      "relative_deviations": [
+        0.0,
+        0.008072474631778417,
+        0.0008168536022311716
+      ],
+      "three_run_median": 1.0142928338885255,
+      "within_threshold": true
+    }
+  },
+  "cohort_id": "becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a",
+  "measurement_commit": "afd73d76107f9b7f352c8f5bb8a0ed382051f8bc",
+  "policy_id": "candidate-plugin-0.1.3-pre-measurement",
+  "policy_version": 1,
+  "report_count": 3,
+  "reports": [
+    {
+      "bundle_path": "results/canonical/cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a/reports/01-6da113089284ffe1e19f70a1a85e9ed8322c59748a65cdba9875dcd3c64cfacd.json",
+      "generated_at": "2026-07-26T14:40:49.161970+00:00",
+      "index": 0,
+      "selected": true,
+      "sha256": "6da113089284ffe1e19f70a1a85e9ed8322c59748a65cdba9875dcd3c64cfacd",
+      "source_path": "results/local/benchmark-publish-20260726T144049Z.json"
+    },
+    {
+      "bundle_path": "results/canonical/cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a/reports/02-f63fc7a7f001e3c9883cd9a6bdeaf079887ff4bd53c158cd42a3964860117f43.json",
+      "generated_at": "2026-07-26T14:58:48.612158+00:00",
+      "index": 1,
+      "selected": false,
+      "sha256": "f63fc7a7f001e3c9883cd9a6bdeaf079887ff4bd53c158cd42a3964860117f43",
+      "source_path": "results/local/benchmark-publish-20260726T145848Z.json"
+    },
+    {
+      "bundle_path": "results/canonical/cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a/reports/03-8104e13a6e94674f74039f8e2ee2b727298a9fcc009b0f30d9df4de4022114d1.json",
+      "generated_at": "2026-07-26T15:17:35.132140+00:00",
+      "index": 2,
+      "selected": false,
+      "sha256": "8104e13a6e94674f74039f8e2ee2b727298a9fcc009b0f30d9df4de4022114d1",
+      "source_path": "results/local/benchmark-publish-20260726T151735Z.json"
+    }
+  ],
+  "schema_version": 1,
+  "selected_report_index": 0,
+  "selection": "chronological-first",
+  "stability_threshold_fraction": 0.1
+}
