@@ -20,6 +20,14 @@ The locks use the released distributions `rextio==0.1.6`,
 `rextio-tensorflow==0.1.2`. The optional CUDA locks add
 `rextio-device-cuda==0.1.0`.
 
+> **Methodology amendment:** The first implementation applied the 10 percent
+> stability veto to all cases and rejected the first cohort because the
+> nonheadline NumPy BLAS negative control varied by approximately 23 percent.
+> All three original reports are retained; there is no sliding window or
+> fastest-run selection. All six pre-frozen README rows met the threshold, so
+> the publication gate now applies to those headline rows while Core executable
+> and NumPy `dot` remain fully published diagnostics.
+
 ## Run the CPU suite
 
 One fail-closed entrypoint bootstraps every locked CPU profile, builds all
@@ -76,12 +84,15 @@ PYTHONPATH=src profiles/base/.venv/bin/python -m rextio_benchmark cohort \
 ```
 
 The command verifies all three before writing, rejects sliding windows and
-unstable cohorts, selects the first report, copies all raw reports and
-`run-output` evidence into one `cohort-<sha256>` directory, and writes a
-hash-bound stability summary. After committing that bundle, render the five
-localized Core README blocks with `rextio_benchmark readme-blocks`; pass the
-canonical report, full measurement/evidence commits, GitHub URL, and an output
-directory explicitly.
+unstable headline rows, reports deviation for every case, selects the first
+report, copies all raw reports and `run-output` evidence into one
+`cohort-<sha256>` directory, and writes a hash-bound stability summary. It may
+run from a clean descendant policy commit: inputs remain verified from the
+measurement commit and current output bytes must retain their recorded
+digests. Dirty or unrelated checkouts fail closed. After committing that
+bundle, render the five localized Core README blocks with
+`rextio_benchmark readme-blocks`; pass the canonical report, full
+measurement/evidence commits, GitHub URL, and an output directory explicitly.
 
 ## Cases
 

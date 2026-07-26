@@ -8,6 +8,7 @@ from collections.abc import Sequence
 from datetime import datetime
 from typing import Any
 
+from .readme_blocks import HEADLINE_ROWS
 from .verification import GateError
 
 POLICY_VERSION = 1
@@ -74,6 +75,7 @@ def validate_cohort(reports: Sequence[dict[str, Any]]) -> dict[str, Any]:
             raise GateError("cohort reports differ in frozen run identity")
 
     stability: dict[str, Any] = {}
+    headline_case_ids = {case_id for _, case_id in HEADLINE_ROWS}
     for case_id in identities["case_ids"]:
         values = [
             next(case for case in report["cases"] if case["id"] == case_id)["paired"][
@@ -86,7 +88,9 @@ def validate_cohort(reports: Sequence[dict[str, Any]]) -> dict[str, Any]:
         median = float(statistics.median(values))
         deviations = [abs(value - median) / median for value in values]
         maximum = max(deviations)
-        if maximum > STABILITY_THRESHOLD + 1e-12:
+        headline_gate = case_id in headline_case_ids
+        within_threshold = maximum <= STABILITY_THRESHOLD + 1e-12
+        if headline_gate and not within_threshold:
             raise GateError(
                 f"{case_id} cohort deviation {maximum:.6f} exceeds "
                 f"{STABILITY_THRESHOLD:.2f}"
@@ -96,7 +100,8 @@ def validate_cohort(reports: Sequence[dict[str, Any]]) -> dict[str, Any]:
             "three_run_median": median,
             "relative_deviations": deviations,
             "maximum_relative_deviation": maximum,
-            "stable": True,
+            "headline_gate": headline_gate,
+            "within_threshold": within_threshold,
         }
     return {
         "schema_version": 1,

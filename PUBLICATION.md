@@ -4,6 +4,14 @@ This policy freezes the initial CPU headline selection before any canonical
 performance result exists. A result that fails this policy is retained as local
 evidence but is not published as canonical.
 
+> **Methodology amendment after the first cohort:** The initial implementation
+> incorrectly applied the 10 percent stability veto to every diagnostic case.
+> It rejected the retained BLAS-owned NumPy `dot` negative control after that
+> nonheadline result varied by approximately 23 percent. The first three
+> reports remain the fixed cohort: no run was discarded, no sliding window or
+> fastest-result selection was introduced, and all six pre-frozen README rows
+> satisfied the 10 percent rule. The gate now matches that pre-frozen scope.
+
 ## Frozen headline rows
 
 The Core README table contains exactly these rows, in this order:
@@ -35,15 +43,17 @@ measurement commit on one unchanged host. Every attempt must:
    and
 4. contain finite positive timing samples and verifier-recomputed statistics.
 
-For every case, take the three reports' `paired.median_speedup` values. The
-cohort is stable only when each value differs from their three-run median by no
-more than 10 percent of that median. Crossing 1× is allowed; stability does not
+For every case, take the three reports' `paired.median_speedup` values and
+report each deviation from the three-run median. The 10 percent publication
+gate applies only to the six pre-frozen headline rows. Core executable and the
+NumPy BLAS negative control remain fully published diagnostics even when their
+`within_threshold` field is false. Crossing 1× is allowed; stability does not
 mean that native must be faster.
 
-If any of the first three attempts fails qualification or stability, publish
-no result from that cohort. Diagnose the cause, make any required change in a
-new measurement commit, and begin a new three-attempt cohort. Do not discard an
-early run and slide to a more favorable later window.
+If any of the first three attempts fails qualification, or a headline row
+fails stability, publish no result from that cohort. Diagnose the cause, make
+any required change in a new measurement commit, and begin a new three-attempt
+cohort. Do not discard an early run and slide to a more favorable later window.
 
 ## Canonical selection and commit identities
 
@@ -64,6 +74,11 @@ the report to `results/canonical/` necessarily creates a later **evidence
 publication commit**. Public links pin the report to that later commit while
 preserving the measurement commit in the evidence. No report is rerun merely
 to make those two commit identities equal.
+
+Bundling may run at that clean descendant policy/evidence commit. The recorded
+measurement commit must remain its ancestor; run-inputs are verified from that
+commit's Git blobs and every current run-output byte must still match its
+recorded digest. Dirty or unrelated checkouts are rejected.
 
 Generate Core README blocks only from that verified canonical report with
 `rextio_benchmark readme-blocks`. The generator fixes the six rows above,

@@ -459,9 +459,11 @@ def test_bundle_report_writes_role_keyed_manifest(
     subprocess.run(["git", "init", "-b", "main"], cwd=tmp_path, check=True, capture_output=True)
     subprocess.run(["git", "config", "user.email", "fixture@example.com"], cwd=tmp_path, check=True)
     subprocess.run(["git", "config", "user.name", "Fixture"], cwd=tmp_path, check=True)
+    ignore = tmp_path / ".gitignore"
+    ignore.write_text("cases/*/.rextio/\nresults/local/\n", encoding="utf-8")
     tracked = tmp_path / "tracked.txt"
     tracked.write_text("input\n", encoding="utf-8")
-    subprocess.run(["git", "add", "tracked.txt"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "add", ".gitignore", "tracked.txt"], cwd=tmp_path, check=True)
     subprocess.run(["git", "commit", "-m", "run"], cwd=tmp_path, check=True, capture_output=True)
     commit = subprocess.run(
         ["git", "rev-parse", "HEAD"],
@@ -470,6 +472,15 @@ def test_bundle_report_writes_role_keyed_manifest(
         capture_output=True,
         text=True,
     ).stdout.strip()
+    policy = tmp_path / "policy.txt"
+    policy.write_text("descendant policy\n", encoding="utf-8")
+    subprocess.run(["git", "add", "policy.txt"], cwd=tmp_path, check=True)
+    subprocess.run(
+        ["git", "commit", "-m", "policy"],
+        cwd=tmp_path,
+        check=True,
+        capture_output=True,
+    )
     output = tmp_path / "cases/fixture/.rextio/reports/check.json"
     output.parent.mkdir(parents=True)
     output.write_text('{"accepted":true}\n', encoding="utf-8")
@@ -519,3 +530,79 @@ def test_bundle_report_writes_role_keyed_manifest(
         == "results/canonical/fixture/manifest.json"
     )
     assert summary["stored_bytes"] == output.stat().st_size
+
+
+def test_bundle_report_rejects_dirty_descendant(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    subprocess.run(["git", "init", "-b", "main"], cwd=tmp_path, check=True, capture_output=True)
+    subprocess.run(["git", "config", "user.email", "fixture@example.com"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "config", "user.name", "Fixture"], cwd=tmp_path, check=True)
+    tracked = tmp_path / "tracked.txt"
+    tracked.write_text("A\n", encoding="utf-8")
+    subprocess.run(["git", "add", "tracked.txt"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "commit", "-m", "A"], cwd=tmp_path, check=True, capture_output=True)
+    commit_a = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=tmp_path,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    tracked.write_text("dirty\n", encoding="utf-8")
+    source_report = tmp_path / "report.json"
+    report = {
+        "repository": {"commit": commit_a, "dirty": False},
+        "publishable": True,
+        "cases": [],
+    }
+    source_report.write_text(json.dumps(report), encoding="utf-8")
+    monkeypatch.setattr(
+        "rextio_benchmark.bundler.verify_report",
+        lambda report_path, repository_root: report,
+    )
+    with pytest.raises(GateError, match="clean"):
+        bundle_report(source_report, tmp_path, name="dirty")
+
+
+def test_bundle_report_rejects_unrelated_commit(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    subprocess.run(["git", "init", "-b", "main"], cwd=tmp_path, check=True, capture_output=True)
+    subprocess.run(["git", "config", "user.email", "fixture@example.com"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "config", "user.name", "Fixture"], cwd=tmp_path, check=True)
+    tracked = tmp_path / "tracked.txt"
+    tracked.write_text("A\n", encoding="utf-8")
+    subprocess.run(["git", "add", "tracked.txt"], cwd=tmp_path, check=True)
+    subprocess.run(["git", "commit", "-m", "A"], cwd=tmp_path, check=True, capture_output=True)
+    commit_a = subprocess.run(
+        ["git", "rev-parse", "HEAD"],
+        cwd=tmp_path,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+    subprocess.run(["git", "checkout", "--orphan", "unrelated"], cwd=tmp_path, check=True)
+    tracked.write_text("unrelated\n", encoding="utf-8")
+    subprocess.run(["git", "add", "tracked.txt"], cwd=tmp_path, check=True)
+    subprocess.run(
+        ["git", "commit", "-m", "unrelated"],
+        cwd=tmp_path,
+        check=True,
+        capture_output=True,
+    )
+    source_report = tmp_path / "report.json"
+    report = {
+        "repository": {"commit": commit_a, "dirty": False},
+        "publishable": True,
+        "cases": [],
+    }
+    source_report.write_text(json.dumps(report), encoding="utf-8")
+    monkeypatch.setattr(
+        "rextio_benchmark.bundler.verify_report",
+        lambda report_path, repository_root: report,
+    )
+    with pytest.raises(GateError, match="ancestor"):
+        bundle_report(source_report, tmp_path, name="unrelated")

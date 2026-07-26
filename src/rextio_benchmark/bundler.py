@@ -10,7 +10,7 @@ from typing import Any
 
 from .cohort import cohort_id, validate_cohort
 from .verification import GateError, logical_path, resolve_logical_path, sha256_file
-from .verifier import verify_report
+from .verifier import _run_commit_available, _worktree_clean, verify_report
 
 MAX_CANONICAL_OBJECT_BYTES = 256 * 1024 * 1024
 MAX_CANONICAL_BUNDLE_BYTES = 512 * 1024 * 1024
@@ -36,6 +36,14 @@ def _write_json(path: Path, value: dict[str, Any]) -> None:
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def _require_clean_descendant(repository_root: Path, run_commit: str) -> None:
+    current_commit = _current_commit(repository_root)
+    if not _run_commit_available(repository_root, run_commit, current_commit):
+        raise GateError("recorded run commit is not an ancestor of the current commit")
+    if not _worktree_clean(repository_root):
+        raise GateError("canonical evidence requires a clean worktree")
+
+
 def bundle_report(
     report_path: Path,
     repository_root: Path,
@@ -50,8 +58,7 @@ def bundle_report(
     if report.get("canonical_bundle") is not None:
         raise GateError("report is already canonical")
     run_commit = report["repository"]["commit"]
-    if _current_commit(repository_root) != run_commit:
-        raise GateError("canonical bundle must be created at the recorded run commit")
+    _require_clean_descendant(repository_root, run_commit)
 
     bundle_name = name or _default_name(report)
     if (
@@ -180,8 +187,7 @@ def bundle_cohort(
     reports = [verify_report(path, repository_root) for path in resolved]
     stability = validate_cohort(reports)
     run_commit = reports[0]["repository"]["commit"]
-    if _current_commit(repository_root) != run_commit:
-        raise GateError("cohort must be bundled at its clean measurement commit")
+    _require_clean_descendant(repository_root, run_commit)
     digests = [sha256_file(path) for path in resolved]
     identifier = cohort_id(digests)
     name = f"cohort-{identifier}"

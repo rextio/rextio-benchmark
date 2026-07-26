@@ -15,6 +15,11 @@ from rextio_benchmark.readme_blocks import HEADLINE_ROWS, generate_blocks
 from rextio_benchmark.report import _host_identity
 from rextio_benchmark.verification import GateError, sha256_file
 
+DIAGNOSTIC_CASES = (
+    "core-native-executable",
+    "numpy-blas-dot-negative-control",
+)
+
 
 def _report(timestamp: str, commit: str = "a" * 40) -> dict:
     cases = []
@@ -47,6 +52,16 @@ def _report(timestamp: str, commit: str = "a" * 40) -> dict:
                 "paired": {"median_speedup": speedup},
             }
         )
+    for case_id in DIAGNOSTIC_CASES:
+        cases.append(deepcopy(cases[0]))
+        cases[-1]["id"] = case_id
+        cases[-1]["gate"]["evidence"]["input"]["path"] = (
+            f"cases/{case_id}/benchmark.json"
+        )
+        cases[-1]["gate"]["evidence"]["output"]["path"] = (
+            f"cases/{case_id}/.rextio/reports/build.json"
+        )
+        cases[-1]["paired"]["median_speedup"] = 1.0
     return {
         "schema_version": 1,
         "generated_at": timestamp,
@@ -78,6 +93,45 @@ def test_cohort_is_chronological_stable_and_not_fastest() -> None:
     assert summary["selection"] == "chronological-first"
     with pytest.raises(GateError, match="chronological"):
         validate_cohort([reports[1], reports[0], reports[2]])
+
+
+def test_unstable_nonheadline_case_is_retained_without_veto() -> None:
+    reports = [
+        _report("2026-07-26T00:00:00+00:00"),
+        _report("2026-07-26T00:01:00+00:00"),
+        _report("2026-07-26T00:02:00+00:00"),
+    ]
+    negative = "numpy-blas-dot-negative-control"
+    next(case for case in reports[1]["cases"] if case["id"] == negative)["paired"][
+        "median_speedup"
+    ] = 1.23
+    summary = validate_cohort(reports)
+    assert set(summary["cases"]) == {
+        case_id for _, case_id in HEADLINE_ROWS
+    } | set(DIAGNOSTIC_CASES)
+    assert summary["cases"][negative]["headline_gate"] is False
+    assert summary["cases"][negative]["within_threshold"] is False
+    assert all(
+        {"headline_gate", "within_threshold"} <= set(record)
+        for record in summary["cases"].values()
+    )
+    assert summary["cases"][HEADLINE_ROWS[0][1]]["headline_gate"] is True
+    assert summary["cases"][HEADLINE_ROWS[0][1]]["within_threshold"] is True
+
+
+def test_unstable_headline_case_still_rejects() -> None:
+    reports = [
+        _report("2026-07-26T00:00:00+00:00"),
+        _report("2026-07-26T00:01:00+00:00"),
+        _report("2026-07-26T00:02:00+00:00"),
+    ]
+    next(
+        case
+        for case in reports[1]["cases"]
+        if case["id"] == HEADLINE_ROWS[0][1]
+    )["paired"]["median_speedup"] = 1.0
+    with pytest.raises(GateError, match=HEADLINE_ROWS[0][1]):
+        validate_cohort(reports)
 
 
 def test_cohort_freezes_run_output_declarations() -> None:
@@ -112,7 +166,12 @@ def test_bundle_cohort_copies_all_reports_and_hashes_summary(
         "rextio_benchmark.bundler.verify_report",
         lambda path, root: reports[paths.index(path)],
     )
-    monkeypatch.setattr("rextio_benchmark.bundler._current_commit", lambda root: "a" * 40)
+    monkeypatch.setattr("rextio_benchmark.bundler._current_commit", lambda root: "b" * 40)
+    monkeypatch.setattr(
+        "rextio_benchmark.bundler._run_commit_available",
+        lambda root, run, current: run == "a" * 40 and current == "b" * 40,
+    )
+    monkeypatch.setattr("rextio_benchmark.bundler._worktree_clean", lambda root: True)
 
     def fake_bundle(path: Path, root: Path, *, name: str | None = None):
         assert name == expected_name
