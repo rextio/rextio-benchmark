@@ -97,7 +97,12 @@ def generate_blocks(
     cases = {case["id"]: case for case in report["cases"]}
     if any(case_id not in cases for _, case_id in HEADLINE_ROWS):
         raise GateError("canonical report lacks a frozen headline row")
-    report_url = f"{base}/blob/{evidence_commit}/{report_logical_path}"
+    markdown_path = report["canonical_bundle"].get("report_markdown_path")
+    if not isinstance(markdown_path, str) or not markdown_path.endswith("/report.md"):
+        raise GateError("canonical report lacks its bound Markdown path")
+    if Path(markdown_path).parent != Path(report_logical_path).parent:
+        raise GateError("canonical JSON and Markdown reports use different bundle roots")
+    report_url = f"{base}/blob/{evidence_commit}/{markdown_path}"
     measurement_url = f"{base}/commit/{measurement_commit}"
     evidence_url = f"{base}/commit/{evidence_commit}"
     host = report["system"]["host"]

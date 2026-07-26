@@ -273,7 +273,10 @@ def test_build_receipt_sanitizes_commands_and_tails(
 
 def test_readme_blocks_keep_row_order_links_and_slow_values() -> None:
     report = _report("2026-07-26T00:00:00+00:00")
-    report["canonical_bundle"] = {"manifest_path": "fixture"}
+    report["canonical_bundle"] = {
+        "manifest_path": "results/canonical/cohort/manifest.json",
+        "report_markdown_path": "results/canonical/cohort/report.md",
+    }
     blocks = generate_blocks(
         report,
         report_logical_path="results/canonical/cohort/report.json",
@@ -293,4 +296,6 @@ def test_readme_blocks_keep_row_order_links_and_slow_values() -> None:
         assert positions == sorted(positions)
         assert "0.750×" in block
         assert "/blob/" + "b" * 40 in block
+        assert "/report.md)" in block
+        assert "/report.json)" not in block
         assert "/commit/" + "a" * 40 in block
