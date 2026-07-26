@@ -88,6 +88,7 @@ def test_markdown_renderer_preserves_blockers() -> None:
     markdown = render_markdown(blocked_quick_report())
     assert "| Case | Source median | Native median | Median speedup | Status |" in markdown
     assert "quick-mode-is-never-publishable" in markdown
+    assert "Core executable row includes process startup" in markdown
     assert "Slower and negative-control results are intentionally preserved." in markdown
 
 

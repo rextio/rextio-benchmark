@@ -167,6 +167,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         [
             "",
             "Build, import, and first-call timings are separate from steady-state samples.",
+            "The Core executable row includes process startup in every retained observation.",
             "Slower and negative-control results are intentionally preserved.",
             "",
         ]
