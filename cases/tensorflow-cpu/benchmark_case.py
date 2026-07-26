@@ -4,10 +4,11 @@ from rextio_benchmark.canonical import exact_sequence
 
 
 def make_arguments(_benchmark_id: str) -> tuple[object, ...]:
+    # x: 512x96, weight: 80x96 (non-square), default transpose -> 96x80, bias: 80.
     tf.random.set_seed(20260726)
     x = tf.random.stateless_normal((512, 96), seed=(20, 26), dtype=tf.float32)
-    weight = tf.random.stateless_normal((96, 96), seed=(7, 26), dtype=tf.float32) * 0.04
-    bias = tf.linspace(-0.1, 0.1, 96)
+    weight = tf.random.stateless_normal((80, 96), seed=(7, 26), dtype=tf.float32) * 0.04
+    bias = tf.linspace(-0.1, 0.1, 80)
     return x, weight, bias, 12, 1
 
 

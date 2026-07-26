@@ -14,6 +14,15 @@ HEADLINE_ROWS = (
     ("PyTorch CPU deep MLP", "torch-cpu-deep-mlp"),
     ("TensorFlow CPU eager chain", "tensorflow-cpu-eager-chain"),
 )
+
+# Commit-pinned unreleased candidates. Not PyPI 0.1.3 releases.
+# Imported lazily in formatting to avoid import cycles with cohort.py.
+def _candidate_plugin_pins() -> dict[str, dict[str, str]]:
+    from .cohort import CANDIDATE_PLUGIN_PINS
+
+    return CANDIDATE_PLUGIN_PINS
+
+
 LOCALES = {
     "README.md": {
         "heading": "Verified CPU benchmark snapshot",
@@ -28,6 +37,10 @@ LOCALES = {
             "manually vectorized pandas/NumPy rewrite may be faster. Ratios below 1× "
             "mean Rextio was slower; values near 1× indicate parity, not a material "
             "speedup."
+        ),
+        "candidate_caveat": (
+            "Plugin versions marked candidate are unreleased Git commit pins, not "
+            "PyPI rextio-numpy 0.1.3 or rextio-tensorflow 0.1.3 releases."
         ),
         "links": ("Canonical report", "measurement commit", "evidence commit"),
     },
@@ -45,6 +58,10 @@ LOCALES = {
             "느렸다는 뜻이며, 1× 부근의 값은 실질적인 속도 향상이 아니라 성능이 "
             "대체로 동등하다는 뜻입니다."
         ),
+        "candidate_caveat": (
+            "candidate로 표시된 플러그인 버전은 PyPI rextio-numpy 0.1.3 또는 "
+            "rextio-tensorflow 0.1.3 릴리스가 아니라 미배포 Git 커밋 핀입니다."
+        ),
         "links": ("정식 보고서", "측정 커밋", "증거 커밋"),
     },
     "README.ja.md": {
@@ -61,6 +78,10 @@ LOCALES = {
             "書き換えの方が速い場合があります。1× 未満は Rextio の方が遅く、"
             "1× 付近は実質的な高速化ではなく同等性能を示します。"
         ),
+        "candidate_caveat": (
+            "candidate と記したプラグイン版は PyPI の rextio-numpy 0.1.3 や "
+            "rextio-tensorflow 0.1.3 リリースではなく、未公開 Git コミット固定です。"
+        ),
         "links": ("正規レポート", "測定コミット", "証拠コミット"),
     },
     "README.zh-hans.md": {
@@ -74,6 +95,10 @@ LOCALES = {
             "Core 可执行文件因包含进程启动而单独报告。NumPy `dot` 保留为 BLAS "
             "negative control；手工向量化的 pandas/NumPy 重写可能更快。低于 "
             "1× 表示 Rextio 更慢；接近 1× 表示性能相当，而非实质性加速。"
+        ),
+        "candidate_caveat": (
+            "标为 candidate 的插件版本是未发布的 Git 提交固定，不是 PyPI 上的 "
+            "rextio-numpy 0.1.3 或 rextio-tensorflow 0.1.3 发行版。"
         ),
         "links": ("正式报告", "测量提交", "证据提交"),
     },
@@ -89,10 +114,34 @@ LOCALES = {
             "negative control；手動向量化的 pandas/NumPy 重寫可能更快。低於 "
             "1× 表示 Rextio 較慢；接近 1× 表示效能相當，而非實質性加速。"
         ),
+        "candidate_caveat": (
+            "標為 candidate 的外掛版本是未發佈的 Git 提交固定，不是 PyPI 上的 "
+            "rextio-numpy 0.1.3 或 rextio-tensorflow 0.1.3 發行版。"
+        ),
         "links": ("正式報告", "測量提交", "證據提交"),
     },
 }
 _COMMIT = re.compile(r"^[0-9a-f]{40}$")
+
+
+def _format_versions(versions: dict[str, str]) -> str:
+    pins = _candidate_plugin_pins()
+    parts: list[str] = []
+    for name in sorted(versions):
+        version = versions[name]
+        pin = pins.get(name)
+        if pin is not None and version == pin["version"]:
+            parts.append(f"{name} {version} candidate@{pin['rev'][:12]}")
+        else:
+            parts.append(f"{name} {version}")
+    return ", ".join(parts)
+
+
+def _report_uses_candidate_plugins(versions: dict[str, str]) -> bool:
+    pins = _candidate_plugin_pins()
+    return any(
+        name in versions and versions[name] == pin["version"] for name, pin in pins.items()
+    )
 
 
 def generate_blocks(
@@ -115,6 +164,7 @@ def generate_blocks(
     cases = {case["id"]: case for case in report["cases"]}
     if any(case_id not in cases for _, case_id in HEADLINE_ROWS):
         raise GateError("canonical report lacks a frozen headline row")
+    # Full-report diagnostics (e.g. phase1) must never enter the six-row block.
     markdown_path = report["canonical_bundle"].get("report_markdown_path")
     if not isinstance(markdown_path, str) or not markdown_path.endswith("/report.md"):
         raise GateError("canonical report lacks its bound Markdown path")
@@ -132,7 +182,8 @@ def generate_blocks(
         for name, version in case["packages"].items()
         if name == "rextio" or name.startswith("rextio-")
     }
-    version_text = ", ".join(f"{name} {versions[name]}" for name in sorted(versions))
+    version_text = _format_versions(versions)
+    uses_candidates = _report_uses_candidate_plugins(versions)
     outputs = {}
     for filename, locale in LOCALES.items():
         domain, source, native, ratio = locale["columns"]
@@ -160,6 +211,12 @@ def generate_blocks(
             [
                 "",
                 locale["caveat"],
+            ]
+        )
+        if uses_candidates:
+            lines.extend(["", locale["candidate_caveat"]])
+        lines.extend(
+            [
                 "",
                 f"[{links[0]}]({report_url}) · [{links[1]}]({measurement_url}) · "
                 f"[{links[2]}]({evidence_url})",

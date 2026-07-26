@@ -9,7 +9,9 @@ def inference(
     depth: int,
     phase: int,
 ) -> TensorI64Cpu1D:
-    hidden = tf.matmul(x, weight)
+    # Default rank-2 transpose on a non-square weight (out, in) -> (in, out).
+    transposed = tf.transpose(weight)
+    hidden = tf.matmul(x, transposed)
     hidden = tf.nn.relu(hidden)
     for layer in range(depth):
         if (layer + phase) % 2 == 0:
@@ -19,4 +21,3 @@ def inference(
         hidden = tf.nn.tanh(hidden)
     probabilities = tf.nn.softmax(hidden + bias, axis=1)
     return tf.argmax(probabilities, axis=1)
-

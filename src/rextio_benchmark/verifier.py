@@ -11,7 +11,7 @@ from typing import Any
 
 import jsonschema
 
-from .cohort import cohort_id, validate_cohort
+from .cohort import cohort_id, expected_complete_case_ids, validate_cohort
 from .models import BenchmarkCase, load_cases, paired_orders
 from .output_table import validate_output_table
 from .portability import require_portable
@@ -717,8 +717,17 @@ def verify_report(report_path: Path, repository_root: Path) -> dict[str, Any]:
     canonical_bundle = _load_canonical_bundle(report, report_path, repository_root)
     known = {case.benchmark_id: case for case in load_cases(repository_root)}
     identifiers = [case["id"] for case in report["cases"]]
-    _require(len(identifiers) == len(set(identifiers)), "case ids are not unique")
-    _require(set(identifiers) == set(known), "report case set differs from manifests")
+    identifier_set = set(identifiers)
+    _require(len(identifiers) == len(identifier_set), "case ids are not unique")
+    _require(identifier_set <= set(known), "report contains unknown cases")
+    expected_cases = expected_complete_case_ids(
+        report,
+        current_case_ids=frozenset(known),
+    )
+    _require(
+        identifier_set == set(expected_cases),
+        "report case set differs from manifests",
+    )
     for case_report in report["cases"]:
         case = known[case_report["id"]]
         if not case_report["eligible"]:

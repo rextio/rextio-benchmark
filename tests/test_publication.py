@@ -18,6 +18,7 @@ from rextio_benchmark.verification import GateError, sha256_file
 DIAGNOSTIC_CASES = (
     "core-native-executable",
     "numpy-blas-dot-negative-control",
+    "numpy-mixed-nonfused-phase1",
 )
 
 
@@ -309,3 +310,47 @@ def test_readme_blocks_keep_row_order_links_and_slow_values() -> None:
         assert "/report.md)" in block
         assert "/report.json)" not in block
         assert "/commit/" + "a" * 40 in block
+        assert "numpy-mixed-nonfused-phase1" not in block
+        assert "phase1" not in block.lower()
+
+
+def test_readme_blocks_state_candidate_commit_caveats() -> None:
+    report = _report("2026-07-26T00:00:00+00:00")
+    for case in report["cases"]:
+        case["packages"] = {
+            "rextio": "0.1.6",
+            "rextio-numpy": "0.1.3",
+            "rextio-tensorflow": "0.1.3",
+        }
+    report["canonical_bundle"] = {
+        "manifest_path": "results/canonical/cohort/manifest.json",
+        "report_markdown_path": "results/canonical/cohort/report.md",
+    }
+    blocks = generate_blocks(
+        report,
+        report_logical_path="results/canonical/cohort/report.json",
+        measurement_commit="a" * 40,
+        evidence_commit="b" * 40,
+        github_url="https://github.com/rextio/rextio-benchmark",
+    )
+    english = blocks["README.md"]
+    assert "rextio-numpy 0.1.3 candidate@7316c47393a8" in english
+    assert "rextio-tensorflow 0.1.3 candidate@346ca58148ed" in english
+    assert "not" in english.lower() and "PyPI" in english
+    assert blocks["README.md"] == generate_blocks(
+        report,
+        report_logical_path="results/canonical/cohort/report.json",
+        measurement_commit="a" * 40,
+        evidence_commit="b" * 40,
+        github_url="https://github.com/rextio/rextio-benchmark",
+    )["README.md"]
+    for block in blocks.values():
+        assert "candidate" in block.lower() or "Candidate" in block
+        data_rows = [
+            line
+            for line in block.splitlines()
+            if line.startswith("| ") and not line.startswith("| ---")
+        ]
+        # header + six headline rows; phase1 diagnostic never appears
+        assert len(data_rows) == 7
+        assert "numpy-mixed-nonfused-phase1" not in block

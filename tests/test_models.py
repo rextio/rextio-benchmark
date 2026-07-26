@@ -20,6 +20,7 @@ def test_required_case_set_is_present() -> None:
         "core-hybrid",
         "core-native-executable",
         "numpy-mixed-fusion",
+        "numpy-mixed-nonfused-phase1",
         "numpy-blas-dot-negative-control",
         "networkx-dijkstra",
         "pandas-series-map",

@@ -1,11 +1,13 @@
 # rextio-benchmark
 
-`rextio-benchmark` is an auditable CPU-first showcase for the released Rextio
-ecosystem. It compares the exact original Python source with the generated
-fallback package and the same generated package forced onto its verified native
-route. It never invents or pre-populates benchmark numbers, discards slower
-results, or implies that Rust makes BLAS, libtorch, TensorFlow, or CUDA kernels
-intrinsically faster.
+`rextio-benchmark` is an auditable CPU-first showcase for the Rextio ecosystem.
+Package version **0.1.1 (Unreleased)** defines the pre-measurement candidate
+plugin cohort while preserving the complete **0.1.0** release history and the
+published Mac CPU evidence. It compares the exact original Python source with
+the generated fallback package and the same generated package forced onto its
+verified native route. It never invents or pre-populates benchmark numbers,
+discards slower results, or implies that Rust makes BLAS, libtorch, TensorFlow,
+or CUDA kernels intrinsically faster.
 
 ## Requirements
 
@@ -15,18 +17,26 @@ intrinsically faster.
 - enough disk space for isolated Torch and TensorFlow environments
 
 The locks use the released distributions `rextio==0.1.6`,
-`rextio-numpy==0.1.2`, `rextio-networkx==0.1.1`,
-`rextio-pandas==0.1.2`, `rextio-torch==0.1.2`, and
-`rextio-tensorflow==0.1.2`. The optional CUDA locks add
-`rextio-device-cuda==0.1.0`.
+`rextio-networkx==0.1.1`, `rextio-pandas==0.1.2`, and `rextio-torch==0.1.2`,
+plus **unreleased commit-pinned candidate** builds
+`rextio-numpy==0.1.3` at Git rev
+`7316c47393a86f1c701049b878d01e8d8f561cdb` and
+`rextio-tensorflow==0.1.3` at Git rev
+`346ca58148ed2563d4c7547dd8443d60cd4f905b`. Those candidates are **not** PyPI
+`rextio-numpy` 0.1.3 or `rextio-tensorflow` 0.1.3 releases. The optional CUDA
+locks add released `rextio-device-cuda==0.1.0` and the same TensorFlow
+candidate pin. See [CHANGELOG.md](CHANGELOG.md) and
+[PUBLICATION.md](PUBLICATION.md).
 
 > **Methodology amendment:** The first implementation applied the 10 percent
 > stability veto to all cases and rejected the first cohort because the
 > nonheadline NumPy BLAS negative control varied by approximately 23 percent.
 > All three original reports are retained; there is no sliding window or
 > fastest-run selection. All six pre-frozen README rows met the threshold, so
-> the publication gate now applies to those headline rows while Core executable
-> and NumPy `dot` remain fully published diagnostics.
+> the publication gate now applies to those headline rows while Core executable,
+> NumPy `dot`, and the phase1 non-fused diagnostic remain fully published
+> diagnostics. Existing 0.1.0 canonical figures stay historical until a
+> candidate three-run cohort is measured.
 
 ## Run the CPU suite
 
@@ -103,12 +113,13 @@ measurement/evidence commits, GitHub URL, and an output directory explicitly.
 | --- | --- | --- |
 | Core hybrid | Scalar arithmetic and nested control-flow loops | Generated wrapper overhead remains visible. |
 | Core executable | Closed direct-native call graph, Rust backend, `fallback=error` | Compares complete Python and Rust processes. |
-| NumPy fusion | Mixed scalar control flow and supported elementwise chains | Measures removed dispatch/materialization. |
+| NumPy fusion (`numpy-mixed-fusion`) | `phase=0` path: `(left + right) * (left - right)` | Headline fusion claim; requires fusion rule + `__rxtnp_echain_` proof. |
+| NumPy phase1 diagnostic | `phase=1` path: `(left - right) / (right + 2.0)` | Full-report only; **not** a fusion claim; never a README headline row. |
 | NumPy dot | Large rank-1 `numpy.dot` | Negative control; BLAS already owns the hot kernel. |
 | NetworkX | Typed adapter Dijkstra on a deterministic weighted graph | No unsupported raw NetworkX spelling is compiled. |
 | pandas | Exact numeric/boolean `Series.map` UDF pipeline | A manually vectorized pandas/NumPy rewrite may be faster. |
 | Torch CPU | Bounded rank-1/rank-2 float32 MLP and scalar loop control | Inference only; no training or unsupported device/dtype. |
-| TensorFlow CPU | Bounded eager TFE matmul/activation/reduction chain | No `tf.function`; no result is presumed. |
+| TensorFlow CPU | Default rank-2 transpose of non-square weight, then eager matmul/activation/classification | Requires transpose rule proof; no `tf.function`; no result is presumed. |
 
 Each case is an independent Rextio project under `cases/`. Core, NumPy,
 NetworkX, and pandas use `profiles/base`; Torch and TensorFlow use isolated

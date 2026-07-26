@@ -25,11 +25,58 @@ The Core README table contains exactly these rows, in this order:
 | PyTorch CPU | `torch-cpu-deep-mlp` |
 | TensorFlow CPU | `tensorflow-cpu-eager-chain` |
 
-The full canonical report must still retain every repository case.
-`core-native-executable` is reported separately because process startup is
-included. `numpy-blas-dot-negative-control` is retained as the BLAS-owned
-negative control. Neither may be substituted into the headline table after
-results are known. Neutral and slower headline rows remain in the table.
+The full canonical report must still retain every repository case for the
+active complete-case set. `core-native-executable` is reported separately
+because process startup is included. `numpy-blas-dot-negative-control` is
+retained as the BLAS-owned negative control. `numpy-mixed-nonfused-phase1` is
+retained as a diagnostic for the phase=1 non-fused branch and is **never** a
+fusion claim and **never** appears in the six-row README headline block.
+Neither diagnostic may be substituted into the headline table after results
+are known. Neutral and slower headline rows remain in the table.
+
+## Released 0.1.0 complete-case set (frozen historical)
+
+The published Mac CPU cohort
+`cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8`
+remains byte-immutable under
+`results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/`.
+Its complete case set is the released 0.1.0 set (without
+`numpy-mixed-nonfused-phase1`). Verification of that cohort continues against
+that frozen complete set so historical reports stay verifiable after later
+diagnostic expansion. Do not rewrite, re-hash, or re-measure that directory.
+
+## Candidate plugin 0.1.3 pre-measurement cohort (second frozen policy)
+
+A second cohort policy is frozen **before** any candidate three-run measurement:
+
+| Field | Value |
+| --- | --- |
+| Policy id | `candidate-plugin-0.1.3-pre-measurement` |
+| Policy version | `1` (same schema; no report schema bump) |
+| Status | pre-measurement (no published candidate numbers yet) |
+| Selection | chronological-first, exactly three publish reports |
+| Headline stability | 10% on the six frozen README rows only |
+| Complete cases | released 0.1.0 set **plus** `numpy-mixed-nonfused-phase1` |
+| `rextio-numpy` | version `0.1.3` from Git rev `7316c47393a86f1c701049b878d01e8d8f561cdb` |
+| `rextio-tensorflow` | version `0.1.3` from Git rev `346ca58148ed2563d4c7547dd8443d60cd4f905b` |
+
+These pins are **unreleased commit-pinned candidate builds**. They are **not**
+PyPI `rextio-numpy` 0.1.3 or `rextio-tensorflow` 0.1.3 releases. All other
+plugin, core, and framework versions remain on their existing released pins.
+
+Headline proof before timing:
+
+- `numpy-mixed-fusion` must declare and satisfy leaves-mode
+  `rextio-numpy/elementwise-chain-fusion` and a generated `__rxtnp_echain_`
+  helper/source presence.
+- `tensorflow-cpu-eager-chain` must declare and satisfy
+  `rextio-tensorflow/transpose-f32-cpu-2d` and generated
+  `rextio_tensorflow_runtime::transpose(` source presence, using a non-square
+  weight with default rank-2 transpose.
+- `numpy-mixed-nonfused-phase1` must not be described as fusion.
+
+Until a candidate three-run cohort is measured, committed, and verified, do not
+publish candidate performance numbers or replace the historical README figures.
 
 ## Qualifying cohort
 
@@ -37,7 +84,8 @@ A cohort is the first three chronological `publish` attempts from one clean
 measurement commit on one unchanged host. Every attempt must:
 
 1. pass `scripts/verify.sh` with `mode=publish` and `publishable=true`;
-2. contain the complete case set with no blocker or ineligible case;
+2. contain the complete case set for the active cohort policy with no blocker
+   or ineligible case;
 3. use identical schema, benchmark configuration, measurement commit, system
    identity, toolchain, package versions, and all hashed evidence declarations;
    and
@@ -45,10 +93,10 @@ measurement commit on one unchanged host. Every attempt must:
 
 For every case, take the three reports' `paired.median_speedup` values and
 report each deviation from the three-run median. The 10 percent publication
-gate applies only to the six pre-frozen headline rows. Core executable and the
-NumPy BLAS negative control remain fully published diagnostics even when their
-`within_threshold` field is false. Crossing 1× is allowed; stability does not
-mean that native must be faster.
+gate applies only to the six pre-frozen headline rows. Core executable, the
+NumPy BLAS negative control, and the phase1 non-fused diagnostic remain fully
+published diagnostics even when their `within_threshold` field is false.
+Crossing 1× is allowed; stability does not mean that native must be faster.
 
 If any of the first three attempts fails qualification, or a headline row
 fails stability, publish no result from that cohort. Diagnose the cause, make
@@ -84,8 +132,10 @@ recorded digest. Dirty or unrelated checkouts are rejected.
 
 Generate Core README blocks only from that verified canonical report with
 `rextio_benchmark readme-blocks`. The generator fixes the six rows above,
-retains ratios below 1×, and emits identical numbers and commit-pinned links in
-all five localized blocks.
+retains ratios below 1×, emits identical numbers and commit-pinned links in
+all five localized blocks, and, when candidate plugin versions are present,
+states the candidate version and Git-commit caveats. It never invents numbers
+and never inserts diagnostic cases into the headline table.
 Normalized outputs are stored once per case in the report's content-addressed
 `output_table`. Publication verification recomputes every table address,
 rejects dangling or unreferenced entries, and independently applies the

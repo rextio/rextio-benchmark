@@ -10,7 +10,26 @@
       "qualname": "numpy_case.workload.mixed_fusion",
       "expected_route": "native-plugin:rextio-numpy",
       "tolerance": {"absolute": 1e-9, "relative": 1e-9},
-      "description": "Mixed scalar control flow and fused NumPy elementwise chains."
+      "description": "Headline fused path: phase=0 executes (left + right) * (left - right).",
+      "generated_expectations": {
+        "plugin_rules": [
+          {
+            "rule_id": "rextio-numpy/elementwise-chain-fusion",
+            "operand_mode": "leaves"
+          }
+        ],
+        "generated_rust_source_substrings": ["__rxtnp_echain_"]
+      }
+    },
+    {
+      "id": "numpy-mixed-nonfused-phase1",
+      "kind": "python-module",
+      "module": "numpy_case.workload",
+      "function": "mixed_fusion",
+      "qualname": "numpy_case.workload.mixed_fusion",
+      "expected_route": "native-plugin:rextio-numpy",
+      "tolerance": {"absolute": 1e-9, "relative": 1e-9},
+      "description": "Diagnostic phase=1 path for (left - right) / (right + 2.0); not a fusion claim."
     },
     {
       "id": "numpy-blas-dot-negative-control",
@@ -25,4 +44,3 @@
     }
   ]
 }
-

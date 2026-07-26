@@ -187,3 +187,242 @@ def test_build_gate_requires_exact_route_and_built_artifact(tmp_path: Path) -> N
     (reports / "check.json").write_text(json.dumps(check), encoding="utf-8")
     with pytest.raises(GateError, match="route"):
         gate_build(case, tmp_path)
+
+
+def test_generated_expectations_require_plugin_rule_and_rust_substring(
+    tmp_path: Path,
+) -> None:
+    from rextio_benchmark.verification import enforce_generated_expectations
+
+    rust = tmp_path / "lib.rs"
+    rust.write_text(
+        "fn body() { let _ = __rxtnp_echain_demo(&a, &b); }\n",
+        encoding="utf-8",
+    )
+    check = {
+        "modules": [
+            {
+                "functions": [
+                    {
+                        "qualname": "numpy_case.workload.mixed_fusion",
+                        "route": "native-plugin:rextio-numpy",
+                        "native_status": "accepted",
+                        "plugin_claims": [
+                            {
+                                "rule_id": "rextio-numpy/elementwise-chain-fusion",
+                                "operand_mode": "leaves",
+                            }
+                        ],
+                    }
+                ]
+            }
+        ]
+    }
+    case = BenchmarkCase(
+        benchmark_id="numpy-mixed-fusion",
+        project="numpy",
+        profile="base",
+        project_root=tmp_path,
+        adapter_path=tmp_path / "benchmark_case.py",
+        kind="python-module",
+        module="numpy_case.workload",
+        function="mixed_fusion",
+        qualname="numpy_case.workload.mixed_fusion",
+        expected_route="native-plugin:rextio-numpy",
+        tolerance={"absolute": 0.0, "relative": 0.0},
+        raw={
+            "generated_expectations": {
+                "plugin_rules": [
+                    {
+                        "rule_id": "rextio-numpy/elementwise-chain-fusion",
+                        "operand_mode": "leaves",
+                    }
+                ],
+                "generated_rust_source_substrings": ["__rxtnp_echain_"],
+            }
+        },
+    )
+    enforce_generated_expectations(case, check, generated_rust_source=rust)
+
+    missing_rule = {
+        "modules": [
+            {
+                "functions": [
+                    {
+                        "qualname": "numpy_case.workload.mixed_fusion",
+                        "route": "native-plugin:rextio-numpy",
+                        "native_status": "accepted",
+                        "plugin_claims": [],
+                    }
+                ]
+            }
+        ]
+    }
+    with pytest.raises(GateError, match="missing required plugin rule"):
+        enforce_generated_expectations(case, missing_rule, generated_rust_source=rust)
+
+    rust.write_text("fn body() { /* no helper */ }\n", encoding="utf-8")
+    with pytest.raises(GateError, match="generated Rust source lacks"):
+        enforce_generated_expectations(case, check, generated_rust_source=rust)
+
+
+def test_gate_build_enforces_generated_expectations_on_portable_check(
+    tmp_path: Path,
+) -> None:
+    """Recorded check_report evidence is the portable snapshot; it must prove claims."""
+    from rextio_benchmark.verification import enforce_generated_expectations
+
+    project = tmp_path / "cases" / "numpy"
+    reports = project / ".rextio" / "reports"
+    generated = project / ".rextio" / "generated"
+    source = project / "src" / "numpy_case"
+    runtime_artifact = project / ".rextio/build/python/_rextio_native.so"
+    declared_artifact = generated / "python/_rextio_native.so"
+    source.mkdir(parents=True)
+    reports.mkdir(parents=True)
+    runtime_artifact.parent.mkdir(parents=True)
+    declared_artifact.parent.mkdir(parents=True)
+    (source / "workload.py").write_text(
+        "def mixed_fusion() -> int:\n    return 1\n",
+        encoding="utf-8",
+    )
+    for path in (
+        project / "benchmark_case.py",
+        project / "benchmark.json",
+        project / "rextio.toml",
+        tmp_path / "profiles/base/pyproject.toml",
+        tmp_path / "profiles/base/uv.lock",
+        tmp_path / "scripts/bootstrap.sh",
+        tmp_path / "scripts/build.sh",
+        tmp_path / "scripts/benchmark.sh",
+        tmp_path / "scripts/verify.sh",
+        tmp_path / "scripts/run.sh",
+        tmp_path / "pyproject.toml",
+        tmp_path / "schema/benchmark-report-v1.schema.json",
+        tmp_path / "PUBLICATION.md",
+        generated / "rust/Cargo.toml",
+        generated / "rust/Cargo.lock",
+        generated / "python/numpy_case/workload.py",
+        generated / "python/numpy_case/_fallback_workload.py",
+    ):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("fixture\n", encoding="utf-8")
+    rust = generated / "rust/src/lib.rs"
+    rust.parent.mkdir(parents=True, exist_ok=True)
+    rust.write_text(
+        "fn body() { let _ = __rxtnp_echain_demo(&a, &b); }\n",
+        encoding="utf-8",
+    )
+    for name in (
+        "build_runner.py",
+        "canonical.py",
+        "case_runner.py",
+        "models.py",
+        "output_table.py",
+        "portability.py",
+        "processes.py",
+        "report.py",
+        "statistics.py",
+        "verification.py",
+        "verifier.py",
+        "worker.py",
+    ):
+        path = tmp_path / "src/rextio_benchmark" / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("fixture\n", encoding="utf-8")
+    runtime_artifact.write_bytes(b"native")
+    declared_artifact.write_bytes(b"native")
+    check_payload = {
+        "modules": [
+            {
+                "functions": [
+                    {
+                        "qualname": "numpy_case.workload.mixed_fusion",
+                        "route": "native-plugin:rextio-numpy",
+                        "native_status": "accepted",
+                        "plugin_claims": [
+                            {
+                                "rule_id": "rextio-numpy/elementwise-chain-fusion",
+                                "operand_mode": "leaves",
+                            }
+                        ],
+                    }
+                ]
+            }
+        ]
+    }
+    (reports / "check.json").write_text(json.dumps(check_payload), encoding="utf-8")
+    (reports / "build.json").write_text(
+        json.dumps(
+            {
+                "build_python": str(project / ".rextio/build/python"),
+                "native_build": {
+                    "status": "built",
+                    "installed_path": str(declared_artifact),
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    case = BenchmarkCase(
+        benchmark_id="numpy-mixed-fusion",
+        project="numpy",
+        profile="base",
+        project_root=project,
+        adapter_path=project / "benchmark_case.py",
+        kind="python-module",
+        module="numpy_case.workload",
+        function="mixed_fusion",
+        qualname="numpy_case.workload.mixed_fusion",
+        expected_route="native-plugin:rextio-numpy",
+        tolerance={"absolute": 0.0, "relative": 0.0},
+        raw={
+            "generated_expectations": {
+                "plugin_rules": [
+                    {
+                        "rule_id": "rextio-numpy/elementwise-chain-fusion",
+                        "operand_mode": "leaves",
+                    }
+                ],
+                "generated_rust_source_substrings": ["__rxtnp_echain_"],
+            }
+        },
+    )
+    gate = gate_build(case, tmp_path)
+    portable_path = project / ".rextio/reports/portable/check.json"
+    assert gate["evidence"]["check_report"]["path"] == (
+        "cases/numpy/.rextio/reports/portable/check.json"
+    )
+    assert portable_path.is_file()
+    portable_check = json.loads(portable_path.read_text(encoding="utf-8"))
+    # The recorded portable evidence itself must satisfy the proof gate.
+    enforce_generated_expectations(
+        case,
+        portable_check,
+        generated_rust_source=rust,
+    )
+    # Missing claims in the portable evidence path fails closed.
+    stripped = json.loads(json.dumps(portable_check))
+    stripped["modules"][0]["functions"][0]["plugin_claims"] = []
+    with pytest.raises(GateError, match="missing required plugin rule"):
+        enforce_generated_expectations(
+            case,
+            stripped,
+            generated_rust_source=rust,
+        )
+
+
+def test_phase1_case_has_no_fusion_expectations() -> None:
+    from pathlib import Path as PathType
+
+    from rextio_benchmark.models import load_cases
+
+    root = PathType(__file__).resolve().parents[1]
+    cases = {case.benchmark_id: case for case in load_cases(root)}
+    assert "generated_expectations" not in cases["numpy-mixed-nonfused-phase1"].raw
+    fusion = cases["numpy-mixed-fusion"].raw["generated_expectations"]
+    assert fusion["plugin_rules"][0]["rule_id"] == ("rextio-numpy/elementwise-chain-fusion")
+    assert fusion["plugin_rules"][0]["operand_mode"] == "leaves"
+    tf = cases["tensorflow-cpu-eager-chain"].raw["generated_expectations"]
+    assert tf["plugin_rules"][0]["rule_id"] == ("rextio-tensorflow/transpose-f32-cpu-2d")
+    assert "rextio_tensorflow_runtime::transpose(" in tf["generated_rust_source_substrings"]

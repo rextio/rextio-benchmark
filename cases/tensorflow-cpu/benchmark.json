@@ -10,8 +10,17 @@
       "qualname": "tensorflow_case.workload.inference",
       "expected_route": "native-plugin:rextio-tensorflow",
       "tolerance": {"absolute": 0.0, "relative": 0.0},
-      "description": "Bounded CPU eager TFE operation chain; tf.function is not used."
+      "description": "Bounded CPU eager chain with default rank-2 transpose of a non-square weight; tf.function is not used.",
+      "generated_expectations": {
+        "plugin_rules": [
+          {
+            "rule_id": "rextio-tensorflow/transpose-f32-cpu-2d"
+          }
+        ],
+        "generated_rust_source_substrings": [
+          "rextio_tensorflow_runtime::transpose("
+        ]
+      }
     }
   ]
 }
-
