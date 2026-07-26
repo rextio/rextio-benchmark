@@ -3,6 +3,28 @@
   "profile": "base",
   "benchmarks": [
     {
+      "id": "numpy-f64-1d-boundary-direct-sink",
+      "kind": "python-module",
+      "module": "numpy_case.workload",
+      "function": "boundary_direct_sink",
+      "qualname": "numpy_case.workload.boundary_direct_sink",
+      "expected_route": "native-plugin:rextio-numpy",
+      "tolerance": {"absolute": 0.0, "relative": 0.0},
+      "description": "Diagnostic F64_1D boundary path: borrow one read-only NumPy input and fill one fresh Python-owned output directly.",
+      "generated_expectations": {
+        "plugin_rules": [
+          {
+            "rule_id": "rextio-numpy/elementwise-float64"
+          }
+        ],
+        "generated_rust_source_substrings": [
+          "numpy::PyReadonlyArray1<'py, f64>",
+          "__rxtnp_f64_1d_output",
+          "__rxtnp_release_f64_1d"
+        ]
+      }
+    },
+    {
       "id": "numpy-mixed-fusion",
       "kind": "python-module",
       "module": "numpy_case.workload",

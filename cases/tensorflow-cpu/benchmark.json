@@ -3,6 +3,35 @@
   "profile": "tensorflow-cpu",
   "benchmarks": [
     {
+      "id": "tensorflow-cpu-small-batch-prepost",
+      "kind": "python-module",
+      "module": "tensorflow_case.workload",
+      "function": "small_batch_prepost",
+      "qualname": "tensorflow_case.workload.small_batch_prepost",
+      "expected_route": "native-plugin:rextio-tensorflow",
+      "tolerance": {"absolute": 0.0, "relative": 0.0},
+      "description": "Diagnostic batch-1 eager scoring path where normalization, scalar control, tensor boundaries, softmax, and exact label postprocessing dominate small kernels.",
+      "generated_expectations": {
+        "plugin_rules": [
+          {
+            "rule_id": "rextio-tensorflow/matmul-f32-cpu-2d"
+          },
+          {
+            "rule_id": "rextio-tensorflow/softmax-axis1-f32-cpu-2d"
+          },
+          {
+            "rule_id": "rextio-tensorflow/argmax-axis1-i64-cpu-2d"
+          }
+        ],
+        "generated_rust_source_substrings": [
+          "struct TrustedResidentFacts",
+          "for round_idx in 0..4 {",
+          "rextio_tensorflow_runtime::softmax_axis1",
+          "rextio_tensorflow_runtime::argmax_axis1"
+        ]
+      }
+    },
+    {
       "id": "tensorflow-cpu-eager-chain",
       "kind": "python-module",
       "module": "tensorflow_case.workload",

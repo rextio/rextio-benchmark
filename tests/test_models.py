@@ -22,10 +22,13 @@ def test_required_case_set_is_present() -> None:
         "numpy-mixed-fusion",
         "numpy-mixed-nonfused-phase1",
         "numpy-blas-dot-negative-control",
+        "numpy-f64-1d-boundary-direct-sink",
         "networkx-dijkstra",
         "pandas-series-map",
         "torch-cpu-deep-mlp",
+        "torch-cpu-small-batch-prepost",
         "tensorflow-cpu-eager-chain",
+        "tensorflow-cpu-small-batch-prepost",
     }
 
 
@@ -34,4 +37,3 @@ def test_framework_profiles_are_isolated() -> None:
     assert cases["torch-cpu-deep-mlp"].profile == "torch-cpu"
     assert cases["tensorflow-cpu-eager-chain"].profile == "tensorflow-cpu"
     assert cases["core-hybrid"].profile == "base"
-

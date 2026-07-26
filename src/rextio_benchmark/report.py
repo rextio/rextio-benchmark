@@ -8,6 +8,10 @@ from pathlib import Path
 from typing import Any
 
 from .case_runner import MODE_SETTINGS, run_executable_case, run_module_case
+from .integration_targets import (
+    cases_require_integration_targets,
+    require_integration_targets_ready,
+)
 from .models import load_cases, profile_python
 from .portability import portable_value, require_portable
 from .provenance import assemble_candidate_policy_binding, report_package_versions
@@ -58,8 +62,13 @@ def run_suite(repository_root: Path, mode: str) -> tuple[dict[str, Any], Path]:
     if mode not in MODE_SETTINGS:
         raise ValueError(f"unknown mode {mode!r}")
     repository = _repository_state(repository_root)
+    loaded_cases = load_cases(repository_root)
+    if cases_require_integration_targets(
+        frozenset(case.benchmark_id for case in loaded_cases)
+    ):
+        require_integration_targets_ready(repository_root)
     cases = []
-    for case in load_cases(repository_root):
+    for case in loaded_cases:
         python = profile_python(repository_root, case.profile)
         try:
             if not python.is_file():

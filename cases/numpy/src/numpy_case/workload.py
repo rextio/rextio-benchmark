@@ -3,6 +3,10 @@ from rextio_numpy.types import F64Arr1
 import numpy as np
 
 
+def boundary_direct_sink(values: F64Arr1) -> F64Arr1:
+    return values + 0.25
+
+
 def mixed_fusion(
     left: F64Arr1,
     right: F64Arr1,

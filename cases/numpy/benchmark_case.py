@@ -3,6 +3,10 @@ from rextio_benchmark.canonical import sequence
 
 
 def make_arguments(benchmark_id: str) -> tuple[object, ...]:
+    if benchmark_id == "numpy-f64-1d-boundary-direct-sink":
+        values = np.linspace(-2.0, 2.0, 4_096, dtype=np.float64)
+        values.flags.writeable = False
+        return (values,)
     if benchmark_id == "numpy-mixed-fusion":
         # phase=0 selects the fused expression (left + right) * (left - right).
         left = np.linspace(0.01, 0.15, 100_000, dtype=np.float64)

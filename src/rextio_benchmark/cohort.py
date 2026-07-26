@@ -37,13 +37,33 @@ CANDIDATE_PLUGIN_013_COMPLETE_CASE_IDS = frozenset(
     }
 )
 
+# Unmeasured next candidate definition. The existing nine-case candidate
+# cohort remains historical and is registered below before these diagnostics
+# expand the live manifest set.
+NEXT_CANDIDATE_COMPLETE_CASE_IDS = frozenset(
+    {
+        *CANDIDATE_PLUGIN_013_COMPLETE_CASE_IDS,
+        "numpy-f64-1d-boundary-direct-sink",
+        "tensorflow-cpu-small-batch-prepost",
+        "torch-cpu-small-batch-prepost",
+    }
+)
+
 HEADLINE_CASE_IDS = frozenset(case_id for _, case_id in HEADLINE_ROWS)
 
-DIAGNOSTIC_CASE_IDS = frozenset(
+BASE_DIAGNOSTIC_CASE_IDS = frozenset(
     {
         "core-native-executable",
         "numpy-blas-dot-negative-control",
         "numpy-mixed-nonfused-phase1",
+    }
+)
+DIAGNOSTIC_CASE_IDS = frozenset(
+    {
+        *BASE_DIAGNOSTIC_CASE_IDS,
+        "numpy-f64-1d-boundary-direct-sink",
+        "tensorflow-cpu-small-batch-prepost",
+        "torch-cpu-small-batch-prepost",
     }
 )
 
@@ -72,12 +92,30 @@ CANDIDATE_COHORT_POLICY: dict[str, Any] = {
     "complete_case_ids": sorted(CANDIDATE_PLUGIN_013_COMPLETE_CASE_IDS),
     # Preserve HEADLINE_ROWS order (not alphabetical sorted-set order).
     "headline_case_ids": [case_id for _, case_id in HEADLINE_ROWS],
-    "diagnostic_case_ids": sorted(DIAGNOSTIC_CASE_IDS),
+    "diagnostic_case_ids": sorted(BASE_DIAGNOSTIC_CASE_IDS),
     "candidate_plugins": CANDIDATE_PLUGIN_PINS,
     "notes": (
         "Second frozen cohort definition for commit-pinned rextio-numpy and "
         "rextio-tensorflow 0.1.3 candidates. Not yet measured; invents no "
         "performance numbers. Phase1 is diagnostic only and is not a fusion claim."
+    ),
+}
+
+NEXT_CANDIDATE_COHORT_POLICY: dict[str, Any] = {
+    "policy_id": "candidate-boundary-prepost-0.1.1",
+    "policy_version": POLICY_VERSION,
+    "status": "blocked-pending-integration-shas",
+    "selection": "chronological-first",
+    "report_count": REPORT_COUNT,
+    "stability_threshold_fraction": STABILITY_THRESHOLD,
+    "complete_case_ids": sorted(NEXT_CANDIDATE_COMPLETE_CASE_IDS),
+    "headline_case_ids": [case_id for _, case_id in HEADLINE_ROWS],
+    "diagnostic_case_ids": sorted(DIAGNOSTIC_CASE_IDS),
+    "target_config": "profiles/next-candidate.toml",
+    "notes": (
+        "Unmeasured diagnostic expansion for the NumPy F64_1D direct boundary "
+        "and Torch/TensorFlow CPU small-batch pre/post paths. It cannot run or "
+        "publish until every integration target and active profile is exact-bound."
     ),
 }
 
@@ -124,6 +162,13 @@ FROZEN_CANONICAL_COHORTS: dict[str, dict[str, Any]] = {
         "measurement_commit": "ff7f4fea34199d850bed0446a8a223ef730ddf17",
         "evidence_commit": "e62a3f8fb1637f52288873fb077ba4efba0ead59",
     },
+    "becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a": {
+        "policy_id": "candidate-plugin-0.1.3-pre-measurement",
+        "policy_version": POLICY_VERSION,
+        "complete_case_ids": frozenset(CANDIDATE_PLUGIN_013_COMPLETE_CASE_IDS),
+        "measurement_commit": "afd73d76107f9b7f352c8f5bb8a0ed382051f8bc",
+        "evidence_commit": "fced0b803b823e7855ec6c52277a58aebb0aa8b9",
+    },
 }
 
 # Sorted path:sha256 fingerprint of the frozen released cohort tree contents.
@@ -134,6 +179,14 @@ RELEASED_CANONICAL_COHORT_TREE_SHA256 = (
     "b548eb97c30ddd3a38a7353cc9bc4091a5cee29cb86a077b1a375f3c22b4bd42"
 )
 RELEASED_CANONICAL_COHORT_FILE_COUNT = 60
+
+CANDIDATE_CANONICAL_COHORT_DIR = (
+    "results/canonical/cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a"
+)
+CANDIDATE_CANONICAL_COHORT_TREE_SHA256 = (
+    "d318c50496662908b057d2282e0934fdefc5d9a726e20567ab5d4f5b3a8c1cb7"
+)
+CANDIDATE_CANONICAL_COHORT_FILE_COUNT = 60
 
 
 def _evidence_declarations(report: dict[str, Any]) -> dict[str, Any]:
