@@ -5,7 +5,7 @@ import json
 import math
 import re
 import statistics
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -164,10 +164,21 @@ class VerifiedStabilitySummary:
     logical_path: str
     sha256: str
     raw_bytes: bytes
-    _attestation: object = field(repr=False, compare=False)
 
 
-_SUMMARY_ATTESTATION = object()
+def _finite_number(value: object, *, positive: bool = False) -> bool:
+    """Return whether *value* is a JSON number accepted by the evidence contract."""
+    return (
+        isinstance(value, (int, float))
+        and not isinstance(value, bool)
+        and math.isfinite(value)
+        and (value > 0 if positive else value >= 0)
+    )
+
+
+def _exact_int(value: object, expected: int) -> bool:
+    """Avoid Python's ``True == 1`` identity loophole in signed evidence."""
+    return type(value) is int and value == expected
 
 
 def load_verified_stability_summary(
@@ -198,6 +209,8 @@ def load_verified_stability_summary(
         or not re.fullmatch(r"[0-9a-f]{64}", cohort_id)
     ):
         raise GateError("canonical report lacks a bound stability summary")
+    if not isinstance(report_logical_path, str):
+        raise GateError("canonical report path must be a logical string")
     report_path = Path(report_logical_path)
     summary_path = Path(logical)
     if (
@@ -226,63 +239,80 @@ def load_verified_stability_summary(
         raise GateError("canonical stability summary is not JSON") from error
     if not isinstance(document, dict):
         raise GateError("canonical stability summary must be an object")
+    repository = report.get("repository")
+    repository_commit = repository.get("commit") if isinstance(repository, dict) else None
     if (
-        document.get("schema_version") != 1
+        not _exact_int(document.get("schema_version"), 1)
         or document.get("cohort_id") != cohort_id
-        or document.get("measurement_commit") != report.get("repository", {}).get("commit")
+        or document.get("measurement_commit") != repository_commit
         or document.get("policy_id") != policy_id
         or document.get("selection") != "chronological-first"
-        or document.get("selected_report_index") != 0
-        or document.get("report_count") != 3
-        or isinstance(document.get("stability_threshold_fraction"), bool)
+        or not _exact_int(document.get("selected_report_index"), 0)
+        or not _exact_int(document.get("report_count"), 3)
+        or not _finite_number(document.get("stability_threshold_fraction"), positive=True)
         or document.get("stability_threshold_fraction") != 0.10
     ):
         raise GateError("canonical stability summary identity differs")
     cases = document.get("cases")
     if not isinstance(cases, dict):
         raise GateError("canonical stability summary lacks cases")
-    report_case_ids = {case.get("id") for case in report.get("cases", []) if isinstance(case, dict)}
+    report_cases = report.get("cases")
+    if not isinstance(report_cases, list):
+        raise GateError("canonical report lacks a case list")
+    report_case_ids = [case.get("id") for case in report_cases if isinstance(case, dict)]
     if (
-        not all(isinstance(case_id, str) for case_id in report_case_ids)
-        or set(cases) != report_case_ids
+        len(report_case_ids) != len(report_cases)
+        or not all(isinstance(case_id, str) for case_id in report_case_ids)
+        or len(set(report_case_ids)) != len(report_case_ids)
+        or not all(isinstance(case_id, str) for case_id in cases)
+        or set(cases) != set(report_case_ids)
     ):
         raise GateError("canonical stability summary case keys differ")
-    for _, case_id in HEADLINE_ROWS:
+    report_by_id = {case["id"]: case for case in report_cases}
+    threshold = document["stability_threshold_fraction"]
+    for case_id in report_case_ids:
         record = cases.get(case_id)
         speedups = record.get("median_speedups") if isinstance(record, dict) else None
         median = record.get("three_run_median") if isinstance(record, dict) else None
+        deviations = record.get("relative_deviations") if isinstance(record, dict) else None
         deviation = record.get("maximum_relative_deviation") if isinstance(record, dict) else None
+        paired = report_by_id[case_id].get("paired")
+        selected_speedup = paired.get("median_speedup") if isinstance(paired, dict) else None
         if (
             not isinstance(record, dict)
-            or record.get("headline_gate") is not True
-            or record.get("within_threshold") is not True
             or not isinstance(speedups, list)
             or len(speedups) != 3
-            or not all(
-                isinstance(value, (int, float))
-                and not isinstance(value, bool)
-                and math.isfinite(value)
-                and value > 0
-                for value in speedups
-            )
-            or not isinstance(median, (int, float))
-            or isinstance(median, bool)
-            or not math.isfinite(median)
-            or median <= 0
-            or not isinstance(deviation, (int, float))
-            or isinstance(deviation, bool)
-            or not math.isfinite(deviation)
-            or deviation < 0
-            or deviation > 0.10
-            or not math.isclose(median, statistics.median(speedups), rel_tol=0.0, abs_tol=1e-12)
+            or not all(_finite_number(value, positive=True) for value in speedups)
+            or not _finite_number(median, positive=True)
+            or not isinstance(deviations, list)
+            or len(deviations) != 3
+            or not all(_finite_number(value) for value in deviations)
+            or not _finite_number(deviation)
+            or not _finite_number(selected_speedup, positive=True)
         ):
-            raise GateError(f"canonical stability summary rejects headline {case_id}")
+            raise GateError(f"canonical stability summary rejects case {case_id}")
+        recomputed_median = statistics.median(speedups)
+        recomputed_deviations = [
+            abs(value - recomputed_median) / recomputed_median for value in speedups
+        ]
+        recomputed_maximum = max(recomputed_deviations)
+        expected_headline = case_id in {headline_id for _, headline_id in HEADLINE_ROWS}
+        expected_within_threshold = recomputed_maximum <= threshold + 1e-12
+        if (
+            median != recomputed_median
+            or deviations != recomputed_deviations
+            or deviation != recomputed_maximum
+            or speedups[0] != selected_speedup
+            or record.get("headline_gate") is not expected_headline
+            or record.get("within_threshold") is not expected_within_threshold
+            or (expected_headline and not expected_within_threshold)
+        ):
+            raise GateError(f"canonical stability summary arithmetic differs for {case_id}")
     return VerifiedStabilitySummary(
         document=document,
         logical_path=logical,
         sha256=actual_sha,
         raw_bytes=raw,
-        _attestation=_SUMMARY_ATTESTATION,
     )
 
 
@@ -308,7 +338,7 @@ def generate_blocks(
     measurement_commit: str,
     evidence_commit: str,
     github_url: str,
-    stability_summary: VerifiedStabilitySummary | None = None,
+    repository_root: Path,
 ) -> dict[str, str]:
     if not report.get("publishable") or report.get("canonical_bundle") is None:
         raise GateError("README blocks require a verified canonical publish report")
@@ -388,25 +418,11 @@ def generate_blocks(
         bound_pins = bound_candidate_pins_from_report(report)
         if set(bound_pins) != expected_names or set(bound_pins) != present_names:
             raise GateError("README candidate policy pins do not match the full candidate set")
-    if not isinstance(stability_summary, VerifiedStabilitySummary):
-        raise GateError("README blocks require a verified stability summary")
-    if stability_summary._attestation is not _SUMMARY_ATTESTATION:
-        raise GateError("README blocks reject an unverified stability wrapper")
-    metadata = report.get("canonical_bundle")
-    if not isinstance(metadata, dict):
-        raise GateError("README blocks require canonical bundle metadata")
-    if (
-        stability_summary.logical_path != metadata.get("stability_summary_path")
-        or stability_summary.sha256 != metadata.get("stability_summary_sha256")
-        or hashlib.sha256(stability_summary.raw_bytes).hexdigest() != stability_summary.sha256
-    ):
-        raise GateError("README stability summary binding differs")
-    try:
-        parsed_summary = json.loads(stability_summary.raw_bytes)
-    except json.JSONDecodeError as error:
-        raise GateError("README stability summary bytes are not JSON") from error
-    if parsed_summary != stability_summary.document:
-        raise GateError("README stability summary document differs from raw bytes")
+    stability_summary = load_verified_stability_summary(
+        report,
+        repository_root=repository_root,
+        report_logical_path=report_logical_path,
+    )
     summary = stability_summary.document
     if summary.get("measurement_commit") != measurement_commit:
         raise GateError("stability summary measurement commit differs")

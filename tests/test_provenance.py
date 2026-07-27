@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 from copy import deepcopy
 from pathlib import Path
@@ -33,11 +32,7 @@ from rextio_benchmark.provenance import (
     report_package_versions,
 )
 from rextio_benchmark.readme_blocks import (
-    _SUMMARY_ATTESTATION,
-    HEADLINE_ROWS,
-    VerifiedStabilitySummary,
     generate_blocks,
-    load_verified_stability_summary,
 )
 from rextio_benchmark.verification import GateError
 from rextio_benchmark.verifier import (
@@ -48,32 +43,6 @@ from rextio_benchmark.verifier import (
 ROOT = Path(__file__).resolve().parents[1]
 NUMPY_PIN = CANDIDATE_PLUGIN_PINS["rextio-numpy"]
 TF_PIN = CANDIDATE_PLUGIN_PINS["rextio-tensorflow"]
-
-
-def _verified_summary(report: dict) -> VerifiedStabilitySummary:
-    document = {
-        "measurement_commit": report["repository"]["commit"],
-        "cases": {
-            case_id: {
-                "headline_gate": True,
-                "within_threshold": True,
-                "three_run_median": next(case for case in report["cases"] if case["id"] == case_id)[
-                    "paired"
-                ]["median_speedup"],
-            }
-            for _, case_id in HEADLINE_ROWS
-        },
-    }
-    raw = json.dumps(document, sort_keys=True, separators=(",", ":")).encode()
-    report["canonical_bundle"]["stability_summary_path"] = "results/canonical/cohort/stability.json"
-    report["canonical_bundle"]["stability_summary_sha256"] = hashlib.sha256(raw).hexdigest()
-    return VerifiedStabilitySummary(
-        document,
-        "results/canonical/cohort/stability.json",
-        hashlib.sha256(raw).hexdigest(),
-        raw,
-        _SUMMARY_ATTESTATION,
-    )
 
 
 def _policy_and_provenance(
@@ -612,15 +581,18 @@ def test_validate_cohort_released_shape_omits_candidate_fields() -> None:
     assert "candidate_plugins" not in summary
 
 
-def test_readme_labels_candidate_only_from_bound_provenance() -> None:
+def test_readme_labels_candidate_only_from_bound_provenance(tmp_path: Path) -> None:
+    from test_publication import _write_stability_fixture
+
     report = _minimal_report(with_binding=True)
+    report_path = _write_stability_fixture(report, tmp_path)
     blocks = generate_blocks(
         report,
-        report_logical_path="results/canonical/cohort/report.json",
+        report_logical_path=report_path,
         measurement_commit="a" * 40,
         evidence_commit="b" * 40,
         github_url="https://github.com/rextio/rextio-benchmark",
-        stability_summary=_verified_summary(report),
+        repository_root=tmp_path,
     )
     english = blocks["README.md"]
     assert "rextio-numpy 0.1.3 candidate@7316c47393a8" in english
@@ -628,7 +600,9 @@ def test_readme_labels_candidate_only_from_bound_provenance() -> None:
     assert "PyPI" in english
 
 
-def test_readme_labels_all_four_next_candidate_packages_in_every_locale() -> None:
+def test_readme_labels_all_four_next_candidate_packages_in_every_locale(tmp_path: Path) -> None:
+    from test_publication import _write_stability_fixture
+
     report = _minimal_report(with_binding=False)
     for case in report["cases"]:
         packages = dict(case["packages"])
@@ -653,13 +627,14 @@ def test_readme_labels_all_four_next_candidate_packages_in_every_locale() -> Non
         }
         for name, pin in pins.items()
     }
+    report_path = _write_stability_fixture(report, tmp_path)
     blocks = generate_blocks(
         report,
-        report_logical_path="results/canonical/cohort/report.json",
+        report_logical_path=report_path,
         measurement_commit="a" * 40,
         evidence_commit="b" * 40,
         github_url="https://github.com/rextio/rextio-benchmark",
-        stability_summary=_verified_summary(report),
+        repository_root=tmp_path,
     )
     for block in blocks.values():
         assert "rextio 0.1.7 candidate@b8b8ed11f6b7" in block
@@ -679,6 +654,7 @@ def test_readme_fails_for_candidate_versions_without_binding() -> None:
             measurement_commit="a" * 40,
             evidence_commit="b" * 40,
             github_url="https://github.com/rextio/rextio-benchmark",
+            repository_root=ROOT,
         )
 
 
@@ -697,6 +673,7 @@ def test_readme_rejects_cross_case_candidate_plugin_version_conflict() -> None:
             measurement_commit="a" * 40,
             evidence_commit="b" * 40,
             github_url="https://github.com/rextio/rextio-benchmark",
+            repository_root=ROOT,
         )
 
 
@@ -710,6 +687,7 @@ def test_readme_fails_for_tampered_binding() -> None:
             measurement_commit="a" * 40,
             evidence_commit="b" * 40,
             github_url="https://github.com/rextio/rextio-benchmark",
+            repository_root=ROOT,
         )
 
 
@@ -730,6 +708,7 @@ def test_readme_rejects_released_versions_plus_candidate_policy() -> None:
             measurement_commit="a" * 40,
             evidence_commit="b" * 40,
             github_url="https://github.com/rextio/rextio-benchmark",
+            repository_root=ROOT,
         )
 
 
@@ -747,6 +726,7 @@ def test_readme_rejects_partial_candidate_set_mismatch() -> None:
             measurement_commit="a" * 40,
             evidence_commit="b" * 40,
             github_url="https://github.com/rextio/rextio-benchmark",
+            repository_root=ROOT,
         )
 
 
@@ -770,6 +750,7 @@ def test_readme_and_verify_reject_downgrade_or_omitted_candidate_subset() -> Non
             measurement_commit="a" * 40,
             evidence_commit="b" * 40,
             github_url="https://github.com/rextio/rextio-benchmark",
+            repository_root=ROOT,
         )
 
     # Omit tensorflow only (subset spoof) with binding stripped.
@@ -787,6 +768,7 @@ def test_readme_and_verify_reject_downgrade_or_omitted_candidate_subset() -> Non
             measurement_commit="a" * 40,
             evidence_commit="b" * 40,
             github_url="https://github.com/rextio/rextio-benchmark",
+            repository_root=ROOT,
         )
 
     # Partial binding removed after full versions: delete package_provenance for one pin.
@@ -807,11 +789,7 @@ def test_authentic_released_frozen_readme_has_no_candidate_labels() -> None:
         measurement_commit=real["repository"]["commit"],
         evidence_commit=FROZEN_CANONICAL_COHORTS[RELEASED_COHORT_ID]["evidence_commit"],
         github_url="https://github.com/rextio/rextio-benchmark",
-        stability_summary=load_verified_stability_summary(
-            real,
-            repository_root=ROOT,
-            report_logical_path=f"{RELEASED_CANONICAL_COHORT_DIR}/report.json",
-        ),
+        repository_root=ROOT,
     )
     assert "candidate@" not in blocks["README.md"]
     assert "0.1.3" not in blocks["README.md"] or "rextio-numpy 0.1.2" in blocks["README.md"]

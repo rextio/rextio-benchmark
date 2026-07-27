@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import hashlib
 import json
 from copy import deepcopy
 from pathlib import Path
@@ -19,10 +18,9 @@ from rextio_benchmark.integration_targets import (
 )
 from rextio_benchmark.portability import portable_value, require_portable
 from rextio_benchmark.readme_blocks import (
-    _SUMMARY_ATTESTATION,
     HEADLINE_ROWS,
-    VerifiedStabilitySummary,
     generate_blocks,
+    load_verified_stability_summary,
 )
 from rextio_benchmark.report import _host_identity
 from rextio_benchmark.verification import GateError, sha256_file
@@ -34,30 +32,53 @@ DIAGNOSTIC_CASES = (
 )
 
 
-def _verified_summary(report: dict) -> VerifiedStabilitySummary:
+def _write_stability_fixture(report: dict, root: Path) -> str:
+    """Create the same hash-bound JSON path that the public renderer consumes."""
+    logical = "results/canonical/cohort/stability.json"
+    cases = {}
+    for case in report["cases"]:
+        speedup = case["paired"]["median_speedup"]
+        speedups = [speedup, speedup, speedup]
+        cases[case["id"]] = {
+            "median_speedups": speedups,
+            "three_run_median": speedup,
+            "relative_deviations": [0.0, 0.0, 0.0],
+            "maximum_relative_deviation": 0.0,
+            "headline_gate": case["id"] in {case_id for _, case_id in HEADLINE_ROWS},
+            "within_threshold": True,
+        }
+    policy = report.get("policy")
     document = {
+        "schema_version": 1,
+        "cohort_id": "c" * 64,
         "measurement_commit": report["repository"]["commit"],
-        "cases": {
-            case_id: {
-                "headline_gate": True,
-                "within_threshold": True,
-                "three_run_median": next(case for case in report["cases"] if case["id"] == case_id)[
-                    "paired"
-                ]["median_speedup"],
-            }
-            for _, case_id in HEADLINE_ROWS
-        },
+        "policy_id": policy.get("policy_id") if isinstance(policy, dict) else None,
+        "selection": "chronological-first",
+        "selected_report_index": 0,
+        "report_count": 3,
+        "stability_threshold_fraction": 0.10,
+        "cases": cases,
     }
     raw = json.dumps(document, sort_keys=True, separators=(",", ":")).encode()
-    report["canonical_bundle"]["stability_summary_path"] = "results/canonical/cohort/stability.json"
-    report["canonical_bundle"]["stability_summary_sha256"] = hashlib.sha256(raw).hexdigest()
-    return VerifiedStabilitySummary(
-        document,
-        "results/canonical/cohort/stability.json",
-        hashlib.sha256(raw).hexdigest(),
-        raw,
-        _SUMMARY_ATTESTATION,
+    path = root / logical
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(raw)
+    report.setdefault("canonical_bundle", {}).update(
+        {
+            "cohort_id": document["cohort_id"],
+            "stability_summary_path": logical,
+            "stability_summary_sha256": sha256_file(path),
+        }
     )
+    return "results/canonical/cohort/report.json"
+
+
+def _rewrite_stability_fixture(report: dict, root: Path, mutate) -> None:
+    path = root / report["canonical_bundle"]["stability_summary_path"]
+    document = json.loads(path.read_text(encoding="utf-8"))
+    mutate(document)
+    path.write_text(json.dumps(document, sort_keys=True, separators=(",", ":")), encoding="utf-8")
+    report["canonical_bundle"]["stability_summary_sha256"] = sha256_file(path)
 
 
 def _report(timestamp: str, commit: str = "a" * 40) -> dict:
@@ -116,6 +137,121 @@ def _report(timestamp: str, commit: str = "a" * 40) -> dict:
         "configuration": {"pairs": 12},
         "cases": cases,
     }
+
+
+@pytest.mark.parametrize("field", ["schema_version", "selected_report_index", "report_count"])
+def test_stability_loader_rejects_boolean_identity_fields(tmp_path: Path, field: str) -> None:
+    report = _report("2026-07-26T00:00:00+00:00")
+    logical = _write_stability_fixture(report, tmp_path)
+    _rewrite_stability_fixture(report, tmp_path, lambda document: document.__setitem__(field, True))
+    with pytest.raises(GateError, match="identity differs"):
+        load_verified_stability_summary(
+            report,
+            repository_root=tmp_path,
+            report_logical_path=logical,
+        )
+
+
+@pytest.mark.parametrize(
+    ("name", "mutate"),
+    [
+        (
+            "forged-maximum",
+            lambda document: document["cases"]["core-hybrid"].__setitem__(
+                "maximum_relative_deviation", 0.01
+            ),
+        ),
+        (
+            "boolean-speedup",
+            lambda document: document["cases"]["core-hybrid"].__setitem__(
+                "median_speedups", [True, True, True]
+            ),
+        ),
+        (
+            "negative-deviation",
+            lambda document: document["cases"]["core-hybrid"].__setitem__(
+                "relative_deviations", [-0.1, 0.0, 0.0]
+            ),
+        ),
+        (
+            "boolean-deviation",
+            lambda document: document["cases"]["core-hybrid"].__setitem__(
+                "maximum_relative_deviation", False
+            ),
+        ),
+        (
+            "wrong-selected-speedup",
+            lambda document: document["cases"]["core-hybrid"].update(
+                {
+                    "median_speedups": [2.0, 2.0, 2.0],
+                    "three_run_median": 2.0,
+                    "relative_deviations": [0.0, 0.0, 0.0],
+                    "maximum_relative_deviation": 0.0,
+                }
+            ),
+        ),
+    ],
+    ids=lambda value: value if isinstance(value, str) else None,
+)
+def test_stability_loader_rejects_forged_case_arithmetic(tmp_path: Path, name: str, mutate) -> None:
+    report = _report("2026-07-26T00:00:00+00:00")
+    logical = _write_stability_fixture(report, tmp_path)
+    _rewrite_stability_fixture(report, tmp_path, mutate)
+    with pytest.raises(GateError, match="rejects case|arithmetic differs"):
+        load_verified_stability_summary(
+            report,
+            repository_root=tmp_path,
+            report_logical_path=logical,
+        )
+
+
+def test_stability_loader_rejects_duplicate_report_case_id(tmp_path: Path) -> None:
+    report = _report("2026-07-26T00:00:00+00:00")
+    logical = _write_stability_fixture(report, tmp_path)
+    report["cases"].append(deepcopy(report["cases"][0]))
+    with pytest.raises(GateError, match="case keys differ"):
+        load_verified_stability_summary(
+            report,
+            repository_root=tmp_path,
+            report_logical_path=logical,
+        )
+
+
+@pytest.mark.parametrize(
+    "logical", ["/tmp/stability.json", "results/canonical/../escape/stability.json"]
+)
+def test_stability_loader_rejects_absolute_or_parent_summary_path(
+    tmp_path: Path, logical: str
+) -> None:
+    report = _report("2026-07-26T00:00:00+00:00")
+    report_path = _write_stability_fixture(report, tmp_path)
+    report["canonical_bundle"]["stability_summary_path"] = logical
+    with pytest.raises(GateError, match="not sibling-bound"):
+        load_verified_stability_summary(
+            report,
+            repository_root=tmp_path,
+            report_logical_path=report_path,
+        )
+
+
+def test_stability_loader_rejects_outside_symlink(tmp_path: Path) -> None:
+    report = _report("2026-07-26T00:00:00+00:00")
+    logical = _write_stability_fixture(report, tmp_path)
+    path = tmp_path / report["canonical_bundle"]["stability_summary_path"]
+    outside = tmp_path.parent / "outside-stability.json"
+    outside.write_bytes(path.read_bytes())
+    path.unlink()
+    try:
+        path.symlink_to(outside)
+    except OSError as error:
+        pytest.skip(f"symlinks unavailable on this platform: {error}")
+    report["canonical_bundle"]["stability_summary_sha256"] = sha256_file(outside)
+    with pytest.raises(GateError, match="escapes repository"):
+        load_verified_stability_summary(
+            report,
+            repository_root=tmp_path,
+            report_logical_path=logical,
+        )
 
 
 def test_cohort_is_chronological_stable_and_not_fastest() -> None:
@@ -325,7 +461,7 @@ def test_build_receipt_sanitizes_commands_and_tails(
     assert record["command"][0] == "profiles/base/.venv/bin/rextio"
 
 
-def test_readme_blocks_keep_row_order_links_and_slow_values() -> None:
+def test_readme_blocks_keep_row_order_links_and_slow_values(tmp_path: Path) -> None:
     from rextio_benchmark.cohort import CANDIDATE_COHORT_POLICY, CANDIDATE_PLUGIN_PINS
 
     report = _report("2026-07-26T00:00:00+00:00")
@@ -362,13 +498,14 @@ def test_readme_blocks_keep_row_order_links_and_slow_values() -> None:
         }
         for name, pin in CANDIDATE_PLUGIN_PINS.items()
     }
+    report_path = _write_stability_fixture(report, tmp_path)
     blocks = generate_blocks(
         report,
-        report_logical_path="results/canonical/cohort/report.json",
+        report_logical_path=report_path,
         measurement_commit="a" * 40,
         evidence_commit="b" * 40,
         github_url="https://github.com/rextio/rextio-benchmark",
-        stability_summary=_verified_summary(report),
+        repository_root=tmp_path,
     )
     assert list(blocks) == [
         "README.md",
@@ -399,7 +536,7 @@ def test_readme_blocks_keep_row_order_links_and_slow_values() -> None:
         assert "phase1" not in block.lower()
 
 
-def test_readme_blocks_state_candidate_commit_caveats() -> None:
+def test_readme_blocks_state_candidate_commit_caveats(tmp_path: Path) -> None:
     from rextio_benchmark.cohort import CANDIDATE_COHORT_POLICY, CANDIDATE_PLUGIN_PINS
 
     report = _report("2026-07-26T00:00:00+00:00")
@@ -436,13 +573,14 @@ def test_readme_blocks_state_candidate_commit_caveats() -> None:
         }
         for name, pin in CANDIDATE_PLUGIN_PINS.items()
     }
+    report_path = _write_stability_fixture(report, tmp_path)
     blocks = generate_blocks(
         report,
-        report_logical_path="results/canonical/cohort/report.json",
+        report_logical_path=report_path,
         measurement_commit="a" * 40,
         evidence_commit="b" * 40,
         github_url="https://github.com/rextio/rextio-benchmark",
-        stability_summary=_verified_summary(report),
+        repository_root=tmp_path,
     )
     english = blocks["README.md"]
     assert "rextio-numpy 0.1.3 candidate@7316c47393a8" in english
@@ -452,11 +590,11 @@ def test_readme_blocks_state_candidate_commit_caveats() -> None:
         blocks["README.md"]
         == generate_blocks(
             report,
-            report_logical_path="results/canonical/cohort/report.json",
+            report_logical_path=report_path,
             measurement_commit="a" * 40,
             evidence_commit="b" * 40,
             github_url="https://github.com/rextio/rextio-benchmark",
-            stability_summary=_verified_summary(report),
+            repository_root=tmp_path,
         )["README.md"]
     )
     for block in blocks.values():
