@@ -514,30 +514,34 @@ def test_readme_blocks_keep_row_order_links_and_slow_values(tmp_path: Path) -> N
         "README.zh-hans.md",
         "README.zh-hant.md",
     ]
-    version_labels = {
-        "README.md": "Versions:",
-        "README.ko.md": "버전:",
-        "README.ja.md": "バージョン:",
-        "README.zh-hans.md": "版本:",
-        "README.zh-hant.md": "版本:",
+    suite_markers = {
+        "README.md": "all five first-party plugins",
+        "README.ko.md": "플러그인 5개 전부",
+        "README.ja.md": "プラグイン 5 つすべて",
+        "README.zh-hans.md": "全部五个一等插件",
+        "README.zh-hant.md": "全部五個一等外掛",
     }
     for filename, block in blocks.items():
-        assert version_labels[filename] in block
+        assert suite_markers[filename] in block
     for block in blocks.values():
         positions = [block.index(label) for label, _ in HEADLINE_ROWS]
         assert positions == sorted(positions)
         assert "pandas Series.map" in block
         assert "0.750×" in block
-        assert "/blob/" + "b" * 40 in block
-        assert "/report.md)" in block
-        assert "/report.json)" not in block
-        assert "/commit/" + "a" * 40 in block
+        assert "/blob/" not in block
+        assert "/commit/" not in block
+        assert "report.md)" not in block
+        assert "report.json)" not in block
+        assert "https://github.com/rextio/rextio-benchmark" in block
         assert "numpy-mixed-nonfused-phase1" not in block
         assert "phase1" not in block.lower()
 
 
 def test_readme_blocks_state_candidate_commit_caveats(tmp_path: Path) -> None:
+    import re
+
     from rextio_benchmark.cohort import CANDIDATE_COHORT_POLICY, CANDIDATE_PLUGIN_PINS
+    from rextio_benchmark.readme_blocks import BENCHMARK_PROVENANCE_URL
 
     report = _report("2026-07-26T00:00:00+00:00")
     for case in report["cases"]:
@@ -583,9 +587,20 @@ def test_readme_blocks_state_candidate_commit_caveats(tmp_path: Path) -> None:
         repository_root=tmp_path,
     )
     english = blocks["README.md"]
-    assert "rextio-numpy 0.1.3 candidate@7316c47393a8" in english
-    assert "rextio-tensorflow 0.1.3 candidate@346ca58148ed" in english
-    assert "not" in english.lower() and "PyPI" in english
+    assert "- [rextio-numpy](https://github.com/rextio/rextio-numpy) 0.1.3 candidate" in english
+    assert (
+        "- [rextio-tensorflow](https://github.com/rextio/rextio-tensorflow) 0.1.3 candidate"
+        in english
+    )
+    assert BENCHMARK_PROVENANCE_URL in english
+    assert "candidate@" not in english
+    assert re.search(r"\b[0-9a-f]{40}\b", english) is None
+    assert "/blob/" not in english
+    assert "/commit/" not in english
+    for pin in CANDIDATE_PLUGIN_PINS.values():
+        assert pin["rev"] not in english
+        assert pin["rev"][:12] not in english
+    assert "PyPI" in english
     assert (
         blocks["README.md"]
         == generate_blocks(
@@ -599,6 +614,11 @@ def test_readme_blocks_state_candidate_commit_caveats(tmp_path: Path) -> None:
     )
     for block in blocks.values():
         assert "candidate" in block.lower() or "Candidate" in block
+        assert "candidate@" not in block
+        assert BENCHMARK_PROVENANCE_URL in block
+        assert re.search(r"\b[0-9a-f]{40}\b", block) is None
+        assert "/blob/" not in block
+        assert "/commit/" not in block
         data_rows = [
             line
             for line in block.splitlines()

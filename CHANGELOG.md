@@ -6,10 +6,14 @@ Changelog and Semantic Versioning conventions.
 ## [0.1.1] — Unreleased
 
 Measured publication of the unreleased plugin **0.1.3** candidate Mac CPU
-cohort under package **0.1.1 (Unreleased)**. This cut does **not** replace the
-released **0.1.0** complete-case cohort or its historical figures.
-`rextio-numpy==0.1.3` and `rextio-tensorflow==0.1.3` remain **unreleased
-commit-pinned candidate builds**, not PyPI 0.1.3 releases.
+cohort under package **0.1.1 (Unreleased)**. The suite covers **Rextio Core
+plus five first-party plugins**, and each workload exercises its relevant
+component. This cut does **not** replace the released **0.1.0** complete-case
+cohort or its historical figures. `rextio`, `rextio-numpy`, `rextio-torch`,
+and `rextio-tensorflow` remain **unreleased commit-pinned candidate builds**
+for the boundary/pre-post cohort; `rextio-networkx==0.1.1` and
+`rextio-pandas==0.1.2` were installed as **released PyPI artifacts** whose
+commits identify the corresponding release tags.
 
 ### Added
 
@@ -52,9 +56,15 @@ commit-pinned candidate builds**, not PyPI 0.1.3 releases.
   `cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8`.
 - Correct headline `numpy-mixed-fusion` to pass `phase=0` so the timed path is
   the fused expression `(left + right) * (left - right)`.
-- README block generator and all five locales state candidate version and
-  commit caveats only from verified bound report policy/provenance (never from
-  version strings alone).
+- README block generator and all five locales list the six measured packages
+  (names, versions, GitHub links) and link to `rextio-benchmark` for exact
+  revisions; Core marker blocks never expose commit hashes or `candidate@`
+  labels. Candidate package presence still comes only from verified bound
+  report policy/provenance (never from version strings alone).
+- Document explicit package provenance for the 0.1.1 suite in README and
+  PUBLICATION: Core 0.1.7 / NumPy 0.1.3 / Torch 0.1.3 / TensorFlow 0.1.3 as
+  Git-pinned candidates, and NetworkX 0.1.1 / pandas 0.1.2 as released PyPI
+  pins with release-tag commits.
 - Historical canonical verification accepts the frozen 0.1.0 complete-case set
   so old reports remain verifiable after the diagnostic case is added.
 - Canonical verification treats bundled run-output evidence as authoritative

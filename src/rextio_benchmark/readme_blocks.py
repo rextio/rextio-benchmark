@@ -20,11 +20,26 @@ HEADLINE_ROWS = (
     ("TensorFlow CPU eager chain", "tensorflow-cpu-eager-chain"),
 )
 
+# Core + five first-party plugins; order matches package-doc provenance tables.
+SUITE_PACKAGE_ORDER = (
+    "rextio",
+    "rextio-numpy",
+    "rextio-networkx",
+    "rextio-pandas",
+    "rextio-torch",
+    "rextio-tensorflow",
+)
+
+BENCHMARK_PROVENANCE_URL = "https://github.com/rextio/rextio-benchmark"
+
 LOCALES = {
     "README.md": {
         "heading": "Verified CPU benchmark snapshot",
         "intro": "Same Python source and deterministic inputs",
-        "versions": "Versions",
+        "suite_statement": (
+            "This snapshot used **Rextio Core together with all five first-party "
+            "plugins**. Packages (PyPI name · version · repository):"
+        ),
         "columns": ("Domain", "Python source", "Rextio native", "Speedup (source ÷ native)"),
         "caveat": (
             "These are workload-specific results, not library-wide performance claims. "
@@ -36,22 +51,29 @@ LOCALES = {
             "speedup."
         ),
         "candidate_caveat": (
-            "Packages marked candidate are unreleased exact Git commit pins, including "
-            "Core 0.1.7 and rextio-torch 0.1.3; they are not PyPI releases. "
-            "The same applies to rextio-numpy 0.1.3 and rextio-tensorflow 0.1.3."
+            "Packages marked **candidate** (Core 0.1.7, rextio-numpy 0.1.3, "
+            "rextio-torch 0.1.3, and rextio-tensorflow 0.1.3) are unreleased versions, "
+            "not PyPI releases. rextio-networkx 0.1.1 and rextio-pandas 0.1.2 are "
+            "released packages."
         ),
         "selection": "Selection: the chronologically first report (index 0) of exactly three qualifying publish reports; never selected by speedup.",  # noqa: E501
         "stability": "Stability: all six frozen headline rows passed the 10% stability veto.",
         "median_intro": "Three-run medians",
         "median_labels": ("Core", "NumPy", "NetworkX", "pandas", "Torch", "TensorFlow"),
         "nonclaim": "No result claims intrinsic BLAS, libtorch, TensorFlow-kernel, or CUDA acceleration.",  # noqa: E501
-        "abbrev_pin": "`candidate@` labels display the first 12 hexadecimal characters only; each candidate is verified and pinned by its full 40-character Git commit.",  # noqa: E501
-        "links": ("Canonical report", "measurement commit", "evidence commit"),
+        "methodology": (
+            "**For full methodology, exact revisions, evidence, diagnostics, and "
+            f"detailed results, use the [rextio-benchmark]({BENCHMARK_PROVENANCE_URL}) "
+            "repository.**"
+        ),
     },
     "README.ko.md": {
         "heading": "검증된 CPU 벤치마크 스냅샷",
         "intro": "동일한 Python 소스와 결정론적 입력",
-        "versions": "버전",
+        "suite_statement": (
+            "이 스냅샷은 **Rextio Core와 1st-party 플러그인 5개 전부**를 함께 사용해 "
+            "측정했습니다. 패키지(PyPI 이름 · 버전 · 저장소):"
+        ),
         "columns": ("영역", "Python 소스", "Rextio native", "속도비 (소스 ÷ native)"),
         "caveat": (
             "각 수치는 해당 workload의 결과이며 라이브러리 전체 성능을 뜻하지 않습니다. "
@@ -63,22 +85,28 @@ LOCALES = {
             "대체로 동등하다는 뜻입니다."
         ),
         "candidate_caveat": (
-            "candidate로 표시된 패키지는 Core 0.1.7과 rextio-torch 0.1.3을 포함한 "
-            "미배포 exact Git 커밋 핀이며 PyPI 릴리스가 아닙니다. rextio-numpy "
-            "0.1.3과 rextio-tensorflow 0.1.3에도 동일하게 적용됩니다."
+            "**candidate**로 표시된 패키지(Core 0.1.7, rextio-numpy 0.1.3, "
+            "rextio-torch 0.1.3, rextio-tensorflow 0.1.3)는 미배포 버전이며 PyPI "
+            "릴리스가 아닙니다. rextio-networkx 0.1.1과 rextio-pandas 0.1.2는 "
+            "릴리스된 패키지입니다."
         ),
         "selection": "선택: 정확히 세 개의 적격 publish 보고서 중 시간순 첫 번째 보고서(index 0)를 사용하며, 속도비로 선택하지 않습니다.",  # noqa: E501
         "stability": "안정성: 고정된 여섯 headline 행은 모두 10% 안정성 veto를 통과했습니다.",
         "median_intro": "3회 실행 중앙값",
         "median_labels": ("Core", "NumPy", "NetworkX", "pandas", "Torch", "TensorFlow"),
         "nonclaim": "어떤 결과도 BLAS, libtorch, TensorFlow kernel 또는 CUDA 자체의 가속을 주장하지 않습니다.",  # noqa: E501
-        "abbrev_pin": "`candidate@` 표시는 앞 12자리 16진수만 보이며, 각 candidate는 전체 40자리 Git 커밋으로 검증·고정됩니다.",  # noqa: E501
-        "links": ("정식 보고서", "측정 커밋", "증거 커밋"),
+        "methodology": (
+            "**전체 방법론, 정확한 리비전, 증거, 진단, 상세 결과는 "
+            f"[rextio-benchmark]({BENCHMARK_PROVENANCE_URL}) 저장소를 사용하세요.**"
+        ),
     },
     "README.ja.md": {
         "heading": "検証済み CPU ベンチマーク",
         "intro": "同一の Python ソースと決定論的な入力",
-        "versions": "バージョン",
+        "suite_statement": (
+            "このスナップショットは **Rextio Core と 1st-party プラグイン 5 つすべて**を"
+            "組み合わせて測定しました。パッケージ（PyPI 名 · バージョン · リポジトリ）:"
+        ),
         "columns": ("領域", "Python ソース", "Rextio native", "高速化 (source ÷ native)"),
         "caveat": (
             "各数値は個別 workload の結果であり、ライブラリ全体の性能を示すものでは"
@@ -90,22 +118,29 @@ LOCALES = {
             "1× 付近は実質的な高速化ではなく同等性能を示します。"
         ),
         "candidate_caveat": (
-            "candidate と記したパッケージは Core 0.1.7 と rextio-torch 0.1.3 "
-            "を含む未公開の exact Git コミット固定であり、PyPI リリースでは"
-            "ありません。rextio-numpy 0.1.3 と rextio-tensorflow 0.1.3 も同様です。"
+            "**candidate** と記したパッケージ（Core 0.1.7、rextio-numpy 0.1.3、"
+            "rextio-torch 0.1.3、rextio-tensorflow 0.1.3）は未公開バージョンであり、"
+            "PyPI リリースではありません。rextio-networkx 0.1.1 と rextio-pandas "
+            "0.1.2 はリリース済みパッケージです。"
         ),
         "selection": "選択: 正確に 3 件の適格な publish レポートのうち時系列で最初のレポート（index 0）を使い、速度比では選択しません。",  # noqa: E501
         "stability": "安定性: 固定された 6 つの headline 行はすべて 10% の安定性 veto を通過しました。",  # noqa: E501
         "median_intro": "3 回実行の中央値",
         "median_labels": ("Core", "NumPy", "NetworkX", "pandas", "Torch", "TensorFlow"),
         "nonclaim": "BLAS、libtorch、TensorFlow kernel、CUDA 自体の高速化を主張する結果ではありません。",  # noqa: E501
-        "abbrev_pin": "`candidate@` は先頭 12 桁の 16 進表示のみで、各 candidate は完全な 40 桁 Git コミットで検証・固定されます。",  # noqa: E501
-        "links": ("正規レポート", "測定コミット", "証拠コミット"),
+        "methodology": (
+            "**方法論の全文、正確なリビジョン、証拠、診断、詳細結果については、"
+            f"[rextio-benchmark]({BENCHMARK_PROVENANCE_URL}) リポジトリを参照して"
+            "ください。**"
+        ),
     },
     "README.zh-hans.md": {
         "heading": "已验证的 CPU 基准快照",
         "intro": "相同的 Python 源码和确定性输入",
-        "versions": "版本",
+        "suite_statement": (
+            "本快照使用 **Rextio Core 与全部五个一等插件** 共同测量。"
+            "包（PyPI 名称 · 版本 · 仓库）："
+        ),
         "columns": ("领域", "Python 源码", "Rextio native", "加速比 (source ÷ native)"),
         "caveat": (
             "这些数值仅代表对应 workload，并非对整个库的性能声明。"
@@ -115,22 +150,27 @@ LOCALES = {
             "1× 表示 Rextio 更慢；接近 1× 表示性能相当，而非实质性加速。"
         ),
         "candidate_caveat": (
-            "标为 candidate 的包（包括 Core 0.1.7 和 rextio-torch 0.1.3）是未发布的 "
-            "exact Git 提交固定，不是 PyPI 发行版；rextio-numpy 0.1.3 和 "
-            "rextio-tensorflow 0.1.3 也同样如此。"
+            "标为 **candidate** 的包（Core 0.1.7、rextio-numpy 0.1.3、rextio-torch "
+            "0.1.3、rextio-tensorflow 0.1.3）为未发布版本，不是 PyPI 发行版。"
+            "rextio-networkx 0.1.1 与 rextio-pandas 0.1.2 为已发布包。"
         ),
         "selection": "选择：恰好三份合格 publish 报告中按时间顺序第一份（index 0）；绝不按加速比选择。",  # noqa: E501
         "stability": "稳定性：六个固定 headline 行全部通过了 10% 稳定性 veto。",
         "median_intro": "三次运行中位数",
         "median_labels": ("Core", "NumPy", "NetworkX", "pandas", "Torch", "TensorFlow"),
         "nonclaim": "结果不声称 BLAS、libtorch、TensorFlow kernel 或 CUDA 内核本身得到加速。",
-        "abbrev_pin": "`candidate@` 只显示前 12 个十六进制字符；每个 candidate 都按完整 40 字符 Git 提交验证并固定。",  # noqa: E501
-        "links": ("正式报告", "测量提交", "证据提交"),
+        "methodology": (
+            "**完整方法、确切修订、证据、诊断与详细结果，请使用 "
+            f"[rextio-benchmark]({BENCHMARK_PROVENANCE_URL}) 仓库。**"
+        ),
     },
     "README.zh-hant.md": {
         "heading": "已驗證的 CPU 基準快照",
         "intro": "相同的 Python 原始碼和確定性輸入",
-        "versions": "版本",
+        "suite_statement": (
+            "本快照使用 **Rextio Core 與全部五個一等外掛** 共同測量。"
+            "套件（PyPI 名稱 · 版本 · 儲存庫）："
+        ),
         "columns": ("領域", "Python 原始碼", "Rextio native", "加速比 (source ÷ native)"),
         "caveat": (
             "這些數值僅代表對應 workload，並非對整個函式庫的效能聲明。"
@@ -140,17 +180,19 @@ LOCALES = {
             "1× 表示 Rextio 較慢；接近 1× 表示效能相當，而非實質性加速。"
         ),
         "candidate_caveat": (
-            "標為 candidate 的套件（包括 Core 0.1.7 和 rextio-torch 0.1.3）是未發佈的 "
-            "exact Git 提交固定，不是 PyPI 發行版；rextio-numpy 0.1.3 和 "
-            "rextio-tensorflow 0.1.3 也同樣如此。"
+            "標為 **candidate** 的套件（Core 0.1.7、rextio-numpy 0.1.3、rextio-torch "
+            "0.1.3、rextio-tensorflow 0.1.3）為未發佈版本，不是 PyPI 發行版。"
+            "rextio-networkx 0.1.1 與 rextio-pandas 0.1.2 為已發佈套件。"
         ),
         "selection": "選擇：恰好三份合格 publish 報告中按時間順序第一份（index 0）；絕不按加速比選擇。",  # noqa: E501
         "stability": "穩定性：六個固定 headline 行全部通過了 10% 穩定性 veto。",
         "median_intro": "三次執行中位數",
         "median_labels": ("Core", "NumPy", "NetworkX", "pandas", "Torch", "TensorFlow"),
         "nonclaim": "結果不聲稱 BLAS、libtorch、TensorFlow kernel 或 CUDA 核心本身得到加速。",
-        "abbrev_pin": "`candidate@` 只顯示前 12 個十六進位字元；每個 candidate 都按完整 40 字元 Git 提交驗證並固定。",  # noqa: E501
-        "links": ("正式報告", "測量提交", "證據提交"),
+        "methodology": (
+            "**完整方法、確切修訂、證據、診斷與詳細結果，請使用 "
+            f"[rextio-benchmark]({BENCHMARK_PROVENANCE_URL}) 儲存庫。**"
+        ),
     },
 }
 _COMMIT = re.compile(r"^[0-9a-f]{40}$")
@@ -316,19 +358,40 @@ def load_verified_stability_summary(
     )
 
 
-def _format_versions(
+def _package_github_url(name: str) -> str:
+    """Return the canonical first-party GitHub repository URL for *name*."""
+    return f"https://github.com/rextio/{name}"
+
+
+def _package_is_candidate(
+    name: str,
+    version: str,
+    bound_pins: dict[str, dict[str, str]],
+) -> bool:
+    """Return whether *name*/*version* is a verified bound candidate pin."""
+    pin = bound_pins.get(name)
+    return pin is not None and version == pin["version"]
+
+
+def _format_package_bullets(
     versions: dict[str, str],
     bound_pins: dict[str, dict[str, str]],
-) -> str:
-    parts: list[str] = []
-    for name in sorted(versions):
+) -> list[str]:
+    """Format Core package bullets: linked name, version, optional candidate.
+
+    Order follows :data:`SUITE_PACKAGE_ORDER`. Candidate status comes only from
+    verified bound provenance; no revision characters are rendered.
+    """
+    ordered = [name for name in SUITE_PACKAGE_ORDER if name in versions]
+    ordered.extend(sorted(name for name in versions if name not in SUITE_PACKAGE_ORDER))
+    lines: list[str] = []
+    for name in ordered:
         version = versions[name]
-        pin = bound_pins.get(name)
-        if pin is not None and version == pin["version"]:
-            parts.append(f"{name} {version} candidate@{pin['rev'][:12]}")
-        else:
-            parts.append(f"{name} {version}")
-    return ", ".join(parts)
+        label = f"[{name}]({_package_github_url(name)}) {version}"
+        if _package_is_candidate(name, version, bound_pins):
+            label = f"{label} candidate"
+        lines.append(f"- {label}")
+    return lines
 
 
 def generate_blocks(
@@ -346,21 +409,20 @@ def generate_blocks(
         raise GateError("measurement commit differs from canonical report")
     if not _COMMIT.fullmatch(measurement_commit) or not _COMMIT.fullmatch(evidence_commit):
         raise GateError("README commit arguments must be full lowercase Git commits")
-    base = github_url.rstrip("/")
-    if not base.startswith("https://github.com/"):
+    if not github_url.rstrip("/").startswith("https://github.com/"):
         raise GateError("GitHub URL must use https://github.com/")
     cases = {case["id"]: case for case in report["cases"]}
     if any(case_id not in cases for _, case_id in HEADLINE_ROWS):
         raise GateError("canonical report lacks a frozen headline row")
     # Full-report diagnostics (e.g. phase1) must never enter the six-row block.
+    # measurement_commit / evidence_commit and the bound Markdown path remain
+    # required validation inputs; Core marker output never embeds blob/commit
+    # URLs (paths expose hashes).
     markdown_path = report["canonical_bundle"].get("report_markdown_path")
     if not isinstance(markdown_path, str) or not markdown_path.endswith("/report.md"):
         raise GateError("canonical report lacks its bound Markdown path")
     if Path(markdown_path).parent != Path(report_logical_path).parent:
         raise GateError("canonical JSON and Markdown reports use different bundle roots")
-    report_url = f"{base}/blob/{evidence_commit}/{markdown_path}"
-    measurement_url = f"{base}/commit/{measurement_commit}"
-    evidence_url = f"{base}/commit/{evidence_commit}"
     host = report["system"]["host"]
     machine = " / ".join(dict.fromkeys((host["model"], host["cpu_brand"])))
     date = report["generated_at"][:10]
@@ -372,10 +434,10 @@ def generate_blocks(
         for name, version in case["packages"].items()
         if name == "rextio" or name.startswith("rextio-")
     }
-    # Candidate@REV labels and caveats come only from verified bound policy/provenance.
+    # Candidate labels and caveats come only from verified bound policy/provenance.
     # Non-released publishable/canonical reports require the full frozen candidate set;
     # authentic released frozen reports stay unlabeled. Version strings alone never
-    # imply candidacy.
+    # imply candidacy. Revision characters are never rendered in Core blocks.
     from .integration_targets import TARGET_PACKAGE_VERSIONS, TARGET_POLICY_ID
     from .provenance import (
         bound_candidate_pins_from_report,
@@ -426,7 +488,7 @@ def generate_blocks(
     summary = stability_summary.document
     if summary.get("measurement_commit") != measurement_commit:
         raise GateError("stability summary measurement commit differs")
-    version_text = _format_versions(display_versions, bound_pins)
+    package_bullets = _format_package_bullets(display_versions, bound_pins)
     uses_candidates = bool(bound_pins)
     outputs = {}
     for filename, locale in LOCALES.items():
@@ -441,7 +503,11 @@ def generate_blocks(
             "",
             f"{locale['intro']}; **{machine}**, **{date}**, CPython "
             f"**{report['system']['python_controller']}**.",
-            f"{locale['versions']}: {version_text}.",
+            "",
+            locale["suite_statement"],
+            "",
+            *package_bullets,
+            "",
             locale["selection"],
             f"{locale['stability']} {locale['median_intro']}: {three_run_medians}.",
             "",
@@ -454,7 +520,6 @@ def generate_blocks(
             native_ms = case["lanes"]["rextio-native"]["steady_state"]["median_ns"] / 1e6
             speedup = case["paired"]["median_speedup"]
             lines.append(f"| {label} | {source_ms:.6f} ms | {native_ms:.6f} ms | {speedup:.3f}× |")
-        links = locale["links"]
         lines.extend(
             [
                 "",
@@ -467,14 +532,12 @@ def generate_blocks(
                 [
                     "",
                     locale["candidate_caveat"],
-                    locale["abbrev_pin"],
                 ]
             )
         lines.extend(
             [
                 "",
-                f"[{links[0]}]({report_url}) · [{links[1]}]({measurement_url}) · "
-                f"[{links[2]}]({evidence_url})",
+                locale["methodology"],
                 "<!-- rextio-benchmark:end -->",
                 "",
             ]

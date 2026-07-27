@@ -1,13 +1,16 @@
 # rextio-benchmark
 
 `rextio-benchmark` is an auditable CPU-first showcase for the Rextio ecosystem.
-Package version **0.1.1 (Unreleased)** publishes the measured unreleased
-plugin **0.1.3** candidate Mac CPU cohort while preserving the complete
-**0.1.0** release history and its frozen published evidence. It compares the
-exact original Python source with the generated fallback package and the same
-generated package forced onto its verified native route. It never invents or
-pre-populates benchmark numbers, discards slower results, or implies that Rust
-makes BLAS, libtorch, TensorFlow, or CUDA kernels intrinsically faster.
+The suite covers **Rextio Core plus five first-party plugins** (NumPy,
+NetworkX, pandas, Torch, and TensorFlow); each workload exercises its relevant
+component. Package version **0.1.1 (Unreleased)** publishes the measured
+unreleased plugin **0.1.3** candidate Mac CPU cohort while preserving the
+complete **0.1.0** release history and its frozen published evidence. It
+compares the exact original Python source with the generated fallback package
+and the same generated package forced onto its verified native route. It never
+invents or pre-populates benchmark numbers, discards slower results, or implies
+that Rust makes BLAS, libtorch, TensorFlow, or CUDA kernels intrinsically
+faster.
 
 ## Requirements
 
@@ -22,6 +25,25 @@ declared in `profiles/next-candidate.toml`. They are not corresponding PyPI
 releases. NetworkX 0.1.1 and pandas 0.1.2 remain released pins; optional CUDA
 locks also include released `rextio-device-cuda==0.1.0`. See
 [CHANGELOG.md](CHANGELOG.md) and [PUBLICATION.md](PUBLICATION.md).
+
+### Measured package provenance (0.1.1 suite)
+
+The published boundary/pre-post Mac CPU cohort measures exactly these six
+packages. NetworkX and pandas were installed as **released PyPI artifacts**;
+their commit values identify the corresponding release tags. The other four
+packages are **exact Git-pinned candidates** (not PyPI releases of those
+versions).
+
+| PyPI package | Measured version / status | Git commit (40-char) | Repository |
+| --- | --- | --- | --- |
+| `rextio` | 0.1.7 candidate | `b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97` | https://github.com/rextio/rextio |
+| `rextio-numpy` | 0.1.3 candidate | `cf461e6775780a598517980c555a1aec079285d8` | https://github.com/rextio/rextio-numpy |
+| `rextio-networkx` | 0.1.1 released | `ffc8681756d6f690ac090fe6b03f6ba220896ded` | https://github.com/rextio/rextio-networkx |
+| `rextio-pandas` | 0.1.2 released | `930a4fbfbd084a9869dbbf521770e811ea3d6652` | https://github.com/rextio/rextio-pandas |
+| `rextio-torch` | 0.1.3 candidate | `1e92b24b154c7266dc37d19533fc3e17a8b05f9a` | https://github.com/rextio/rextio-torch |
+| `rextio-tensorflow` | 0.1.3 candidate | `1fdb2e1cd91d058a056db76c2e0a15d52c855053` | https://github.com/rextio/rextio-tensorflow |
+
+Canonical evidence directories under `results/canonical/` remain byte-immutable.
 
 > **Methodology amendment:** The first implementation applied the 10 percent
 > stability veto to all cases and rejected the first cohort because the
@@ -50,15 +72,9 @@ from clean commit
 [`92ef027cea25f9d6bf1d730de4c226d40016ba6e`](https://github.com/rextio/rextio-benchmark/commit/92ef027cea25f9d6bf1d730de4c226d40016ba6e).
 The immutable policy id is `candidate-boundary-prepost-0.1.1` (a frozen
 pre-measurement name); this is its subsequently measured candidate cohort.
-The unreleased exact Git candidates are:
-
-- `rextio==0.1.7` candidate@`b8b8ed11f6b7`
-- `rextio-numpy==0.1.3` candidate@`cf461e677578`
-- `rextio-torch==0.1.3` candidate@`1e92b24b154c`
-- `rextio-tensorflow==0.1.3` candidate@`1fdb2e1cd91`
-
-They are candidate Git revisions, not corresponding PyPI releases. NetworkX
-0.1.1 and pandas 0.1.2 remain released pins.
+Measured package provenance for Core plus the five first-party plugins is the
+table above: four exact Git-pinned candidates and two released PyPI pins
+(NetworkX 0.1.1, pandas 0.1.2) whose commits identify the release tags.
 
 **Three-run medians** (headline rows; maximum relative deviation from the
 three-run median; 10% stability gate):

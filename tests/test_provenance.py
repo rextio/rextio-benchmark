@@ -582,6 +582,9 @@ def test_validate_cohort_released_shape_omits_candidate_fields() -> None:
 
 
 def test_readme_labels_candidate_only_from_bound_provenance(tmp_path: Path) -> None:
+    import re
+
+    from rextio_benchmark.readme_blocks import BENCHMARK_PROVENANCE_URL
     from test_publication import _write_stability_fixture
 
     report = _minimal_report(with_binding=True)
@@ -595,12 +598,28 @@ def test_readme_labels_candidate_only_from_bound_provenance(tmp_path: Path) -> N
         repository_root=tmp_path,
     )
     english = blocks["README.md"]
-    assert "rextio-numpy 0.1.3 candidate@7316c47393a8" in english
-    assert "rextio-tensorflow 0.1.3 candidate@346ca58148ed" in english
+    assert "- [rextio-numpy](https://github.com/rextio/rextio-numpy) 0.1.3 candidate" in english
+    assert (
+        "- [rextio-tensorflow](https://github.com/rextio/rextio-tensorflow) 0.1.3 candidate"
+        in english
+    )
+    assert BENCHMARK_PROVENANCE_URL in english
+    assert "candidate@" not in english
+    assert re.search(r"\b[0-9a-f]{40}\b", english) is None
+    assert "/blob/" not in english
+    assert "/commit/" not in english
+    assert NUMPY_PIN["rev"] not in english
+    assert TF_PIN["rev"] not in english
     assert "PyPI" in english
 
 
 def test_readme_labels_all_four_next_candidate_packages_in_every_locale(tmp_path: Path) -> None:
+    import re
+
+    from rextio_benchmark.readme_blocks import (
+        BENCHMARK_PROVENANCE_URL,
+        SUITE_PACKAGE_ORDER,
+    )
     from test_publication import _write_stability_fixture
 
     report = _minimal_report(with_binding=False)
@@ -636,13 +655,29 @@ def test_readme_labels_all_four_next_candidate_packages_in_every_locale(tmp_path
         github_url="https://github.com/rextio/rextio-benchmark",
         repository_root=tmp_path,
     )
+    expected_bullets = [
+        "- [rextio](https://github.com/rextio/rextio) 0.1.7 candidate",
+        "- [rextio-numpy](https://github.com/rextio/rextio-numpy) 0.1.3 candidate",
+        "- [rextio-networkx](https://github.com/rextio/rextio-networkx) 0.1.1",
+        "- [rextio-pandas](https://github.com/rextio/rextio-pandas) 0.1.2",
+        "- [rextio-torch](https://github.com/rextio/rextio-torch) 0.1.3 candidate",
+        "- [rextio-tensorflow](https://github.com/rextio/rextio-tensorflow) 0.1.3 candidate",
+    ]
+    assert [line.split(" ", 1)[0] for line in expected_bullets]  # package names present
+    assert len(expected_bullets) == len(SUITE_PACKAGE_ORDER)
     for block in blocks.values():
-        assert "rextio 0.1.7 candidate@b8b8ed11f6b7" in block
-        assert "rextio-numpy 0.1.3 candidate@cf461e677578" in block
-        assert "rextio-torch 0.1.3 candidate@1e92b24b154c" in block
-        assert "rextio-tensorflow 0.1.3 candidate@1fdb2e1cd91d" in block
-        assert "Core 0.1.7" in block
-        assert "rextio-torch 0.1.3" in block
+        positions = [block.index(bullet) for bullet in expected_bullets]
+        assert positions == sorted(positions)
+        for bullet in expected_bullets:
+            assert bullet in block
+        assert BENCHMARK_PROVENANCE_URL in block
+        assert "candidate@" not in block
+        assert re.search(r"\b[0-9a-f]{40}\b", block) is None
+        assert "/blob/" not in block
+        assert "/commit/" not in block
+        for pin in pins.values():
+            assert pin["rev"] not in block
+            assert pin["rev"][:12] not in block
 
 
 def test_readme_fails_for_candidate_versions_without_binding() -> None:
@@ -791,8 +826,17 @@ def test_authentic_released_frozen_readme_has_no_candidate_labels() -> None:
         github_url="https://github.com/rextio/rextio-benchmark",
         repository_root=ROOT,
     )
-    assert "candidate@" not in blocks["README.md"]
-    assert "0.1.3" not in blocks["README.md"] or "rextio-numpy 0.1.2" in blocks["README.md"]
+    import re
+
+    english = blocks["README.md"]
+    assert "candidate@" not in english
+    assert "0.1.3" not in english or "rextio-numpy 0.1.2" in english
+    assert "- [rextio-numpy](https://github.com/rextio/rextio-numpy) 0.1.2" in english
+    assert " candidate" not in english  # released frozen reports stay unlabeled
+    assert "https://github.com/rextio/rextio-benchmark" in english
+    assert re.search(r"\b[0-9a-f]{40}\b", english) is None
+    assert "/blob/" not in english
+    assert "/commit/" not in english
     assert is_released_frozen_report(real) is True
     _verify_candidate_policy_and_provenance(real, ROOT)
 

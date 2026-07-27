@@ -25,6 +25,10 @@ The Core README table contains exactly these rows, in this order:
 | PyTorch CPU | `torch-cpu-deep-mlp` |
 | TensorFlow CPU | `tensorflow-cpu-eager-chain` |
 
+The suite covers **Rextio Core plus five first-party plugins**. Each headline
+workload exercises its relevant component (Core, NumPy, NetworkX, pandas,
+Torch, or TensorFlow).
+
 The full canonical report must still retain every repository case for the
 active complete-case set. `core-native-executable` is reported separately
 because process startup is included. `numpy-blas-dot-negative-control` is
@@ -135,7 +139,8 @@ exact final Core 0.1.7 integration merge
 merge `1fdb2e1cd91d058a056db76c2e0a15d52c855053`. NumPy 0.1.3 is pinned to
 `cf461e6775780a598517980c555a1aec079285d8`, and Torch 0.1.3 is pinned to
 `1e92b24b154c7266dc37d19533fc3e17a8b05f9a`. Every active CPU profile selects
-every declared version from its exact Git source.
+every declared candidate version from its exact Git source. NetworkX 0.1.1 and
+pandas 0.1.2 remain released PyPI installs on the base profile.
 
 | Field | Value |
 | --- | --- |
@@ -145,6 +150,24 @@ every declared version from its exact Git source.
 | Selection | chronological-first, exactly three publish reports |
 | Headline stability | 10% on the six frozen README rows only (**passed**) |
 | Complete cases | earlier nine-case candidate set plus all three diagnostics above |
+
+### Measured package provenance (Core + five plugins)
+
+This cohort exercises Rextio Core and all five first-party plugins. NetworkX
+and pandas were installed as **released PyPI artifacts**; their commit values
+identify the corresponding release tags. The other four packages are **exact
+Git-pinned candidates**.
+
+| PyPI package | Measured version / status | Git commit (40-char) | Repository |
+| --- | --- | --- | --- |
+| `rextio` | 0.1.7 candidate | `b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97` | https://github.com/rextio/rextio |
+| `rextio-numpy` | 0.1.3 candidate | `cf461e6775780a598517980c555a1aec079285d8` | https://github.com/rextio/rextio-numpy |
+| `rextio-networkx` | 0.1.1 released | `ffc8681756d6f690ac090fe6b03f6ba220896ded` | https://github.com/rextio/rextio-networkx |
+| `rextio-pandas` | 0.1.2 released | `930a4fbfbd084a9869dbbf521770e811ea3d6652` | https://github.com/rextio/rextio-pandas |
+| `rextio-torch` | 0.1.3 candidate | `1e92b24b154c7266dc37d19533fc3e17a8b05f9a` | https://github.com/rextio/rextio-torch |
+| `rextio-tensorflow` | 0.1.3 candidate | `1fdb2e1cd91d058a056db76c2e0a15d52c855053` | https://github.com/rextio/rextio-tensorflow |
+
+Do not rewrite, re-hash, or re-measure any directory under `results/canonical/`.
 
 ### Measured boundary/pre-post headline results (no cherry-picking)
 
@@ -253,14 +276,19 @@ retroactively to the released 0.1.0 cohort.
 
 Generate Core README blocks only from that verified canonical report with
 `rextio_benchmark readme-blocks`. The generator fixes the six rows above,
-retains ratios below 1×, emits identical numbers and commit-pinned links in
-all five localized blocks, and labels `candidate@REV` / candidate caveats only
-from verified bound report policy and package provenance (never from version
-strings alone). It additionally reads the sibling hash-bound `stability.json`
-and requires its policy, cohort/measurement identity, chronological index 0 of
-exactly three reports, complete case keys, 10% threshold, and six qualifying
-headline rows before rendering selection or three-run-median wording. It never
-invents numbers and never inserts diagnostic cases into the headline table.
+retains ratios below 1×, and emits identical numbers and commit-pinned report
+links in all five localized blocks. Core marker blocks list the six measured
+package names with versions and GitHub repository links, and point readers to
+https://github.com/rextio/rextio-benchmark for exact revisions and full
+provenance; they **never** expose commit hashes or `candidate@` labels (those
+details stay in this package's documentation and verified report bindings).
+Candidate package presence still comes only from verified bound report policy
+and package provenance (never from version strings alone). The generator
+additionally reads the sibling hash-bound `stability.json` and requires its
+policy, cohort/measurement identity, chronological index 0 of exactly three
+reports, complete case keys, 10% threshold, and six qualifying headline rows
+before rendering selection or three-run-median wording. It never invents
+numbers and never inserts diagnostic cases into the headline table.
 Normalized outputs are stored once per case in the report's content-addressed
 `output_table`. Publication verification recomputes every table address,
 rejects dangling or unreferenced entries, and independently applies the
