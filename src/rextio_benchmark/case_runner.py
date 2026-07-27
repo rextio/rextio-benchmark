@@ -22,7 +22,7 @@ from .verification import (
     outputs_close,
     require_import_under,
 )
-from .worker import _module_provenance, package_versions
+from .worker import _module_provenance, package_vcs_provenance, package_versions
 
 MODE_SETTINGS = {
     "quick": {
@@ -275,6 +275,7 @@ def run_module_case(
         "eligible": True,
         "blockers": [],
         "packages": (native_metadata or {})["packages"],
+        "package_provenance": (native_metadata or {}).get("package_provenance") or {},
         "python": (native_metadata or {})["python"],
         "environment": _portable_environment(
             {
@@ -434,6 +435,7 @@ def run_executable_case(
         "eligible": True,
         "blockers": [],
         "packages": package_versions(),
+        "package_provenance": package_vcs_provenance(),
         "python": sys.version,
         "environment": _portable_environment(
             {

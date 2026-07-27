@@ -1,11 +1,16 @@
 # rextio-benchmark
 
-`rextio-benchmark` is an auditable CPU-first showcase for the released Rextio
-ecosystem. It compares the exact original Python source with the generated
-fallback package and the same generated package forced onto its verified native
-route. It never invents or pre-populates benchmark numbers, discards slower
-results, or implies that Rust makes BLAS, libtorch, TensorFlow, or CUDA kernels
-intrinsically faster.
+`rextio-benchmark` is an auditable CPU-first showcase for the Rextio ecosystem.
+The suite covers **Rextio Core plus five first-party plugins** (NumPy,
+NetworkX, pandas, Torch, and TensorFlow); each workload exercises its relevant
+component. GitHub repository version **0.1.1** (not published to PyPI)
+publishes the measured pre-release plugin **0.1.3** candidate Mac CPU cohort
+while preserving the complete **0.1.0** release history and its frozen
+published evidence. It compares the exact original Python source with the
+generated fallback package and the same generated package forced onto its
+verified native route. It never invents or pre-populates benchmark numbers,
+discards slower results, or implies that Rust makes BLAS, libtorch, TensorFlow,
+or CUDA kernels intrinsically faster.
 
 ## Requirements
 
@@ -14,19 +19,130 @@ intrinsically faster.
 - a stable Rust toolchain with `cargo` and `rustc`
 - enough disk space for isolated Torch and TensorFlow environments
 
-The locks use the released distributions `rextio==0.1.6`,
-`rextio-numpy==0.1.2`, `rextio-networkx==0.1.1`,
-`rextio-pandas==0.1.2`, `rextio-torch==0.1.2`, and
-`rextio-tensorflow==0.1.2`. The optional CUDA locks add
-`rextio-device-cuda==0.1.0`.
+The locks use **pre-release commit-pinned candidate** builds of Core 0.1.7,
+NumPy 0.1.3, Torch 0.1.3, and TensorFlow 0.1.3 at the exact Git revisions
+declared in `profiles/next-candidate.toml`. Those pins describe the revisions
+measured at pre-release candidate time, not later PyPI artifacts of those
+versions. NetworkX 0.1.1 and pandas 0.1.2 remain released PyPI pins; optional
+CUDA locks also include released `rextio-device-cuda==0.1.0`. See
+[CHANGELOG.md](CHANGELOG.md) and [PUBLICATION.md](PUBLICATION.md).
+
+### Measured package provenance (0.1.1 suite)
+
+The published boundary/pre-post Mac CPU cohort measures exactly these six
+packages. NetworkX and pandas were installed as **released PyPI artifacts**;
+their commit values identify the corresponding release tags. The other four
+packages are **exact Git-pinned pre-release candidates at measurement time**
+(not later PyPI artifacts of those versions).
+
+| PyPI package | Measured version / status | Git commit (40-char) | Repository |
+| --- | --- | --- | --- |
+| `rextio` | 0.1.7 candidate | `b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97` | https://github.com/rextio/rextio |
+| `rextio-numpy` | 0.1.3 candidate | `cf461e6775780a598517980c555a1aec079285d8` | https://github.com/rextio/rextio-numpy |
+| `rextio-networkx` | 0.1.1 released | `ffc8681756d6f690ac090fe6b03f6ba220896ded` | https://github.com/rextio/rextio-networkx |
+| `rextio-pandas` | 0.1.2 released | `930a4fbfbd084a9869dbbf521770e811ea3d6652` | https://github.com/rextio/rextio-pandas |
+| `rextio-torch` | 0.1.3 candidate | `1e92b24b154c7266dc37d19533fc3e17a8b05f9a` | https://github.com/rextio/rextio-torch |
+| `rextio-tensorflow` | 0.1.3 candidate | `1fdb2e1cd91d058a056db76c2e0a15d52c855053` | https://github.com/rextio/rextio-tensorflow |
+
+Canonical evidence directories under `results/canonical/` remain byte-immutable.
 
 > **Methodology amendment:** The first implementation applied the 10 percent
 > stability veto to all cases and rejected the first cohort because the
 > nonheadline NumPy BLAS negative control varied by approximately 23 percent.
 > All three original reports are retained; there is no sliding window or
 > fastest-run selection. All six pre-frozen README rows met the threshold, so
-> the publication gate now applies to those headline rows while Core executable
-> and NumPy `dot` remain fully published diagnostics.
+> the publication gate now applies to those headline rows while Core executable,
+> NumPy `dot`, and the phase1 non-fused diagnostic remain fully published
+> diagnostics. The released **0.1.0** canonical figures remain historical; the
+> measured **0.1.3** candidate cohort below is an additional qualified
+> publication under GitHub repository version **0.1.1** (not published to
+> PyPI), not a replacement of 0.1.0.
+
+## Verified CPU benchmark snapshots
+
+These are workload-specific results, not library-wide performance claims.
+Ratios below 1× mean Rextio was slower on that workload; values near 1× indicate
+parity, not a material speedup. Neutral and slower headline rows are retained
+with no cherry-picking.
+
+### Pre-release plugin 0.1.3 candidate (measured)
+
+Three-run chronological-first cohort
+[`cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec`](results/canonical/cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec/)
+on **Mac16,11 / Apple M4 Pro**, **2026-07-26**, CPython **3.11.9**, measured
+from clean commit
+[`92ef027cea25f9d6bf1d730de4c226d40016ba6e`](https://github.com/rextio/rextio-benchmark/commit/92ef027cea25f9d6bf1d730de4c226d40016ba6e).
+The immutable policy id is `candidate-boundary-prepost-0.1.1` (a frozen
+pre-measurement name); this is its subsequently measured candidate cohort.
+Measured package provenance for Core plus the five first-party plugins is the
+table above: four exact Git-pinned pre-release candidates at measurement time
+and two released PyPI pins (NetworkX 0.1.1, pandas 0.1.2) whose commits
+identify the release tags.
+
+**Three-run medians** (headline rows; maximum relative deviation from the
+three-run median; 10% stability gate):
+
+| Domain | 3-run median speedup | Max deviation |
+| --- | ---: | ---: |
+| Core hybrid | 57.729× | 1.31% |
+| NumPy mixed fusion | 2.523× | 3.88% |
+| NetworkX Dijkstra | 3.679× | 1.09% |
+| pandas Series.map | 66.143× | 0.92% |
+| PyTorch CPU deep MLP | 1.017× | 0.41% |
+| TensorFlow CPU eager chain | 1.040× | 0.38% |
+
+All six headline rows passed the 10% stability veto.
+
+**Chronological-first canonical report** (selected first of three; not chosen
+by speedup):
+
+| Domain | Python source | Rextio native | Speedup |
+| --- | ---: | ---: | ---: |
+| Core hybrid | 7.988211 ms | 0.138802 ms | 57.729× |
+| NumPy mixed fusion | 0.051241 ms | 0.019296 ms | 2.425× |
+| NetworkX Dijkstra | 50.836724 ms | 13.651031 ms | 3.719× |
+| pandas Series.map | 179.817448 ms | 2.700109 ms | 66.143× |
+| PyTorch CPU deep MLP | 0.391130 ms | 0.385014 ms | 1.018× |
+| TensorFlow CPU eager chain | 0.648913 ms | 0.622690 ms | 1.040× |
+
+**Published diagnostics** (full report only; never README headline substitutes
+or stability gates), from the same chronological-first report: Core executable
+**15.977×**, NumPy phase1 non-fused branch **0.248×** (not a fusion claim),
+NumPy `dot` BLAS negative control **0.587×**, NumPy F64 direct-sink boundary
+**0.305×**, Torch small-batch pre/post **1.158×** (three-run median
+**1.156×**), and TensorFlow small-batch pre/post **0.494×** (three-run median
+**0.495×**).
+
+[Canonical report](results/canonical/cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec/report.md)
+· [stability summary](results/canonical/cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec/stability.json)
+· [PUBLICATION.md](PUBLICATION.md)
+
+### Released 0.1.0 (historical, frozen)
+
+The first public Mac CPU cohort remains byte-immutable at
+[`cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8`](results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/),
+measured from clean commit
+[`ff7f4fea34199d850bed0446a8a223ef730ddf17`](https://github.com/rextio/rextio-benchmark/commit/ff7f4fea34199d850bed0446a8a223ef730ddf17)
+and published in evidence commit
+[`e62a3f8fb1637f52288873fb077ba4efba0ead59`](https://github.com/rextio/rextio-benchmark/commit/e62a3f8fb1637f52288873fb077ba4efba0ead59).
+Released pins only (`rextio-numpy==0.1.2`, `rextio-tensorflow==0.1.2`, and the
+same other released package line). Headline stability met the 10% gate; the
+NumPy BLAS negative control varied by about 23% and remains a published
+non-headline diagnostic.
+
+Chronological-first report (historical wording/figures retained):
+
+| Domain | Python source | Rextio native | Speedup |
+| --- | ---: | ---: | ---: |
+| Core hybrid | 7.915661 ms | 0.138143 ms | 57.712× |
+| NumPy mixed fusion | 0.041840 ms | 0.086150 ms | 0.485× |
+| NetworkX Dijkstra | 50.581281 ms | 13.472185 ms | 3.751× |
+| pandas Series.map | 179.454594 ms | 2.719183 ms | 66.002× |
+| PyTorch CPU deep MLP | 0.388957 ms | 0.383640 ms | 1.014× |
+| TensorFlow CPU eager chain | 0.727017 ms | 0.738452 ms | 0.984× |
+
+Do not rewrite, re-hash, or re-measure that directory. Candidate figures above
+do not replace these released 0.1.0 numbers.
 
 ## Run the CPU suite
 
@@ -96,6 +212,11 @@ unrelated checkouts fail closed. After committing that bundle, render the five
 localized Core README blocks with
 `rextio_benchmark readme-blocks`; pass the canonical report, full
 measurement/evidence commits, GitHub URL, and an output directory explicitly.
+The command verifies the hash-bound sibling `stability.json` before rendering:
+it requires canonical cohort/policy identity, chronological index 0 of three
+reports, exact case keys, a 10% threshold, and six passing headline gates.
+Generated blocks therefore carry verified three-run medians rather than manual
+stability claims.
 
 ## Cases
 
@@ -103,17 +224,32 @@ measurement/evidence commits, GitHub URL, and an output directory explicitly.
 | --- | --- | --- |
 | Core hybrid | Scalar arithmetic and nested control-flow loops | Generated wrapper overhead remains visible. |
 | Core executable | Closed direct-native call graph, Rust backend, `fallback=error` | Compares complete Python and Rust processes. |
-| NumPy fusion | Mixed scalar control flow and supported elementwise chains | Measures removed dispatch/materialization. |
+| NumPy fusion (`numpy-mixed-fusion`) | `phase=0` path: `(left + right) * (left - right)` | Headline fusion claim; requires fusion rule + `__rxtnp_echain_` proof. |
+| NumPy phase1 diagnostic | `phase=1` path: `(left - right) / (right + 2.0)` | Full-report only; **not** a fusion claim; never a README headline row. |
+| NumPy F64_1D boundary diagnostic | Read-only rank-1 float64 input, one add, fresh direct-filled NumPy-owned output | Exact semantic validation; boundary/allocation diagnostic only; no speedup presumed. |
 | NumPy dot | Large rank-1 `numpy.dot` | Negative control; BLAS already owns the hot kernel. |
 | NetworkX | Typed adapter Dijkstra on a deterministic weighted graph | No unsupported raw NetworkX spelling is compiled. |
 | pandas | Exact numeric/boolean `Series.map` UDF pipeline | A manually vectorized pandas/NumPy rewrite may be faster. |
 | Torch CPU | Bounded rank-1/rank-2 float32 MLP and scalar loop control | Inference only; no training or unsupported device/dtype. |
-| TensorFlow CPU | Bounded eager TFE matmul/activation/reduction chain | No `tf.function`; no result is presumed. |
+| Torch CPU small-batch pre/post diagnostic | Batch 1, width 32, four scalar-controlled rounds, softmax and int64 argmax | Exact labels; diagnostic only; Python/tensor boundary overhead is intentionally large relative to the small kernels. |
+| TensorFlow CPU | Default rank-2 transpose of non-square weight, then eager matmul/activation/classification | Requires transpose rule proof; no `tf.function`; no result is presumed. |
+| TensorFlow CPU small-batch pre/post diagnostic | Batch 1, width 32, four scalar-controlled rounds, softmax and int64 argmax | Exact labels; eager diagnostic only; Python/tensor boundary overhead is intentionally large relative to the small kernels. |
 
 Each case is an independent Rextio project under `cases/`. Core, NumPy,
 NetworkX, and pandas use `profiles/base`; Torch and TensorFlow use isolated
 locked profiles so their ABI and runtime requirements cannot contaminate each
 other.
+
+The three new diagnostics belong to the separately measured
+`candidate-boundary-prepost-0.1.1` cohort; they do not alter the six frozen
+headline rows or become headline claims. Activation is deliberately fail-closed through
+`profiles/next-candidate.toml`. Core 0.1.7 is pinned there to
+`b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97`, NumPy 0.1.3 to
+`cf461e6775780a598517980c555a1aec079285d8`, and TensorFlow 0.1.3 to
+`1fdb2e1cd91d058a056db76c2e0a15d52c855053`, and Torch 0.1.3 to
+`1e92b24b154c7266dc37d19533fc3e17a8b05f9a`. Every revision is a full commit,
+and the affected CPU profile manifests select those exact Git sources. The
+policy was measured as the chronological-first three-run cohort linked above.
 
 ## Measurement contract
 

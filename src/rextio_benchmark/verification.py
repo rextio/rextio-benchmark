@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import re
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +19,7 @@ MEASUREMENT_HARNESS_FILES = (
     "build_runner.py",
     "canonical.py",
     "case_runner.py",
+    "integration_targets.py",
     "models.py",
     "output_table.py",
     "portability.py",
@@ -28,6 +30,141 @@ MEASUREMENT_HARNESS_FILES = (
     "verifier.py",
     "worker.py",
 )
+
+
+def _rust_function_body(source: str, name: str) -> str:
+    """Return one generated Rust function body, failing closed on ambiguity."""
+    if re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", name) is None:
+        raise GateError(f"invalid generated Rust function name {name!r}")
+    matches = list(re.finditer(rf"(?m)^\s*(?:pub\s+)?fn\s+{re.escape(name)}(?:\s*<|\s*\()", source))
+    if len(matches) != 1:
+        raise GateError(f"generated Rust expected one function {name!r}, found {len(matches)}")
+    opening = source.find("{", matches[0].end())
+    if opening < 0:
+        raise GateError(f"generated Rust function {name!r} lacks a body")
+    depth = 0
+    in_string = False
+    in_char = False
+    escaped = False
+    line_comment = False
+    block_comment_depth = 0
+    index = opening
+    while index < len(source):
+        char = source[index]
+        following = source[index + 1] if index + 1 < len(source) else ""
+        if line_comment:
+            if char == "\n":
+                line_comment = False
+            index += 1
+            continue
+        if block_comment_depth:
+            if char == "/" and following == "*":
+                block_comment_depth += 1
+                index += 2
+                continue
+            if char == "*" and following == "/":
+                block_comment_depth -= 1
+                index += 2
+                continue
+            index += 1
+            continue
+        if in_string or in_char:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif in_string and char == '"':
+                in_string = False
+            elif in_char and char == "'":
+                in_char = False
+            index += 1
+            continue
+        if char == "/" and following == "/":
+            line_comment = True
+            index += 2
+            continue
+        if char == "/" and following == "*":
+            block_comment_depth = 1
+            index += 2
+            continue
+        if char == '"':
+            in_string = True
+            index += 1
+            continue
+        if char == "'":
+            third = source[index + 2] if index + 2 < len(source) else ""
+            if not (following.isalpha() or following == "_") or third == "'":
+                in_char = True
+                index += 1
+                continue
+        if char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                return source[opening + 1 : index]
+            if depth < 0:
+                break
+        index += 1
+    raise GateError(f"generated Rust function {name!r} has an unbalanced body")
+
+
+def _enforce_rust_function_expectations(
+    benchmark_id: str,
+    source: str,
+    expectations: object,
+) -> None:
+    if not isinstance(expectations, list):
+        raise GateError(f"{benchmark_id}: rust_functions must be an array")
+    for record in expectations:
+        if not isinstance(record, dict) or not isinstance(record.get("name"), str):
+            raise GateError(f"{benchmark_id}: rust_functions entries need a name")
+        name = record["name"]
+        body = _rust_function_body(source, name)
+        for field in ("required_substrings", "forbidden_substrings"):
+            values = record.get(field, []) or []
+            if not isinstance(values, list) or any(
+                not isinstance(value, str) or not value for value in values
+            ):
+                raise GateError(f"{benchmark_id}: {field} must contain non-empty strings")
+        for needle in record.get("required_substrings", []) or []:
+            if needle not in body:
+                raise GateError(f"{benchmark_id}: Rust function {name!r} lacks {needle!r}")
+        for needle in record.get("forbidden_substrings", []) or []:
+            if needle in body:
+                raise GateError(
+                    f"{benchmark_id}: Rust function {name!r} contains forbidden {needle!r}"
+                )
+        counts = record.get("substring_counts", {}) or {}
+        if not isinstance(counts, dict):
+            raise GateError(f"{benchmark_id}: substring_counts must be an object")
+        for needle, expected_count in counts.items():
+            if (
+                not isinstance(needle, str)
+                or not needle
+                or not isinstance(expected_count, int)
+                or isinstance(expected_count, bool)
+                or expected_count < 0
+            ):
+                raise GateError(
+                    f"{benchmark_id}: substring_counts entries must be string -> integer"
+                )
+            actual_count = body.count(needle)
+            if actual_count != expected_count:
+                raise GateError(
+                    f"{benchmark_id}: Rust function {name!r} expected "
+                    f"{expected_count} occurrences of {needle!r}, found {actual_count}"
+                )
+        ordered = record.get("ordered_substrings", []) or []
+        if not isinstance(ordered, list) or any(
+            not isinstance(value, str) or not value for value in ordered
+        ):
+            raise GateError(f"{benchmark_id}: ordered_substrings must contain non-empty strings")
+        position = -1
+        for needle in ordered:
+            position = body.find(needle, position + 1)
+            if position < 0:
+                raise GateError(f"{benchmark_id}: Rust function {name!r} lacks ordered {needle!r}")
 
 
 def sha256_file(path: Path) -> str:
@@ -135,16 +272,10 @@ def find_native_artifact(
         {
             "kind": "native-extension",
             "declared_path": (
-                Path("cases")
-                / case.project_root.name
-                / ".rextio/generated/python"
-                / artifact_name
+                Path("cases") / case.project_root.name / ".rextio/generated/python" / artifact_name
             ).as_posix(),
             "runtime_path": (
-                Path("cases")
-                / case.project_root.name
-                / ".rextio/build/python"
-                / artifact_name
+                Path("cases") / case.project_root.name / ".rextio/build/python" / artifact_name
             ).as_posix(),
         },
     )
@@ -165,6 +296,69 @@ def _evidence_record(
     }
 
 
+def _plugin_claims(record: dict[str, Any]) -> list[dict[str, Any]]:
+    claims = record.get("plugin_claims")
+    if claims is None:
+        return []
+    if not isinstance(claims, list):
+        raise GateError(f"{record.get('qualname')}: plugin_claims must be a list")
+    return [claim for claim in claims if isinstance(claim, dict)]
+
+
+def enforce_generated_expectations(
+    case: BenchmarkCase,
+    check: dict[str, Any],
+    *,
+    generated_rust_source: Path,
+) -> None:
+    """Fail closed when a case declares plugin-rule / generated-source proof.
+
+    Headline NumPy fusion must show leaves-mode elementwise-chain-fusion and a
+    ``__rxtnp_echain_`` helper. TensorFlow transpose must show the exact
+    default rank-2 transpose rule and ``rextio_tensorflow_runtime::transpose``.
+    Phase-1 and other cases without expectations impose no fusion claim.
+    """
+    expectations = case.raw.get("generated_expectations")
+    if not expectations:
+        return
+    if not isinstance(expectations, dict):
+        raise GateError(f"{case.benchmark_id}: generated_expectations must be an object")
+    record = route_record(check, case.qualname)
+    claims = _plugin_claims(record)
+    for rule in expectations.get("plugin_rules", []) or []:
+        if not isinstance(rule, dict) or "rule_id" not in rule:
+            raise GateError(f"{case.benchmark_id}: plugin_rules entries need rule_id")
+        rule_id = rule["rule_id"]
+        required_mode = rule.get("operand_mode")
+        matches = [claim for claim in claims if claim.get("rule_id") == rule_id]
+        if not matches:
+            raise GateError(f"{case.benchmark_id}: missing required plugin rule {rule_id!r}")
+        if required_mode is not None:
+            modes = [claim.get("operand_mode") or "direct" for claim in matches]
+            if required_mode not in modes:
+                raise GateError(
+                    f"{case.benchmark_id}: rule {rule_id!r} lacks operand_mode={required_mode!r}"
+                )
+    if not generated_rust_source.is_file():
+        raise GateError(f"{case.benchmark_id}: generated Rust source missing for expectations")
+    source = generated_rust_source.read_text(encoding="utf-8")
+    for needle in expectations.get("generated_rust_source_substrings", []) or []:
+        if not isinstance(needle, str) or not needle:
+            raise GateError(
+                f"{case.benchmark_id}: generated_rust_source_substrings must be strings"
+            )
+        if needle not in source:
+            raise GateError(
+                f"{case.benchmark_id}: generated Rust source lacks required substring {needle!r}"
+            )
+    if "rust_functions" in expectations:
+        _enforce_rust_function_expectations(
+            case.benchmark_id,
+            source,
+            expectations["rust_functions"],
+        )
+
+
 def gate_build(
     case: BenchmarkCase,
     repository_root: Path,
@@ -178,11 +372,16 @@ def gate_build(
     build = json.loads(build_path.read_text(encoding="utf-8"))
     record = route_record(check, case.qualname)
     if record.get("route") != case.expected_route:
-        raise GateError(
-            f"{case.qualname} route {record.get('route')!r} != {case.expected_route!r}"
-        )
+        raise GateError(f"{case.qualname} route {record.get('route')!r} != {case.expected_route!r}")
     if record.get("native_status") != "accepted":
         raise GateError(f"{case.qualname} native status is {record.get('native_status')!r}")
+    generated_rust_source = case.project_root / ".rextio/generated/rust/src/lib.rs"
+    # Raw check first (fast fail); portable evidence must also carry the proof.
+    enforce_generated_expectations(
+        case,
+        check,
+        generated_rust_source=generated_rust_source,
+    )
     artifact, artifact_paths, artifact_declaration = find_native_artifact(case, build)
     portable_root = report_root / "portable"
     portable_check_path = portable_root / "check.json"
@@ -191,11 +390,16 @@ def gate_build(
     portable_build = write_portable_snapshot(portable_build_path, build, repository_root)
     require_portable(portable_check, repository_root)
     require_portable(portable_build, repository_root)
+    # Evidence role check_report points at the portable snapshot — enforce there.
+    enforce_generated_expectations(
+        case,
+        portable_check,
+        generated_rust_source=generated_rust_source,
+    )
     portable_record = route_record(portable_check, case.qualname)
-    if (
-        portable_record.get("route") != record.get("route")
-        or portable_record.get("native_status") != record.get("native_status")
-    ):
+    if portable_record.get("route") != record.get("route") or portable_record.get(
+        "native_status"
+    ) != record.get("native_status"):
         raise GateError("portable check snapshot changed route semantics")
     portable_artifact, _, portable_declaration = find_native_artifact(case, portable_build)
     if portable_artifact != artifact or portable_declaration != artifact_declaration:
@@ -210,23 +414,19 @@ def gate_build(
         "case_source": case.project_root / "src" / module_path,
         "profile_manifest": profile_root / "pyproject.toml",
         "profile_lock": profile_root / "uv.lock",
+        "integration_target_config": repository_root / "profiles/next-candidate.toml",
         "repository_manifest": repository_root / "pyproject.toml",
-        "report_schema": repository_root
-        / "schema"
-        / "benchmark-report-v1.schema.json",
+        "report_schema": repository_root / "schema" / "benchmark-report-v1.schema.json",
         "publication_policy": repository_root / "PUBLICATION.md",
         "bootstrap_script": repository_root / "scripts" / "bootstrap.sh",
         "build_script": repository_root / "scripts" / "build.sh",
         "benchmark_script": repository_root / "scripts" / "benchmark.sh",
         "verify_script": repository_root / "scripts" / "verify.sh",
         "run_script": repository_root / "scripts" / "run.sh",
-        "generated_rust_manifest": case.project_root
-        / ".rextio/generated/rust/Cargo.toml",
+        "generated_rust_manifest": case.project_root / ".rextio/generated/rust/Cargo.toml",
         "generated_rust_lock": case.project_root / ".rextio/generated/rust/Cargo.lock",
-        "generated_rust_source": case.project_root / ".rextio/generated/rust/src/lib.rs",
-        "generated_python_wrapper": case.project_root
-        / ".rextio/generated/python"
-        / module_path,
+        "generated_rust_source": generated_rust_source,
+        "generated_python_wrapper": case.project_root / ".rextio/generated/python" / module_path,
         "generated_python_fallback": case.project_root
         / ".rextio/generated/python"
         / module_path.parent

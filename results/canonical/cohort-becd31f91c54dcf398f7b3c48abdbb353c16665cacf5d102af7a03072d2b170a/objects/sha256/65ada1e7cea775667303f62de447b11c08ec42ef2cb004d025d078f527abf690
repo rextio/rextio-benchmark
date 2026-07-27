@@ -1,0 +1,1926 @@
+{
+  "accepted_native": [
+    "numpy_case.workload.blas_dot",
+    "numpy_case.workload.mixed_fusion"
+  ],
+  "accepted_native_top_levels": [],
+  "contract_version": "2.27.0",
+  "diagnostics": [],
+  "embedding_candidates": [],
+  "host_source_plan": {
+    "availability": "available",
+    "execution_authority": "descriptive-only",
+    "graph": {
+      "cycles": [],
+      "external_references": [
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 0,
+          "imported": "numpy",
+          "importer": "benchmark_case",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 18,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          },
+          "version": null
+        },
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 1,
+          "imported": "rextio_benchmark.canonical",
+          "importer": "benchmark_case",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 47,
+              "line": 2
+            },
+            "start": {
+              "column": 0,
+              "line": 2
+            }
+          },
+          "version": null
+        },
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 1,
+          "imported": "numpy",
+          "importer": "numpy_case.workload",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 18,
+              "line": 3
+            },
+            "start": {
+              "column": 0,
+              "line": 3
+            }
+          },
+          "version": null
+        },
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 0,
+          "imported": "rextio_numpy.types",
+          "importer": "numpy_case.workload",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 38,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          },
+          "version": null
+        }
+      ],
+      "local_edges": [],
+      "modules": [
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [
+            {
+              "deferred": false,
+              "kind": "import",
+              "module": null,
+              "names": [
+                {
+                  "asname": "np",
+                  "name": "numpy"
+                }
+              ],
+              "ordinal": 0,
+              "relative_level": 0,
+              "resolved_targets": [
+                "numpy"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 18,
+                  "line": 1
+                },
+                "start": {
+                  "column": 0,
+                  "line": 1
+                }
+              }
+            },
+            {
+              "deferred": false,
+              "kind": "from-import",
+              "module": "rextio_benchmark.canonical",
+              "names": [
+                {
+                  "asname": null,
+                  "name": "sequence"
+                }
+              ],
+              "ordinal": 1,
+              "relative_level": 0,
+              "resolved_targets": [
+                "rextio_benchmark.canonical.sequence"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 47,
+                  "line": 2
+                },
+                "start": {
+                  "column": 0,
+                  "line": 2
+                }
+              }
+            }
+          ],
+          "is_package_init": false,
+          "license": null,
+          "module_name": "benchmark_case",
+          "path": "benchmark_case.py",
+          "provenance": {
+            "evidence": [
+              "sha256:0376e151366fbe3b97802f7c93204703dac86e2fb22371ff482884011a62d4f2"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "benchmark_case.py"
+            ]
+          },
+          "sha256": "0376e151366fbe3b97802f7c93204703dac86e2fb22371ff482884011a62d4f2",
+          "source_origin": "project",
+          "version": null
+        },
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [],
+          "is_package_init": true,
+          "license": null,
+          "module_name": "numpy_case",
+          "path": "src/numpy_case/__init__.py",
+          "provenance": {
+            "evidence": [
+              "sha256:a542d045641651169506b2d45b0a56df5276df4fc8391c000c029901da71e066"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "src/numpy_case/__init__.py"
+            ]
+          },
+          "sha256": "a542d045641651169506b2d45b0a56df5276df4fc8391c000c029901da71e066",
+          "source_origin": "project",
+          "version": null
+        },
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [
+            {
+              "deferred": false,
+              "kind": "from-import",
+              "module": "rextio_numpy.types",
+              "names": [
+                {
+                  "asname": null,
+                  "name": "F64Arr1"
+                }
+              ],
+              "ordinal": 0,
+              "relative_level": 0,
+              "resolved_targets": [
+                "rextio_numpy.types.F64Arr1"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 38,
+                  "line": 1
+                },
+                "start": {
+                  "column": 0,
+                  "line": 1
+                }
+              }
+            },
+            {
+              "deferred": false,
+              "kind": "import",
+              "module": null,
+              "names": [
+                {
+                  "asname": "np",
+                  "name": "numpy"
+                }
+              ],
+              "ordinal": 1,
+              "relative_level": 0,
+              "resolved_targets": [
+                "numpy"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 18,
+                  "line": 3
+                },
+                "start": {
+                  "column": 0,
+                  "line": 3
+                }
+              }
+            }
+          ],
+          "is_package_init": false,
+          "license": null,
+          "module_name": "numpy_case.workload",
+          "path": "src/numpy_case/workload.py",
+          "provenance": {
+            "evidence": [
+              "sha256:e63148e054417c2b8af55b200dab147bd332ee8c596eef769da03ff8df2b814f"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "src/numpy_case/workload.py"
+            ]
+          },
+          "sha256": "e63148e054417c2b8af55b200dab147bd332ee8c596eef769da03ff8df2b814f",
+          "source_origin": "project",
+          "version": null
+        }
+      ],
+      "scc_membership": {
+        "benchmark_case": [
+          "benchmark_case"
+        ],
+        "numpy_case": [
+          "numpy_case"
+        ],
+        "numpy_case.workload": [
+          "numpy_case.workload"
+        ]
+      },
+      "strongly_connected_components": [
+        {
+          "cyclic": false,
+          "members": [
+            "benchmark_case"
+          ]
+        },
+        {
+          "cyclic": false,
+          "members": [
+            "numpy_case"
+          ]
+        },
+        {
+          "cyclic": false,
+          "members": [
+            "numpy_case.workload"
+          ]
+        }
+      ]
+    },
+    "module_initializers": [
+      {
+        "availability": "available",
+        "metadata_ranges": [],
+        "module_name": "benchmark_case",
+        "path": "benchmark_case.py",
+        "provenance": {
+          "evidence": [
+            "sha256:0376e151366fbe3b97802f7c93204703dac86e2fb22371ff482884011a62d4f2"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "benchmark_case.py"
+          ]
+        },
+        "segments": [
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "np"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "numpy"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "np"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "np"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "np"
+            ],
+            "must_bindings": [
+              "np"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "np"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 0,
+            "source_range": {
+              "end": {
+                "column": 18,
+                "line": 1
+              },
+              "start": {
+                "column": 0,
+                "line": 1
+              }
+            },
+            "statement_indexes": [
+              0
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "sequence"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "rextio_benchmark.canonical"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "sequence"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "sequence"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "sequence"
+            ],
+            "must_bindings": [
+              "sequence"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "sequence"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 1,
+            "source_range": {
+              "end": {
+                "column": 47,
+                "line": 2
+              },
+              "start": {
+                "column": 0,
+                "line": 2
+              }
+            },
+            "statement_indexes": [
+              1
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "make_arguments"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "object",
+              "str",
+              "tuple"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "make_arguments"
+            ],
+            "kind": "definition-publication",
+            "may_bindings": [
+              "make_arguments"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "make_arguments"
+            ],
+            "must_bindings": [
+              "make_arguments"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "make_arguments"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 2,
+            "source_range": {
+              "end": {
+                "column": 22,
+                "line": 18
+              },
+              "start": {
+                "column": 0,
+                "line": 5
+              }
+            },
+            "statement_indexes": [
+              2
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "normalize"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "object",
+              "str"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "normalize"
+            ],
+            "kind": "definition-publication",
+            "may_bindings": [
+              "normalize"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "normalize"
+            ],
+            "must_bindings": [
+              "normalize"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "normalize"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 3,
+            "source_range": {
+              "end": {
+                "column": 23,
+                "line": 29
+              },
+              "start": {
+                "column": 0,
+                "line": 21
+              }
+            },
+            "statement_indexes": [
+              3
+            ]
+          }
+        ],
+        "source_sha256": "0376e151366fbe3b97802f7c93204703dac86e2fb22371ff482884011a62d4f2",
+        "unavailable_reason": null
+      },
+      {
+        "availability": "available",
+        "metadata_ranges": [
+          {
+            "end": {
+              "column": 37,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          }
+        ],
+        "module_name": "numpy_case",
+        "path": "src/numpy_case/__init__.py",
+        "provenance": {
+          "evidence": [
+            "sha256:a542d045641651169506b2d45b0a56df5276df4fc8391c000c029901da71e066"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "src/numpy_case/__init__.py"
+          ]
+        },
+        "segments": [],
+        "source_sha256": "a542d045641651169506b2d45b0a56df5276df4fc8391c000c029901da71e066",
+        "unavailable_reason": null
+      },
+      {
+        "availability": "available",
+        "metadata_ranges": [],
+        "module_name": "numpy_case.workload",
+        "path": "src/numpy_case/workload.py",
+        "provenance": {
+          "evidence": [
+            "sha256:e63148e054417c2b8af55b200dab147bd332ee8c596eef769da03ff8df2b814f"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "src/numpy_case/workload.py"
+          ]
+        },
+        "segments": [
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "F64Arr1"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "rextio_numpy.types"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "F64Arr1"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "F64Arr1"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "F64Arr1"
+            ],
+            "must_bindings": [
+              "F64Arr1"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "F64Arr1"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 0,
+            "source_range": {
+              "end": {
+                "column": 38,
+                "line": 1
+              },
+              "start": {
+                "column": 0,
+                "line": 1
+              }
+            },
+            "statement_indexes": [
+              0
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "np"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "numpy"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "np"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "np"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "np"
+            ],
+            "must_bindings": [
+              "np"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "np"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 1,
+            "source_range": {
+              "end": {
+                "column": 18,
+                "line": 3
+              },
+              "start": {
+                "column": 0,
+                "line": 3
+              }
+            },
+            "statement_indexes": [
+              1
+            ]
+          },
+          {
+            "barrier_reason": "function definition annotations require preserved Python source-order evaluation",
+            "bindings": [
+              "mixed_fusion"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "F64Arr1",
+              "int"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "mixed_fusion"
+            ],
+            "kind": "fallback-barrier",
+            "may_bindings": [
+              "mixed_fusion"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "mixed_fusion"
+            ],
+            "must_bindings": [
+              "mixed_fusion"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "mixed_fusion"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 2,
+            "source_range": {
+              "end": {
+                "column": 41,
+                "line": 13
+              },
+              "start": {
+                "column": 0,
+                "line": 6
+              }
+            },
+            "statement_indexes": [
+              2
+            ]
+          },
+          {
+            "barrier_reason": "function definition annotations require preserved Python source-order evaluation",
+            "bindings": [
+              "blas_dot"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "F64Arr1",
+              "float"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "blas_dot"
+            ],
+            "kind": "fallback-barrier",
+            "may_bindings": [
+              "blas_dot"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "blas_dot"
+            ],
+            "must_bindings": [
+              "blas_dot"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "blas_dot"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 3,
+            "source_range": {
+              "end": {
+                "column": 30,
+                "line": 17
+              },
+              "start": {
+                "column": 0,
+                "line": 16
+              }
+            },
+            "statement_indexes": [
+              3
+            ]
+          }
+        ],
+        "source_sha256": "e63148e054417c2b8af55b200dab147bd332ee8c596eef769da03ff8df2b814f",
+        "unavailable_reason": null
+      }
+    ],
+    "unavailable_reason": null
+  },
+  "modules": [
+    {
+      "diagnostics": [],
+      "file_path": "cases/numpy/benchmark_case.py",
+      "functions": [
+        {
+          "accepted": false,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                "float",
+                "float",
+                "int"
+              ],
+              "column": 15,
+              "in_loop": false,
+              "line": 8,
+              "target": "numpy.linspace"
+            },
+            {
+              "arg_types": [
+                "float",
+                "float",
+                "int"
+              ],
+              "column": 16,
+              "in_loop": false,
+              "line": 9,
+              "target": "numpy.linspace"
+            },
+            {
+              "arg_types": [
+                "float",
+                "float",
+                "int"
+              ],
+              "column": 15,
+              "in_loop": false,
+              "line": 13,
+              "target": "numpy.linspace"
+            },
+            {
+              "arg_types": [
+                "float",
+                "float",
+                "int"
+              ],
+              "column": 16,
+              "in_loop": false,
+              "line": 14,
+              "target": "numpy.linspace"
+            },
+            {
+              "arg_types": [
+                null,
+                "float",
+                "int"
+              ],
+              "column": 11,
+              "in_loop": false,
+              "line": 16,
+              "target": "numpy.linspace"
+            },
+            {
+              "arg_types": [
+                "float",
+                null,
+                "int"
+              ],
+              "column": 12,
+              "in_loop": false,
+              "line": 17,
+              "target": "numpy.linspace"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/numpy/benchmark_case.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": false,
+          "line": 5,
+          "marker_kind": "none",
+          "module_name": "benchmark_case",
+          "name": "make_arguments",
+          "name_range": {
+            "end": {
+              "column": 18,
+              "line": 5
+            },
+            "start": {
+              "column": 4,
+              "line": 5
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "not-candidate",
+          "native_target_language": null,
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [
+              "RXT003",
+              "RXT010"
+            ],
+            "diagnostics": [
+              {
+                "code": "RXT003",
+                "column": 0,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 5,
+                "message": "unsupported return type: tuple[object, ...]",
+                "suggestion": "Use a supported 0.1.6 scalar or collection type."
+              },
+              {
+                "code": "RXT010",
+                "column": 15,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 8,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 54,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 8,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 16,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 9,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 56,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 9,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 15,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 13,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 54,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 13,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 16,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 14,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 56,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 14,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 11,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 16,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 51,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 16,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 12,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 17,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 52,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 17,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              }
+            ],
+            "provenance": "auto",
+            "skip_reason": null,
+            "status": "ineligible"
+          },
+          "qualname": "benchmark_case.make_arguments",
+          "rejection_codes": [],
+          "route": "fallback-python",
+          "source_range": {
+            "end": {
+              "column": 22,
+              "line": 18
+            },
+            "start": {
+              "column": 0,
+              "line": 5
+            }
+          }
+        },
+        {
+          "accepted": false,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                null,
+                null
+              ],
+              "column": 7,
+              "in_loop": false,
+              "line": 22,
+              "target": "isinstance"
+            },
+            {
+              "arg_types": [],
+              "column": 15,
+              "in_loop": false,
+              "line": 23,
+              "target": "rextio_benchmark.canonical.sequence"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 18,
+              "in_loop": false,
+              "line": 26,
+              "target": "str"
+            },
+            {
+              "arg_types": [],
+              "column": 19,
+              "in_loop": false,
+              "line": 27,
+              "target": "<dynamic>"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 19,
+              "in_loop": false,
+              "line": 27,
+              "target": "value.reshape"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 11,
+              "in_loop": false,
+              "line": 29,
+              "target": "float"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/numpy/benchmark_case.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": false,
+          "line": 21,
+          "marker_kind": "none",
+          "module_name": "benchmark_case",
+          "name": "normalize",
+          "name_range": {
+            "end": {
+              "column": 13,
+              "line": 21
+            },
+            "start": {
+              "column": 4,
+              "line": 21
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "not-candidate",
+          "native_target_language": null,
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [
+              "RXT002",
+              "RXT003",
+              "RXT010"
+            ],
+            "diagnostics": [
+              {
+                "code": "RXT003",
+                "column": 0,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 21,
+                "message": "unsupported return type: object",
+                "suggestion": "Use a supported 0.1.6 scalar or collection type."
+              },
+              {
+                "code": "RXT002",
+                "column": 34,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 21,
+                "message": "unsupported argument type for value: object",
+                "suggestion": "Use a supported 0.1.6 scalar or collection type."
+              },
+              {
+                "code": "RXT010",
+                "column": 18,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 22,
+                "message": "name 'value' is not defined in this scope of the native function (module globals, closures, and names first bound inside a nested block then read after it are unsupported)",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 25,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 22,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 15,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 23,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 18,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 25,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 22,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 26,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 17,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 29,
+                "message": "name 'value' is not defined in this scope of the native function (module globals, closures, and names first bound inside a nested block then read after it are unsupported)",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              }
+            ],
+            "provenance": "auto",
+            "skip_reason": null,
+            "status": "ineligible"
+          },
+          "qualname": "benchmark_case.normalize",
+          "rejection_codes": [],
+          "route": "fallback-python",
+          "source_range": {
+            "end": {
+              "column": 23,
+              "line": 29
+            },
+            "start": {
+              "column": 0,
+              "line": 21
+            }
+          }
+        }
+      ],
+      "import_policies": [
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external-plugin",
+          "package": "numpy",
+          "plugin": "rextio-numpy",
+          "policy": "plugin",
+          "reason": "active plugin 'rextio-numpy' declares support for this package",
+          "target": "numpy",
+          "version": null,
+          "visible_name": "np"
+        },
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external",
+          "package": "rextio_benchmark",
+          "plugin": null,
+          "policy": "fallback",
+          "reason": "external package without an active plugin uses the default external import policy",
+          "target": "rextio_benchmark.canonical.sequence",
+          "version": null,
+          "visible_name": "sequence"
+        }
+      ],
+      "imports": {
+        "np": "numpy",
+        "sequence": "rextio_benchmark.canonical.sequence"
+      },
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "benchmark_case",
+      "top_level": null
+    },
+    {
+      "diagnostics": [],
+      "file_path": "cases/numpy/src/numpy_case/__init__.py",
+      "functions": [],
+      "import_policies": [],
+      "imports": {},
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "numpy_case",
+      "top_level": null
+    },
+    {
+      "diagnostics": [],
+      "file_path": "cases/numpy/src/numpy_case/workload.py",
+      "functions": [
+        {
+          "accepted": true,
+          "boundary_call_targets": [],
+          "calls": [],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/numpy/src/numpy_case/workload.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": true,
+          "line": 6,
+          "marker_kind": "none",
+          "module_name": "numpy_case.workload",
+          "name": "mixed_fusion",
+          "name_range": {
+            "end": {
+              "column": 16,
+              "line": 6
+            },
+            "start": {
+              "column": 4,
+              "line": 6
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "accepted",
+          "native_target_language": "rust",
+          "plugin_claims": [
+            {
+              "column": 15,
+              "end_column": 46,
+              "end_line": 12,
+              "expression": {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 0,
+                        "leaf_kind": "name",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": "rextio-numpy/f64-1d",
+                        "target": ""
+                      },
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 1,
+                        "leaf_kind": "name",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": "rextio-numpy/f64-1d",
+                        "target": ""
+                      }
+                    ],
+                    "keywords": [],
+                    "kind": "binop",
+                    "leaf_index": null,
+                    "leaf_kind": null,
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-numpy/f64-1d",
+                    "target": "+"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 2,
+                        "leaf_kind": "name",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": "rextio-numpy/f64-1d",
+                        "target": ""
+                      },
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 3,
+                        "leaf_kind": "name",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": "rextio-numpy/f64-1d",
+                        "target": ""
+                      }
+                    ],
+                    "keywords": [],
+                    "kind": "binop",
+                    "leaf_index": null,
+                    "leaf_kind": null,
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-numpy/f64-1d",
+                    "target": "-"
+                  }
+                ],
+                "keywords": [],
+                "kind": "binop",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-numpy/f64-1d",
+                "target": "*"
+              },
+              "kind": "binop",
+              "line": 12,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_mode": "leaves",
+              "operand_types": [
+                "rextio-numpy/f64-1d",
+                "rextio-numpy/f64-1d"
+              ],
+              "plugin_id": "rextio-numpy",
+              "result_type": "rextio-numpy/f64-1d",
+              "rule_id": "rextio-numpy/elementwise-chain-fusion",
+              "target": "*"
+            },
+            {
+              "column": 16,
+              "end_column": 28,
+              "end_line": 12,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-numpy/f64-1d",
+                    "target": ""
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 1,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-numpy/f64-1d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "binop",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-numpy/f64-1d",
+                "target": "+"
+              },
+              "kind": "binop",
+              "line": 12,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-numpy/f64-1d",
+                "rextio-numpy/f64-1d"
+              ],
+              "plugin_id": "rextio-numpy",
+              "result_type": "rextio-numpy/f64-1d",
+              "rule_id": "rextio-numpy/elementwise-float64",
+              "target": "+"
+            },
+            {
+              "column": 33,
+              "end_column": 45,
+              "end_line": 12,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-numpy/f64-1d",
+                    "target": ""
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 1,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-numpy/f64-1d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "binop",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-numpy/f64-1d",
+                "target": "-"
+              },
+              "kind": "binop",
+              "line": 12,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-numpy/f64-1d",
+                "rextio-numpy/f64-1d"
+              ],
+              "plugin_id": "rextio-numpy",
+              "result_type": "rextio-numpy/f64-1d",
+              "rule_id": "rextio-numpy/elementwise-float64",
+              "target": "-"
+            },
+            {
+              "column": 11,
+              "end_column": 41,
+              "end_line": 13,
+              "expression": {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 0,
+                        "leaf_kind": "name",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": "rextio-numpy/f64-1d",
+                        "target": ""
+                      },
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 1,
+                        "leaf_kind": "name",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": "rextio-numpy/f64-1d",
+                        "target": ""
+                      }
+                    ],
+                    "keywords": [],
+                    "kind": "binop",
+                    "leaf_index": null,
+                    "leaf_kind": null,
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-numpy/f64-1d",
+                    "target": "-"
+                  },
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 2,
+                        "leaf_kind": "name",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": "rextio-numpy/f64-1d",
+                        "target": ""
+                      },
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 3,
+                        "leaf_kind": "opaque",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": null,
+                        "target": ""
+                      }
+                    ],
+                    "keywords": [],
+                    "kind": "binop",
+                    "leaf_index": null,
+                    "leaf_kind": null,
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-numpy/f64-1d",
+                    "target": "+"
+                  }
+                ],
+                "keywords": [],
+                "kind": "binop",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-numpy/f64-1d",
+                "target": "/"
+              },
+              "kind": "binop",
+              "line": 13,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-numpy/f64-1d",
+                "rextio-numpy/f64-1d"
+              ],
+              "plugin_id": "rextio-numpy",
+              "result_type": "rextio-numpy/f64-1d",
+              "rule_id": "rextio-numpy/elementwise-float64",
+              "target": "/"
+            },
+            {
+              "column": 12,
+              "end_column": 24,
+              "end_line": 13,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-numpy/f64-1d",
+                    "target": ""
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 1,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-numpy/f64-1d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "binop",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-numpy/f64-1d",
+                "target": "-"
+              },
+              "kind": "binop",
+              "line": 13,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-numpy/f64-1d",
+                "rextio-numpy/f64-1d"
+              ],
+              "plugin_id": "rextio-numpy",
+              "result_type": "rextio-numpy/f64-1d",
+              "rule_id": "rextio-numpy/elementwise-float64",
+              "target": "-"
+            },
+            {
+              "column": 29,
+              "end_column": 40,
+              "end_line": 13,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-numpy/f64-1d",
+                    "target": ""
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 1,
+                    "leaf_kind": "opaque",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "float",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "binop",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-numpy/f64-1d",
+                "target": "+"
+              },
+              "kind": "binop",
+              "line": 13,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-numpy/f64-1d",
+                "float"
+              ],
+              "plugin_id": "rextio-numpy",
+              "result_type": "rextio-numpy/f64-1d",
+              "rule_id": "rextio-numpy/elementwise-float64",
+              "target": "+"
+            }
+          ],
+          "plugin_type_keys": [
+            "rextio-numpy/f64-1d"
+          ],
+          "promotion_assessment": {
+            "diagnostic_codes": [],
+            "diagnostics": [],
+            "provenance": "plugin-managed",
+            "skip_reason": null,
+            "status": "eligible"
+          },
+          "qualname": "numpy_case.workload.mixed_fusion",
+          "rejection_codes": [],
+          "route": "native-plugin:rextio-numpy",
+          "source_range": {
+            "end": {
+              "column": 41,
+              "line": 13
+            },
+            "start": {
+              "column": 0,
+              "line": 6
+            }
+          }
+        },
+        {
+          "accepted": true,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                null,
+                null
+              ],
+              "column": 11,
+              "in_loop": false,
+              "line": 17,
+              "target": "numpy.dot"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/numpy/src/numpy_case/workload.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": true,
+          "line": 16,
+          "marker_kind": "none",
+          "module_name": "numpy_case.workload",
+          "name": "blas_dot",
+          "name_range": {
+            "end": {
+              "column": 12,
+              "line": 16
+            },
+            "start": {
+              "column": 4,
+              "line": 16
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "accepted",
+          "native_target_language": "rust",
+          "plugin_claims": [
+            {
+              "column": 11,
+              "end_column": 30,
+              "end_line": 17,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-numpy/f64-1d",
+                    "target": ""
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 1,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-numpy/f64-1d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "float",
+                "target": "numpy.dot"
+              },
+              "kind": "call",
+              "line": 17,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-numpy/f64-1d",
+                "rextio-numpy/f64-1d"
+              ],
+              "plugin_id": "rextio-numpy",
+              "result_type": "float",
+              "rule_id": "rextio-numpy/dot-float64",
+              "target": "numpy.dot"
+            }
+          ],
+          "plugin_type_keys": [
+            "rextio-numpy/f64-1d"
+          ],
+          "promotion_assessment": {
+            "diagnostic_codes": [],
+            "diagnostics": [],
+            "provenance": "plugin-managed",
+            "skip_reason": null,
+            "status": "eligible"
+          },
+          "qualname": "numpy_case.workload.blas_dot",
+          "rejection_codes": [],
+          "route": "native-plugin:rextio-numpy",
+          "source_range": {
+            "end": {
+              "column": 30,
+              "line": 17
+            },
+            "start": {
+              "column": 0,
+              "line": 16
+            }
+          }
+        }
+      ],
+      "import_policies": [
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external",
+          "package": "rextio_numpy",
+          "plugin": null,
+          "policy": "fallback",
+          "reason": "external package without an active plugin uses the default external import policy",
+          "target": "rextio_numpy.types.F64Arr1",
+          "version": null,
+          "visible_name": "F64Arr1"
+        },
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external-plugin",
+          "package": "numpy",
+          "plugin": "rextio-numpy",
+          "policy": "plugin",
+          "reason": "active plugin 'rextio-numpy' declares support for this package",
+          "target": "numpy",
+          "version": null,
+          "visible_name": "np"
+        }
+      ],
+      "imports": {
+        "F64Arr1": "rextio_numpy.types.F64Arr1",
+        "np": "numpy"
+      },
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "numpy_case.workload",
+      "top_level": null
+    }
+  ],
+  "native_candidates": [
+    "numpy_case.workload.blas_dot",
+    "numpy_case.workload.mixed_fusion"
+  ],
+  "native_top_levels": [],
+  "project_root": "cases/numpy",
+  "rejected_native": [],
+  "rejected_native_top_levels": []
+}

@@ -454,6 +454,80 @@ def test_run_inputs_at_a_and_bundled_outputs_at_b_are_verifiable(tmp_path: Path)
     )
 
 
+def test_bundled_run_outputs_win_over_mutated_live_files(tmp_path: Path) -> None:
+    """Canonical verification must use bundled bytes, not live ignored .rextio paths."""
+    build_bytes = json.dumps(
+        {"executable_build": {"status": "built", "path": "dist/artifact"}}
+    ).encode()
+    artifact_bytes = b"native-original"
+    build_sha = hashlib.sha256(build_bytes).hexdigest()
+    artifact_sha = hashlib.sha256(artifact_bytes).hexdigest()
+
+    # Live paths exist but are mutated (simulates candidate rebuilds overwriting .rextio).
+    live_build = tmp_path / "cases/fixture/.rextio/reports/build.json"
+    live_build.parent.mkdir(parents=True)
+    live_build.write_text('{"mutated": true}\n', encoding="utf-8")
+    live_artifact = tmp_path / "cases/fixture/dist/artifact"
+    live_artifact.parent.mkdir(parents=True)
+    live_artifact.write_bytes(b"mutated-live")
+
+    bundle_root = tmp_path / "results/canonical/fixture/objects"
+    bundle_root.mkdir(parents=True)
+    bundled_build = bundle_root / build_sha
+    bundled_artifact = bundle_root / artifact_sha
+    bundled_build.write_bytes(build_bytes)
+    bundled_artifact.write_bytes(artifact_bytes)
+
+    gate = {
+        "artifact": "cases/fixture/dist/artifact",
+        "artifact_role": "runtime_artifact",
+        "artifact_declaration": {
+            "kind": "executable",
+            "declared_path": "cases/fixture/dist/artifact",
+            "runtime_path": "cases/fixture/dist/artifact",
+        },
+        "evidence": {
+            "build_report": {
+                "path": "cases/fixture/.rextio/reports/build.json",
+                "sha256": build_sha,
+                "kind": "run-output",
+            },
+            "runtime_artifact": {
+                "path": "cases/fixture/dist/artifact",
+                "sha256": artifact_sha,
+                "kind": "run-output",
+            },
+        },
+    }
+    bundle_evidence = {
+        "build_report": {
+            "kind": "run-output",
+            "logical_path": "cases/fixture/.rextio/reports/build.json",
+            "bundle_path": bundled_build.relative_to(tmp_path).as_posix(),
+            "sha256": build_sha,
+            "size_bytes": len(build_bytes),
+        },
+        "runtime_artifact": {
+            "kind": "run-output",
+            "logical_path": "cases/fixture/dist/artifact",
+            "bundle_path": bundled_artifact.relative_to(tmp_path).as_posix(),
+            "sha256": artifact_sha,
+            "size_bytes": len(artifact_bytes),
+        },
+    }
+    resolved = _verify_evidence(
+        gate,
+        tmp_path,
+        "a" * 40,
+        bundle_evidence=bundle_evidence,
+    )
+    assert resolved["build_report"] == bundled_build
+    assert resolved["runtime_artifact"] == bundled_artifact
+    assert sha256_file(resolved["build_report"]) == build_sha
+    # Live mutation must not affect the result.
+    assert sha256_file(live_build) != build_sha
+
+
 def test_bundle_report_writes_role_keyed_manifest(
     tmp_path: Path,
     monkeypatch: pytest.MonkeyPatch,

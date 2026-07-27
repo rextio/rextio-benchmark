@@ -1,0 +1,1221 @@
+{
+  "accepted_native": [
+    "networkx_case.workload.dijkstra"
+  ],
+  "accepted_native_top_levels": [],
+  "contract_version": "2.27.0",
+  "diagnostics": [],
+  "embedding_candidates": [],
+  "host_source_plan": {
+    "availability": "available",
+    "execution_authority": "descriptive-only",
+    "graph": {
+      "cycles": [],
+      "external_references": [
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 0,
+          "imported": "rextio_benchmark.canonical",
+          "importer": "benchmark_case",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 57,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          },
+          "version": null
+        },
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 0,
+          "imported": "rextio_networkx",
+          "importer": "networkx_case.workload",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 1,
+              "line": 7
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          },
+          "version": null
+        }
+      ],
+      "local_edges": [],
+      "modules": [
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [
+            {
+              "deferred": false,
+              "kind": "from-import",
+              "module": "rextio_benchmark.canonical",
+              "names": [
+                {
+                  "asname": null,
+                  "name": "node_float_mapping"
+                }
+              ],
+              "ordinal": 0,
+              "relative_level": 0,
+              "resolved_targets": [
+                "rextio_benchmark.canonical.node_float_mapping"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 57,
+                  "line": 1
+                },
+                "start": {
+                  "column": 0,
+                  "line": 1
+                }
+              }
+            }
+          ],
+          "is_package_init": false,
+          "license": null,
+          "module_name": "benchmark_case",
+          "path": "benchmark_case.py",
+          "provenance": {
+            "evidence": [
+              "sha256:ec13e10193c7ca6f3d2fcc40c4e0c2fa73ef8d3f30aefe345aa413ba162bb719"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "benchmark_case.py"
+            ]
+          },
+          "sha256": "ec13e10193c7ca6f3d2fcc40c4e0c2fa73ef8d3f30aefe345aa413ba162bb719",
+          "source_origin": "project",
+          "version": null
+        },
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [],
+          "is_package_init": true,
+          "license": null,
+          "module_name": "networkx_case",
+          "path": "src/networkx_case/__init__.py",
+          "provenance": {
+            "evidence": [
+              "sha256:13f1c550211c67075cbbec18aaba1d4f229d850764b184ad807e7c2066809a1a"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "src/networkx_case/__init__.py"
+            ]
+          },
+          "sha256": "13f1c550211c67075cbbec18aaba1d4f229d850764b184ad807e7c2066809a1a",
+          "source_origin": "project",
+          "version": null
+        },
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [
+            {
+              "deferred": false,
+              "kind": "from-import",
+              "module": "rextio_networkx",
+              "names": [
+                {
+                  "asname": null,
+                  "name": "DijkstraLengthsI64"
+                },
+                {
+                  "asname": null,
+                  "name": "NodeI64"
+                },
+                {
+                  "asname": null,
+                  "name": "WeightedEdgeListI64F64"
+                },
+                {
+                  "asname": null,
+                  "name": "dijkstra_path_lengths"
+                },
+                {
+                  "asname": null,
+                  "name": "weighted_graph_from_edgelist"
+                }
+              ],
+              "ordinal": 0,
+              "relative_level": 0,
+              "resolved_targets": [
+                "rextio_networkx.DijkstraLengthsI64",
+                "rextio_networkx.NodeI64",
+                "rextio_networkx.WeightedEdgeListI64F64",
+                "rextio_networkx.dijkstra_path_lengths",
+                "rextio_networkx.weighted_graph_from_edgelist"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 1,
+                  "line": 7
+                },
+                "start": {
+                  "column": 0,
+                  "line": 1
+                }
+              }
+            }
+          ],
+          "is_package_init": false,
+          "license": null,
+          "module_name": "networkx_case.workload",
+          "path": "src/networkx_case/workload.py",
+          "provenance": {
+            "evidence": [
+              "sha256:a7406d27d2e8de6925eab297662d8e889254efcd2cddf6cea5f78e527b6feb5f"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "src/networkx_case/workload.py"
+            ]
+          },
+          "sha256": "a7406d27d2e8de6925eab297662d8e889254efcd2cddf6cea5f78e527b6feb5f",
+          "source_origin": "project",
+          "version": null
+        }
+      ],
+      "scc_membership": {
+        "benchmark_case": [
+          "benchmark_case"
+        ],
+        "networkx_case": [
+          "networkx_case"
+        ],
+        "networkx_case.workload": [
+          "networkx_case.workload"
+        ]
+      },
+      "strongly_connected_components": [
+        {
+          "cyclic": false,
+          "members": [
+            "benchmark_case"
+          ]
+        },
+        {
+          "cyclic": false,
+          "members": [
+            "networkx_case"
+          ]
+        },
+        {
+          "cyclic": false,
+          "members": [
+            "networkx_case.workload"
+          ]
+        }
+      ]
+    },
+    "module_initializers": [
+      {
+        "availability": "available",
+        "metadata_ranges": [],
+        "module_name": "benchmark_case",
+        "path": "benchmark_case.py",
+        "provenance": {
+          "evidence": [
+            "sha256:ec13e10193c7ca6f3d2fcc40c4e0c2fa73ef8d3f30aefe345aa413ba162bb719"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "benchmark_case.py"
+          ]
+        },
+        "segments": [
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "node_float_mapping"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "rextio_benchmark.canonical"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "node_float_mapping"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "node_float_mapping"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "node_float_mapping"
+            ],
+            "must_bindings": [
+              "node_float_mapping"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "node_float_mapping"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 0,
+            "source_range": {
+              "end": {
+                "column": 57,
+                "line": 1
+              },
+              "start": {
+                "column": 0,
+                "line": 1
+              }
+            },
+            "statement_indexes": [
+              0
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "make_arguments"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "object",
+              "str",
+              "tuple"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "make_arguments"
+            ],
+            "kind": "definition-publication",
+            "may_bindings": [
+              "make_arguments"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "make_arguments"
+            ],
+            "must_bindings": [
+              "make_arguments"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "make_arguments"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 1,
+            "source_range": {
+              "end": {
+                "column": 19,
+                "line": 13
+              },
+              "start": {
+                "column": 0,
+                "line": 4
+              }
+            },
+            "statement_indexes": [
+              1
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "normalize"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "object",
+              "str"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "normalize"
+            ],
+            "kind": "definition-publication",
+            "may_bindings": [
+              "normalize"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "normalize"
+            ],
+            "must_bindings": [
+              "normalize"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "normalize"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 2,
+            "source_range": {
+              "end": {
+                "column": 36,
+                "line": 19
+              },
+              "start": {
+                "column": 0,
+                "line": 16
+              }
+            },
+            "statement_indexes": [
+              2
+            ]
+          }
+        ],
+        "source_sha256": "ec13e10193c7ca6f3d2fcc40c4e0c2fa73ef8d3f30aefe345aa413ba162bb719",
+        "unavailable_reason": null
+      },
+      {
+        "availability": "available",
+        "metadata_ranges": [
+          {
+            "end": {
+              "column": 40,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          }
+        ],
+        "module_name": "networkx_case",
+        "path": "src/networkx_case/__init__.py",
+        "provenance": {
+          "evidence": [
+            "sha256:13f1c550211c67075cbbec18aaba1d4f229d850764b184ad807e7c2066809a1a"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "src/networkx_case/__init__.py"
+          ]
+        },
+        "segments": [],
+        "source_sha256": "13f1c550211c67075cbbec18aaba1d4f229d850764b184ad807e7c2066809a1a",
+        "unavailable_reason": null
+      },
+      {
+        "availability": "available",
+        "metadata_ranges": [],
+        "module_name": "networkx_case.workload",
+        "path": "src/networkx_case/workload.py",
+        "provenance": {
+          "evidence": [
+            "sha256:a7406d27d2e8de6925eab297662d8e889254efcd2cddf6cea5f78e527b6feb5f"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "src/networkx_case/workload.py"
+          ]
+        },
+        "segments": [
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "DijkstraLengthsI64",
+              "NodeI64",
+              "WeightedEdgeListI64F64",
+              "dijkstra_path_lengths",
+              "weighted_graph_from_edgelist"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "rextio_networkx"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "DijkstraLengthsI64",
+              "NodeI64",
+              "WeightedEdgeListI64F64",
+              "dijkstra_path_lengths",
+              "weighted_graph_from_edgelist"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "DijkstraLengthsI64",
+              "NodeI64",
+              "WeightedEdgeListI64F64",
+              "dijkstra_path_lengths",
+              "weighted_graph_from_edgelist"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "DijkstraLengthsI64",
+              "NodeI64",
+              "WeightedEdgeListI64F64",
+              "dijkstra_path_lengths",
+              "weighted_graph_from_edgelist"
+            ],
+            "must_bindings": [
+              "DijkstraLengthsI64",
+              "NodeI64",
+              "WeightedEdgeListI64F64",
+              "dijkstra_path_lengths",
+              "weighted_graph_from_edgelist"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "DijkstraLengthsI64",
+              "NodeI64",
+              "WeightedEdgeListI64F64",
+              "dijkstra_path_lengths",
+              "weighted_graph_from_edgelist"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 0,
+            "source_range": {
+              "end": {
+                "column": 1,
+                "line": 7
+              },
+              "start": {
+                "column": 0,
+                "line": 1
+              }
+            },
+            "statement_indexes": [
+              0
+            ]
+          },
+          {
+            "barrier_reason": "function definition annotations require preserved Python source-order evaluation",
+            "bindings": [
+              "dijkstra"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "DijkstraLengthsI64",
+              "NodeI64",
+              "WeightedEdgeListI64F64"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "dijkstra"
+            ],
+            "kind": "fallback-barrier",
+            "may_bindings": [
+              "dijkstra"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "dijkstra"
+            ],
+            "must_bindings": [
+              "dijkstra"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "dijkstra"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 1,
+            "source_range": {
+              "end": {
+                "column": 77,
+                "line": 14
+              },
+              "start": {
+                "column": 0,
+                "line": 10
+              }
+            },
+            "statement_indexes": [
+              1
+            ]
+          }
+        ],
+        "source_sha256": "a7406d27d2e8de6925eab297662d8e889254efcd2cddf6cea5f78e527b6feb5f",
+        "unavailable_reason": null
+      }
+    ],
+    "unavailable_reason": null
+  },
+  "modules": [
+    {
+      "diagnostics": [],
+      "file_path": "cases/networkx/benchmark_case.py",
+      "functions": [
+        {
+          "accepted": false,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 16,
+              "in_loop": false,
+              "line": 7,
+              "target": "range"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 8,
+              "in_loop": true,
+              "line": 8,
+              "target": "edges.append"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 12,
+              "in_loop": true,
+              "line": 10,
+              "target": "edges.append"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 12,
+              "in_loop": true,
+              "line": 12,
+              "target": "edges.append"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/networkx/benchmark_case.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": false,
+          "line": 4,
+          "marker_kind": "none",
+          "module_name": "benchmark_case",
+          "name": "make_arguments",
+          "name_range": {
+            "end": {
+              "column": 18,
+              "line": 4
+            },
+            "start": {
+              "column": 4,
+              "line": 4
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "not-candidate",
+          "native_target_language": null,
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [
+              "RXT003",
+              "RXT010"
+            ],
+            "diagnostics": [
+              {
+                "code": "RXT003",
+                "column": 0,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 4,
+                "message": "unsupported return type: tuple[object, ...]",
+                "suggestion": "Use a supported 0.1.6 scalar or collection type."
+              },
+              {
+                "code": "RXT010",
+                "column": 4,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 6,
+                "message": "unsupported local annotation type: list[tuple[int, int, float]]",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 42,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 6,
+                "message": "empty list literals require a supported list[...] annotation",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 8,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 8,
+                "message": "name 'edges' is not defined in this scope of the native function (module globals, closures, and names first bound inside a nested block then read after it are unsupported)",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 44,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 8,
+                "message": "mixed numeric operand types are not supported: int and float",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 12,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 10,
+                "message": "name 'edges' is not defined in this scope of the native function (module globals, closures, and names first bound inside a nested block then read after it are unsupported)",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 49,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 10,
+                "message": "mixed numeric operand types are not supported: int and float",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 12,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 12,
+                "message": "name 'edges' is not defined in this scope of the native function (module globals, closures, and names first bound inside a nested block then read after it are unsupported)",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 50,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 12,
+                "message": "mixed numeric operand types are not supported: int and float",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 11,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 13,
+                "message": "name 'edges' is not defined in this scope of the native function (module globals, closures, and names first bound inside a nested block then read after it are unsupported)",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              }
+            ],
+            "provenance": "auto",
+            "skip_reason": null,
+            "status": "ineligible"
+          },
+          "qualname": "benchmark_case.make_arguments",
+          "rejection_codes": [],
+          "route": "fallback-python",
+          "source_range": {
+            "end": {
+              "column": 19,
+              "line": 13
+            },
+            "start": {
+              "column": 0,
+              "line": 4
+            }
+          }
+        },
+        {
+          "accepted": false,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                null,
+                null
+              ],
+              "column": 11,
+              "in_loop": false,
+              "line": 17,
+              "target": "isinstance"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 14,
+              "in_loop": false,
+              "line": 18,
+              "target": "TypeError"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 58,
+              "in_loop": false,
+              "line": 18,
+              "target": "type"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 11,
+              "in_loop": false,
+              "line": 19,
+              "target": "rextio_benchmark.canonical.node_float_mapping"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/networkx/benchmark_case.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": false,
+          "line": 16,
+          "marker_kind": "none",
+          "module_name": "benchmark_case",
+          "name": "normalize",
+          "name_range": {
+            "end": {
+              "column": 13,
+              "line": 16
+            },
+            "start": {
+              "column": 4,
+              "line": 16
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "not-candidate",
+          "native_target_language": null,
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [
+              "RXT002",
+              "RXT003",
+              "RXT010"
+            ],
+            "diagnostics": [
+              {
+                "code": "RXT003",
+                "column": 0,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 16,
+                "message": "unsupported return type: object",
+                "suggestion": "Use a supported 0.1.6 scalar or collection type."
+              },
+              {
+                "code": "RXT002",
+                "column": 34,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 16,
+                "message": "unsupported argument type for value: object",
+                "suggestion": "Use a supported 0.1.6 scalar or collection type."
+              },
+              {
+                "code": "RXT010",
+                "column": 22,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 17,
+                "message": "name 'value' is not defined in this scope of the native function (module globals, closures, and names first bound inside a nested block then read after it are unsupported)",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 29,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 17,
+                "message": "name 'dict' is not defined in this scope of the native function (module globals, closures, and names first bound inside a nested block then read after it are unsupported)",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 8,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 18,
+                "message": "explicit exception flow is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 24,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 18,
+                "message": "f-strings are not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 30,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 19,
+                "message": "name 'value' is not defined in this scope of the native function (module globals, closures, and names first bound inside a nested block then read after it are unsupported)",
+                "suggestion": "Keep native candidates inside the supported 0.1.6 subset."
+              }
+            ],
+            "provenance": "auto",
+            "skip_reason": null,
+            "status": "ineligible"
+          },
+          "qualname": "benchmark_case.normalize",
+          "rejection_codes": [],
+          "route": "fallback-python",
+          "source_range": {
+            "end": {
+              "column": 36,
+              "line": 19
+            },
+            "start": {
+              "column": 0,
+              "line": 16
+            }
+          }
+        }
+      ],
+      "import_policies": [
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external",
+          "package": "rextio_benchmark",
+          "plugin": null,
+          "policy": "fallback",
+          "reason": "external package without an active plugin uses the default external import policy",
+          "target": "rextio_benchmark.canonical.node_float_mapping",
+          "version": null,
+          "visible_name": "node_float_mapping"
+        }
+      ],
+      "imports": {
+        "node_float_mapping": "rextio_benchmark.canonical.node_float_mapping"
+      },
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "benchmark_case",
+      "top_level": null
+    },
+    {
+      "diagnostics": [],
+      "file_path": "cases/networkx/src/networkx_case/__init__.py",
+      "functions": [],
+      "import_policies": [],
+      "imports": {},
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "networkx_case",
+      "top_level": null
+    },
+    {
+      "diagnostics": [],
+      "file_path": "cases/networkx/src/networkx_case/workload.py",
+      "functions": [
+        {
+          "accepted": true,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                null,
+                null
+              ],
+              "column": 11,
+              "in_loop": false,
+              "line": 14,
+              "target": "rextio_networkx.dijkstra_path_lengths"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 33,
+              "in_loop": false,
+              "line": 14,
+              "target": "rextio_networkx.weighted_graph_from_edgelist"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/networkx/src/networkx_case/workload.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": true,
+          "line": 10,
+          "marker_kind": "none",
+          "module_name": "networkx_case.workload",
+          "name": "dijkstra",
+          "name_range": {
+            "end": {
+              "column": 12,
+              "line": 10
+            },
+            "start": {
+              "column": 4,
+              "line": 10
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "accepted",
+          "native_target_language": "rust",
+          "plugin_claims": [
+            {
+              "column": 11,
+              "end_column": 77,
+              "end_line": 14,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "opaque",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-networkx/weighted-graph-i64-f64",
+                    "target": ""
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 1,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-networkx/node-i64",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-networkx/dijkstra-lengths-i64",
+                "target": "rextio_networkx.dijkstra_path_lengths"
+              },
+              "kind": "call",
+              "line": 14,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-networkx/weighted-graph-i64-f64",
+                "rextio-networkx/node-i64"
+              ],
+              "plugin_id": "rextio-networkx",
+              "result_type": "rextio-networkx/dijkstra-lengths-i64",
+              "rule_id": "rextio-networkx/dijkstra-path-lengths",
+              "target": "rextio_networkx.dijkstra_path_lengths"
+            },
+            {
+              "column": 33,
+              "end_column": 68,
+              "end_line": 14,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-networkx/weighted-edgelist-i64-f64",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-networkx/weighted-graph-i64-f64",
+                "target": "rextio_networkx.weighted_graph_from_edgelist"
+              },
+              "kind": "call",
+              "line": 14,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-networkx/weighted-edgelist-i64-f64"
+              ],
+              "plugin_id": "rextio-networkx",
+              "result_type": "rextio-networkx/weighted-graph-i64-f64",
+              "rule_id": "rextio-networkx/weighted-graph-from-edgelist",
+              "target": "rextio_networkx.weighted_graph_from_edgelist"
+            }
+          ],
+          "plugin_type_keys": [
+            "rextio-networkx/dijkstra-lengths-i64",
+            "rextio-networkx/node-i64",
+            "rextio-networkx/weighted-edgelist-i64-f64"
+          ],
+          "promotion_assessment": {
+            "diagnostic_codes": [],
+            "diagnostics": [],
+            "provenance": "plugin-managed",
+            "skip_reason": null,
+            "status": "eligible"
+          },
+          "qualname": "networkx_case.workload.dijkstra",
+          "rejection_codes": [],
+          "route": "native-plugin:rextio-networkx",
+          "source_range": {
+            "end": {
+              "column": 77,
+              "line": 14
+            },
+            "start": {
+              "column": 0,
+              "line": 10
+            }
+          }
+        }
+      ],
+      "import_policies": [
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external-plugin",
+          "package": "rextio_networkx",
+          "plugin": "rextio-networkx",
+          "policy": "plugin",
+          "reason": "active plugin 'rextio-networkx' declares support for this package",
+          "target": "rextio_networkx.DijkstraLengthsI64",
+          "version": null,
+          "visible_name": "DijkstraLengthsI64"
+        },
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external-plugin",
+          "package": "rextio_networkx",
+          "plugin": "rextio-networkx",
+          "policy": "plugin",
+          "reason": "active plugin 'rextio-networkx' declares support for this package",
+          "target": "rextio_networkx.NodeI64",
+          "version": null,
+          "visible_name": "NodeI64"
+        },
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external-plugin",
+          "package": "rextio_networkx",
+          "plugin": "rextio-networkx",
+          "policy": "plugin",
+          "reason": "active plugin 'rextio-networkx' declares support for this package",
+          "target": "rextio_networkx.WeightedEdgeListI64F64",
+          "version": null,
+          "visible_name": "WeightedEdgeListI64F64"
+        },
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external-plugin",
+          "package": "rextio_networkx",
+          "plugin": "rextio-networkx",
+          "policy": "plugin",
+          "reason": "active plugin 'rextio-networkx' declares support for this package",
+          "target": "rextio_networkx.dijkstra_path_lengths",
+          "version": null,
+          "visible_name": "dijkstra_path_lengths"
+        },
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external-plugin",
+          "package": "rextio_networkx",
+          "plugin": "rextio-networkx",
+          "policy": "plugin",
+          "reason": "active plugin 'rextio-networkx' declares support for this package",
+          "target": "rextio_networkx.weighted_graph_from_edgelist",
+          "version": null,
+          "visible_name": "weighted_graph_from_edgelist"
+        }
+      ],
+      "imports": {
+        "DijkstraLengthsI64": "rextio_networkx.DijkstraLengthsI64",
+        "NodeI64": "rextio_networkx.NodeI64",
+        "WeightedEdgeListI64F64": "rextio_networkx.WeightedEdgeListI64F64",
+        "dijkstra_path_lengths": "rextio_networkx.dijkstra_path_lengths",
+        "weighted_graph_from_edgelist": "rextio_networkx.weighted_graph_from_edgelist"
+      },
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "networkx_case.workload",
+      "top_level": null
+    }
+  ],
+  "native_candidates": [
+    "networkx_case.workload.dijkstra"
+  ],
+  "native_top_levels": [],
+  "project_root": "cases/networkx",
+  "rejected_native": [],
+  "rejected_native_top_levels": []
+}

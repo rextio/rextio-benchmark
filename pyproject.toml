@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "rextio-benchmark"
-version = "0.1.0"
-description = "Auditable source/fallback/native benchmarks for released Rextio packages"
+version = "0.1.1"
+description = "Auditable source/fallback/native benchmarks for released and exact commit-pinned candidate Rextio packages"
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
 license = "MIT"

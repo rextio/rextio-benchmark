@@ -25,11 +25,187 @@ The Core README table contains exactly these rows, in this order:
 | PyTorch CPU | `torch-cpu-deep-mlp` |
 | TensorFlow CPU | `tensorflow-cpu-eager-chain` |
 
-The full canonical report must still retain every repository case.
-`core-native-executable` is reported separately because process startup is
-included. `numpy-blas-dot-negative-control` is retained as the BLAS-owned
-negative control. Neither may be substituted into the headline table after
-results are known. Neutral and slower headline rows remain in the table.
+The suite covers **Rextio Core plus five first-party plugins**. Each headline
+workload exercises its relevant component (Core, NumPy, NetworkX, pandas,
+Torch, or TensorFlow).
+
+The full canonical report must still retain every repository case for the
+active complete-case set. `core-native-executable` is reported separately
+because process startup is included. `numpy-blas-dot-negative-control` is
+retained as the BLAS-owned negative control. `numpy-mixed-nonfused-phase1` is
+retained as a diagnostic for the phase=1 non-fused branch and is **never** a
+fusion claim and **never** appears in the six-row README headline block.
+Neither diagnostic may be substituted into the headline table after results
+are known. Neutral and slower headline rows remain in the table.
+
+## Released 0.1.0 complete-case set (frozen historical)
+
+The published Mac CPU cohort
+`cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8`
+remains byte-immutable under
+`results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/`.
+Its complete case set is the released 0.1.0 set (without
+`numpy-mixed-nonfused-phase1`). Verification of that cohort continues against
+that frozen complete set so historical reports stay verifiable after later
+diagnostic expansion. Do not rewrite, re-hash, or re-measure that directory.
+
+## Candidate plugin 0.1.3 cohort (second frozen policy; measured)
+
+A second cohort policy was frozen **before** any candidate three-run
+measurement under policy id `candidate-plugin-0.1.3-pre-measurement` (that id
+is the immutable policy name bound into reports; it is not rewritten after
+measurement). The qualifying three-run candidate cohort has since been
+measured and is published as a **measured candidate** under GitHub repository
+version **0.1.1** (`rextio-benchmark` is not published to PyPI). The released
+**0.1.0** cohort and figures remain historical and are not replaced.
+
+| Field | Value |
+| --- | --- |
+| Policy id | `candidate-plugin-0.1.3-pre-measurement` (frozen name) |
+| Policy version | `1` (same schema; no report schema bump) |
+| Status | measured candidate (qualified three-run cohort published) |
+| Published cohort | `cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a` |
+| Measurement commit | `afd73d76107f9b7f352c8f5bb8a0ed382051f8bc` |
+| Selection | chronological-first, exactly three publish reports |
+| Headline stability | 10% on the six frozen README rows only (**passed**) |
+| Complete cases | released 0.1.0 set **plus** `numpy-mixed-nonfused-phase1` |
+| `rextio-numpy` | version `0.1.3` from Git rev `7316c47393a86f1c701049b878d01e8d8f561cdb` |
+| `rextio-tensorflow` | version `0.1.3` from Git rev `346ca58148ed2563d4c7547dd8443d60cd4f905b` |
+
+These pins are **pre-release commit-pinned candidate builds at measurement
+time**. They are **not** later PyPI `rextio-numpy` 0.1.3 or `rextio-tensorflow`
+0.1.3 artifacts. All other plugin, core, and framework versions remain on
+their existing released pins.
+
+Headline proof before timing:
+
+- `numpy-mixed-fusion` must declare and satisfy leaves-mode
+  `rextio-numpy/elementwise-chain-fusion` and a generated `__rxtnp_echain_`
+  helper/source presence.
+- `tensorflow-cpu-eager-chain` must declare and satisfy
+  `rextio-tensorflow/transpose-f32-cpu-2d` and generated
+  `rextio_tensorflow_runtime::transpose(` source presence, using a non-square
+  weight with default rank-2 transpose.
+- `numpy-mixed-nonfused-phase1` must not be described as fusion.
+
+### Measured candidate headline results (no cherry-picking)
+
+Three-run medians and maximum relative deviations (all six rows within 10%):
+
+| Domain | 3-run median | Max deviation |
+| --- | ---: | ---: |
+| Core hybrid | 57.392× | 0.46% |
+| NumPy mixed fusion | 0.289× | 4.38% |
+| NetworkX Dijkstra | 3.694× | 4.71% |
+| pandas Series.map | 66.091× | 1.39% |
+| PyTorch CPU deep MLP | 1.014× | 0.81% |
+| TensorFlow CPU eager chain | 0.994× | 0.39% |
+
+Chronological-first canonical report timings (selected first report):
+
+| Domain | Source → native | Speedup |
+| --- | ---: | ---: |
+| Core hybrid | 7.989583 ms → 0.140795 ms | 57.392× |
+| NumPy mixed fusion | 0.052636 ms → 0.174234 ms | 0.302× |
+| NetworkX Dijkstra | 53.579948 ms → 13.893143 ms | 3.868× |
+| pandas Series.map | 179.848385 ms → 2.790601 ms | 65.172× |
+| PyTorch CPU deep MLP | 0.390064 ms → 0.384463 ms | 1.014× |
+| TensorFlow CPU eager chain | 0.650397 ms → 0.653509 ms | 0.997× |
+
+Published diagnostics from that first report: Core executable **16.658×**,
+NumPy phase1 non-fused **0.514×** (not a fusion claim), NumPy `dot` negative
+control **0.241×**. Bundle path:
+`results/canonical/cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a/`.
+Do not rewrite, re-hash, re-measure, rename, or delete that directory. Do not
+replace the frozen released 0.1.0 figures with these candidate numbers.
+
+## Boundary/pre-post diagnostic cohort (third frozen policy; measured)
+
+This bounded candidate definition is distinct from the two earlier byte-frozen
+cohorts. It adds three **non-headline, non-gating diagnostics** and does not
+change the six frozen README rows:
+
+| Diagnostic | Timed boundary |
+| --- | --- |
+| `numpy-f64-1d-boundary-direct-sink` | Read-only `F64_1D` NumPy input borrowed by native code; one directly filled fresh Python-owned output; exact array validation |
+| `torch-cpu-small-batch-prepost` | Batch-1 normalization, two small linears, four scalar-controlled activation rounds, softmax, exact int64 labels |
+| `tensorflow-cpu-small-batch-prepost` | Batch-1 eager normalization, two small matmuls, four scalar-controlled activation rounds, softmax, exact int64 labels |
+
+The report retains the immutable policy id `candidate-boundary-prepost-0.1.1`
+and its `pre-measurement` status field because those values were bound before
+timing; the resulting cohort is now measured and canonical.
+`profiles/next-candidate.toml` records the
+exact final Core 0.1.7 integration merge
+`b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97` and TensorFlow 0.1.3 integration
+merge `1fdb2e1cd91d058a056db76c2e0a15d52c855053`. NumPy 0.1.3 is pinned to
+`cf461e6775780a598517980c555a1aec079285d8`, and Torch 0.1.3 is pinned to
+`1e92b24b154c7266dc37d19533fc3e17a8b05f9a`. Every active CPU profile selects
+every declared candidate version from its exact Git source. NetworkX 0.1.1 and
+pandas 0.1.2 remain released PyPI installs on the base profile.
+
+| Field | Value |
+| --- | --- |
+| Published cohort | `cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec` |
+| Measurement commit | `92ef027cea25f9d6bf1d730de4c226d40016ba6e` |
+| Evidence commit | `0fed54c64283aaa08dfef0c9973e1d522d52bf1b` |
+| Selection | chronological-first, exactly three publish reports |
+| Headline stability | 10% on the six frozen README rows only (**passed**) |
+| Complete cases | earlier nine-case candidate set plus all three diagnostics above |
+
+### Measured package provenance (Core + five plugins)
+
+This cohort exercises Rextio Core and all five first-party plugins. NetworkX
+and pandas were installed as **released PyPI artifacts**; their commit values
+identify the corresponding release tags. The other four packages are **exact
+Git-pinned pre-release candidates at measurement time** (not later PyPI
+artifacts of those versions).
+
+| PyPI package | Measured version / status | Git commit (40-char) | Repository |
+| --- | --- | --- | --- |
+| `rextio` | 0.1.7 candidate | `b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97` | https://github.com/rextio/rextio |
+| `rextio-numpy` | 0.1.3 candidate | `cf461e6775780a598517980c555a1aec079285d8` | https://github.com/rextio/rextio-numpy |
+| `rextio-networkx` | 0.1.1 released | `ffc8681756d6f690ac090fe6b03f6ba220896ded` | https://github.com/rextio/rextio-networkx |
+| `rextio-pandas` | 0.1.2 released | `930a4fbfbd084a9869dbbf521770e811ea3d6652` | https://github.com/rextio/rextio-pandas |
+| `rextio-torch` | 0.1.3 candidate | `1e92b24b154c7266dc37d19533fc3e17a8b05f9a` | https://github.com/rextio/rextio-torch |
+| `rextio-tensorflow` | 0.1.3 candidate | `1fdb2e1cd91d058a056db76c2e0a15d52c855053` | https://github.com/rextio/rextio-tensorflow |
+
+Do not rewrite, re-hash, or re-measure any directory under `results/canonical/`.
+
+### Measured boundary/pre-post headline results (no cherry-picking)
+
+Three-run medians and maximum relative deviations (all six rows within 10%):
+
+| Domain | 3-run median | Max deviation |
+| --- | ---: | ---: |
+| Core hybrid | 57.729× | 1.31% |
+| NumPy mixed fusion | 2.523× | 3.88% |
+| NetworkX Dijkstra | 3.679× | 1.09% |
+| pandas Series.map | 66.143× | 0.92% |
+| PyTorch CPU deep MLP | 1.017× | 0.41% |
+| TensorFlow CPU eager chain | 1.040× | 0.38% |
+
+Chronological-first canonical report timings (selected first report):
+
+| Domain | Source → native | Speedup |
+| --- | ---: | ---: |
+| Core hybrid | 7.988211 ms → 0.138802 ms | 57.729× |
+| NumPy mixed fusion | 0.051241 ms → 0.019296 ms | 2.425× |
+| NetworkX Dijkstra | 50.836724 ms → 13.651031 ms | 3.719× |
+| pandas Series.map | 179.817448 ms → 2.700109 ms | 66.143× |
+| PyTorch CPU deep MLP | 0.391130 ms → 0.385014 ms | 1.018× |
+| TensorFlow CPU eager chain | 0.648913 ms → 0.622690 ms | 1.040× |
+
+Published non-headline diagnostics from that first report: Core executable
+**15.977×**, NumPy phase1 non-fused **0.248×** (not a fusion claim), NumPy
+`dot` negative control **0.587×**, NumPy F64 direct sink **0.305×**, Torch
+small-batch pre/post **1.158×** (three-run median **1.156×**), and TensorFlow
+small-batch pre/post **0.494×** (three-run median **0.495×**). These are
+diagnostic observations, not release, support, or individual-change causal
+A/B claims. Do not rewrite, re-hash, re-measure, rename, or delete that
+directory. This evidence does not authorize a release, tag, merge, or
+headline-scope change. The earlier candidate cohort
+`cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a`
+remains byte-immutable and verifiable against its historical nine-case set.
 
 ## Qualifying cohort
 
@@ -37,18 +213,27 @@ A cohort is the first three chronological `publish` attempts from one clean
 measurement commit on one unchanged host. Every attempt must:
 
 1. pass `scripts/verify.sh` with `mode=publish` and `publishable=true`;
-2. contain the complete case set with no blocker or ineligible case;
+2. contain the complete case set for the active cohort policy with no blocker
+   or ineligible case;
 3. use identical schema, benchmark configuration, measurement commit, system
-   identity, toolchain, package versions, and all hashed evidence declarations;
+   identity, toolchain, package versions, optional candidate
+   policy/package_provenance bindings, and all hashed evidence declarations;
    and
 4. contain finite positive timing samples and verifier-recomputed statistics.
 
+Candidate cohorts additionally require report-level `policy` and
+`package_provenance` captured from installed PEP 610 `direct_url.json`,
+cross-checked against the exact policy pins and hashed profile lock/manifest
+run-inputs. The second cohort uses `candidate-plugin-0.1.3-pre-measurement`;
+the third uses `candidate-boundary-prepost-0.1.1` and binds the four candidate
+packages. The stability summary persists the policy id and bound pins.
+
 For every case, take the three reports' `paired.median_speedup` values and
 report each deviation from the three-run median. The 10 percent publication
-gate applies only to the six pre-frozen headline rows. Core executable and the
-NumPy BLAS negative control remain fully published diagnostics even when their
-`within_threshold` field is false. Crossing 1× is allowed; stability does not
-mean that native must be faster.
+gate applies only to the six pre-frozen headline rows. Core executable, the
+NumPy BLAS negative control, and the phase1 non-fused diagnostic remain fully
+published diagnostics even when their `within_threshold` field is false.
+Crossing 1× is allowed; stability does not mean that native must be faster.
 
 If any of the first three attempts fails qualification, or a headline row
 fails stability, publish no result from that cohort. Diagnose the cause, make
@@ -79,13 +264,35 @@ to make those two commit identities equal.
 
 Bundling may run at that clean descendant policy/evidence commit. The recorded
 measurement commit must remain its ancestor; run-inputs are verified from that
-commit's Git blobs and every current run-output byte must still match its
-recorded digest. Dirty or unrelated checkouts are rejected.
+commit's Git blobs. For canonical bundles, run-output roles are resolved from
+content-addressed bundled objects even when mutable live ignored `.rextio`
+paths exist and differ. Dirty or unrelated checkouts are rejected for new
+publication. The required evidence sequence is: commit only the new cohort
+bundle, run its verifier from that clean evidence commit, then make registry
+or documentation changes. An untracked cohort must not be mistaken for clean
+canonical evidence. Quality CI uses full-history checkout and re-verifies all
+three frozen canonical reports. Candidate verification additionally re-runs
+`generated_expectations` against the resolved bundled portable `check.json`
+and generated Rust source (not live files). Those expectations are not applied
+retroactively to the released 0.1.0 cohort.
 
 Generate Core README blocks only from that verified canonical report with
 `rextio_benchmark readme-blocks`. The generator fixes the six rows above,
-retains ratios below 1×, and emits identical numbers and commit-pinned links in
-all five localized blocks.
+retains ratios below 1×, and emits identical numbers and commit-pinned report
+links in all five localized blocks. Core marker blocks list the six measured
+package names with versions and GitHub repository links, state that
+**candidate** labels mean pre-release revisions at measurement time (not later
+PyPI artifacts), and point readers to
+https://github.com/rextio/rextio-benchmark for exact revisions and full
+provenance; they **never** expose commit hashes or `candidate@` labels (those
+details stay in this repository's documentation and verified report bindings).
+Candidate package presence still comes only from verified bound report policy
+and package provenance (never from version strings alone). The generator
+additionally reads the sibling hash-bound `stability.json` and requires its
+policy, cohort/measurement identity, chronological index 0 of exactly three
+reports, complete case keys, 10% threshold, and six qualifying headline rows
+before rendering selection or three-run-median wording. It never invents
+numbers and never inserts diagnostic cases into the headline table.
 Normalized outputs are stored once per case in the report's content-addressed
 `output_table`. Publication verification recomputes every table address,
 rejects dangling or unreferenced entries, and independently applies the

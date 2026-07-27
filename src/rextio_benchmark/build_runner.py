@@ -8,6 +8,10 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from .integration_targets import (
+    cases_require_integration_targets,
+    require_integration_targets_ready,
+)
 from .models import load_cases, profile_python
 from .portability import portable_value, require_portable
 from .processes import sanitized_environment
@@ -51,8 +55,13 @@ def _run(command: list[str], environment: dict[str, str], cwd: Path) -> dict[str
 
 
 def build_cpu(repository_root: Path) -> tuple[dict[str, Any], bool]:
+    loaded_cases = load_cases(repository_root)
+    if cases_require_integration_targets(
+        frozenset(case.benchmark_id for case in loaded_cases)
+    ):
+        require_integration_targets_ready(repository_root)
     projects: dict[str, list[Any]] = {}
-    for case in load_cases(repository_root):
+    for case in loaded_cases:
         projects.setdefault(case.project, []).append(case)
     records = []
     success = True

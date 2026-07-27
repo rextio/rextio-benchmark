@@ -1,0 +1,2857 @@
+{
+  "accepted_native": [
+    "tensorflow_case.workload.inference",
+    "tensorflow_case.workload.small_batch_prepost"
+  ],
+  "accepted_native_top_levels": [],
+  "contract_version": "2.28.0",
+  "diagnostics": [],
+  "embedding_candidates": [],
+  "host_source_plan": {
+    "availability": "available",
+    "execution_authority": "descriptive-only",
+    "graph": {
+      "cycles": [],
+      "external_references": [
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 1,
+          "imported": "rextio_benchmark.canonical",
+          "importer": "benchmark_case",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 53,
+              "line": 3
+            },
+            "start": {
+              "column": 0,
+              "line": 3
+            }
+          },
+          "version": null
+        },
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 0,
+          "imported": "tensorflow",
+          "importer": "benchmark_case",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 23,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          },
+          "version": null
+        },
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 1,
+          "imported": "rextio_tensorflow.types",
+          "importer": "tensorflow_case.workload",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 82,
+              "line": 2
+            },
+            "start": {
+              "column": 0,
+              "line": 2
+            }
+          },
+          "version": null
+        },
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 0,
+          "imported": "tensorflow",
+          "importer": "tensorflow_case.workload",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 23,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          },
+          "version": null
+        }
+      ],
+      "local_edges": [],
+      "modules": [
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [
+            {
+              "deferred": false,
+              "kind": "import",
+              "module": null,
+              "names": [
+                {
+                  "asname": "tf",
+                  "name": "tensorflow"
+                }
+              ],
+              "ordinal": 0,
+              "relative_level": 0,
+              "resolved_targets": [
+                "tensorflow"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 23,
+                  "line": 1
+                },
+                "start": {
+                  "column": 0,
+                  "line": 1
+                }
+              }
+            },
+            {
+              "deferred": false,
+              "kind": "from-import",
+              "module": "rextio_benchmark.canonical",
+              "names": [
+                {
+                  "asname": null,
+                  "name": "exact_sequence"
+                }
+              ],
+              "ordinal": 1,
+              "relative_level": 0,
+              "resolved_targets": [
+                "rextio_benchmark.canonical.exact_sequence"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 53,
+                  "line": 3
+                },
+                "start": {
+                  "column": 0,
+                  "line": 3
+                }
+              }
+            }
+          ],
+          "is_package_init": false,
+          "license": null,
+          "module_name": "benchmark_case",
+          "path": "benchmark_case.py",
+          "provenance": {
+            "evidence": [
+              "sha256:d43a2d76e7166562802e6cce3ed48a440ec58105f519b6df9c02feb96638fc0a"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "benchmark_case.py"
+            ]
+          },
+          "sha256": "d43a2d76e7166562802e6cce3ed48a440ec58105f519b6df9c02feb96638fc0a",
+          "source_origin": "project",
+          "version": null
+        },
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [],
+          "is_package_init": true,
+          "license": null,
+          "module_name": "tensorflow_case",
+          "path": "src/tensorflow_case/__init__.py",
+          "provenance": {
+            "evidence": [
+              "sha256:32522617af6f7f0991256c17a356979a6a79c12f39ac98d1c43bebbe438c5b56"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "src/tensorflow_case/__init__.py"
+            ]
+          },
+          "sha256": "32522617af6f7f0991256c17a356979a6a79c12f39ac98d1c43bebbe438c5b56",
+          "source_origin": "project",
+          "version": null
+        },
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [
+            {
+              "deferred": false,
+              "kind": "import",
+              "module": null,
+              "names": [
+                {
+                  "asname": "tf",
+                  "name": "tensorflow"
+                }
+              ],
+              "ordinal": 0,
+              "relative_level": 0,
+              "resolved_targets": [
+                "tensorflow"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 23,
+                  "line": 1
+                },
+                "start": {
+                  "column": 0,
+                  "line": 1
+                }
+              }
+            },
+            {
+              "deferred": false,
+              "kind": "from-import",
+              "module": "rextio_tensorflow.types",
+              "names": [
+                {
+                  "asname": null,
+                  "name": "TensorF32Cpu1D"
+                },
+                {
+                  "asname": null,
+                  "name": "TensorF32Cpu2D"
+                },
+                {
+                  "asname": null,
+                  "name": "TensorI64Cpu1D"
+                }
+              ],
+              "ordinal": 1,
+              "relative_level": 0,
+              "resolved_targets": [
+                "rextio_tensorflow.types.TensorF32Cpu1D",
+                "rextio_tensorflow.types.TensorF32Cpu2D",
+                "rextio_tensorflow.types.TensorI64Cpu1D"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 82,
+                  "line": 2
+                },
+                "start": {
+                  "column": 0,
+                  "line": 2
+                }
+              }
+            }
+          ],
+          "is_package_init": false,
+          "license": null,
+          "module_name": "tensorflow_case.workload",
+          "path": "src/tensorflow_case/workload.py",
+          "provenance": {
+            "evidence": [
+              "sha256:178a6b3a0e35127247706f6a30d898d105ee426e58ed7366b18488ebfaf7c177"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "src/tensorflow_case/workload.py"
+            ]
+          },
+          "sha256": "178a6b3a0e35127247706f6a30d898d105ee426e58ed7366b18488ebfaf7c177",
+          "source_origin": "project",
+          "version": null
+        }
+      ],
+      "scc_membership": {
+        "benchmark_case": [
+          "benchmark_case"
+        ],
+        "tensorflow_case": [
+          "tensorflow_case"
+        ],
+        "tensorflow_case.workload": [
+          "tensorflow_case.workload"
+        ]
+      },
+      "strongly_connected_components": [
+        {
+          "cyclic": false,
+          "members": [
+            "benchmark_case"
+          ]
+        },
+        {
+          "cyclic": false,
+          "members": [
+            "tensorflow_case"
+          ]
+        },
+        {
+          "cyclic": false,
+          "members": [
+            "tensorflow_case.workload"
+          ]
+        }
+      ]
+    },
+    "module_initializers": [
+      {
+        "availability": "available",
+        "metadata_ranges": [],
+        "module_name": "benchmark_case",
+        "path": "benchmark_case.py",
+        "provenance": {
+          "evidence": [
+            "sha256:d43a2d76e7166562802e6cce3ed48a440ec58105f519b6df9c02feb96638fc0a"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "benchmark_case.py"
+          ]
+        },
+        "segments": [
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "tf"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "tensorflow"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "tf"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "tf"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "tf"
+            ],
+            "must_bindings": [
+              "tf"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "tf"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 0,
+            "source_range": {
+              "end": {
+                "column": 23,
+                "line": 1
+              },
+              "start": {
+                "column": 0,
+                "line": 1
+              }
+            },
+            "statement_indexes": [
+              0
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "exact_sequence"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "rextio_benchmark.canonical"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "exact_sequence"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "exact_sequence"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "exact_sequence"
+            ],
+            "must_bindings": [
+              "exact_sequence"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "exact_sequence"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 1,
+            "source_range": {
+              "end": {
+                "column": 53,
+                "line": 3
+              },
+              "start": {
+                "column": 0,
+                "line": 3
+              }
+            },
+            "statement_indexes": [
+              1
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "make_arguments"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "object",
+              "str",
+              "tuple"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "make_arguments"
+            ],
+            "kind": "definition-publication",
+            "may_bindings": [
+              "make_arguments"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "make_arguments"
+            ],
+            "must_bindings": [
+              "make_arguments"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "make_arguments"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 2,
+            "source_range": {
+              "end": {
+                "column": 33,
+                "line": 32
+              },
+              "start": {
+                "column": 0,
+                "line": 6
+              }
+            },
+            "statement_indexes": [
+              2
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "normalize"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "object",
+              "str"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "normalize"
+            ],
+            "kind": "definition-publication",
+            "may_bindings": [
+              "normalize"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "normalize"
+            ],
+            "must_bindings": [
+              "normalize"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "normalize"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 3,
+            "source_range": {
+              "end": {
+                "column": 5,
+                "line": 44
+              },
+              "start": {
+                "column": 0,
+                "line": 35
+              }
+            },
+            "statement_indexes": [
+              3
+            ]
+          }
+        ],
+        "source_sha256": "d43a2d76e7166562802e6cce3ed48a440ec58105f519b6df9c02feb96638fc0a",
+        "unavailable_reason": null
+      },
+      {
+        "availability": "available",
+        "metadata_ranges": [
+          {
+            "end": {
+              "column": 46,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          }
+        ],
+        "module_name": "tensorflow_case",
+        "path": "src/tensorflow_case/__init__.py",
+        "provenance": {
+          "evidence": [
+            "sha256:32522617af6f7f0991256c17a356979a6a79c12f39ac98d1c43bebbe438c5b56"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "src/tensorflow_case/__init__.py"
+          ]
+        },
+        "segments": [],
+        "source_sha256": "32522617af6f7f0991256c17a356979a6a79c12f39ac98d1c43bebbe438c5b56",
+        "unavailable_reason": null
+      },
+      {
+        "availability": "available",
+        "metadata_ranges": [],
+        "module_name": "tensorflow_case.workload",
+        "path": "src/tensorflow_case/workload.py",
+        "provenance": {
+          "evidence": [
+            "sha256:178a6b3a0e35127247706f6a30d898d105ee426e58ed7366b18488ebfaf7c177"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "src/tensorflow_case/workload.py"
+          ]
+        },
+        "segments": [
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "tf"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "tensorflow"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "tf"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "tf"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "tf"
+            ],
+            "must_bindings": [
+              "tf"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "tf"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 0,
+            "source_range": {
+              "end": {
+                "column": 23,
+                "line": 1
+              },
+              "start": {
+                "column": 0,
+                "line": 1
+              }
+            },
+            "statement_indexes": [
+              0
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "TensorF32Cpu1D",
+              "TensorF32Cpu2D",
+              "TensorI64Cpu1D"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "rextio_tensorflow.types"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "TensorF32Cpu1D",
+              "TensorF32Cpu2D",
+              "TensorI64Cpu1D"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "TensorF32Cpu1D",
+              "TensorF32Cpu2D",
+              "TensorI64Cpu1D"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "TensorF32Cpu1D",
+              "TensorF32Cpu2D",
+              "TensorI64Cpu1D"
+            ],
+            "must_bindings": [
+              "TensorF32Cpu1D",
+              "TensorF32Cpu2D",
+              "TensorI64Cpu1D"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "TensorF32Cpu1D",
+              "TensorF32Cpu2D",
+              "TensorI64Cpu1D"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 1,
+            "source_range": {
+              "end": {
+                "column": 82,
+                "line": 2
+              },
+              "start": {
+                "column": 0,
+                "line": 2
+              }
+            },
+            "statement_indexes": [
+              1
+            ]
+          },
+          {
+            "barrier_reason": "function definition annotations require preserved Python source-order evaluation",
+            "bindings": [
+              "small_batch_prepost"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "TensorF32Cpu1D",
+              "TensorF32Cpu2D",
+              "TensorI64Cpu1D"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "small_batch_prepost"
+            ],
+            "kind": "fallback-barrier",
+            "may_bindings": [
+              "small_batch_prepost"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "small_batch_prepost"
+            ],
+            "must_bindings": [
+              "small_batch_prepost"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "small_batch_prepost"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 2,
+            "source_range": {
+              "end": {
+                "column": 43,
+                "line": 23
+              },
+              "start": {
+                "column": 0,
+                "line": 5
+              }
+            },
+            "statement_indexes": [
+              2
+            ]
+          },
+          {
+            "barrier_reason": "function definition annotations require preserved Python source-order evaluation",
+            "bindings": [
+              "inference"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "TensorF32Cpu1D",
+              "TensorF32Cpu2D",
+              "TensorI64Cpu1D",
+              "int"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "inference"
+            ],
+            "kind": "fallback-barrier",
+            "may_bindings": [
+              "inference"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "inference"
+            ],
+            "must_bindings": [
+              "inference"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "inference"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 3,
+            "source_range": {
+              "end": {
+                "column": 43,
+                "line": 44
+              },
+              "start": {
+                "column": 0,
+                "line": 26
+              }
+            },
+            "statement_indexes": [
+              3
+            ]
+          }
+        ],
+        "source_sha256": "178a6b3a0e35127247706f6a30d898d105ee426e58ed7366b18488ebfaf7c177",
+        "unavailable_reason": null
+      }
+    ],
+    "unavailable_reason": null
+  },
+  "modules": [
+    {
+      "diagnostics": [],
+      "file_path": "cases/tensorflow-cpu/benchmark_case.py",
+      "functions": [
+        {
+          "accepted": false,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                null,
+                null
+              ],
+              "column": 12,
+              "in_loop": false,
+              "line": 10,
+              "target": "tensorflow.reshape"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 12,
+              "in_loop": false,
+              "line": 11,
+              "target": "tensorflow.range"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 15,
+              "in_loop": false,
+              "line": 14,
+              "target": "tensorflow.range"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 23,
+              "in_loop": false,
+              "line": 15,
+              "target": "tensorflow.range"
+            },
+            {
+              "arg_types": [
+                null,
+                null
+              ],
+              "column": 20,
+              "in_loop": false,
+              "line": 16,
+              "target": "tensorflow.reshape"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 12,
+              "in_loop": false,
+              "line": 17,
+              "target": "tensorflow.range"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 20,
+              "in_loop": false,
+              "line": 20,
+              "target": "tensorflow.range"
+            },
+            {
+              "arg_types": [
+                null,
+                null
+              ],
+              "column": 17,
+              "in_loop": false,
+              "line": 21,
+              "target": "tensorflow.reshape"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 12,
+              "in_loop": false,
+              "line": 22,
+              "target": "tensorflow.range"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 17,
+              "in_loop": false,
+              "line": 25,
+              "target": "tensorflow.range"
+            },
+            {
+              "arg_types": [
+                "int"
+              ],
+              "column": 4,
+              "in_loop": false,
+              "line": 28,
+              "target": "tensorflow.random.set_seed"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 8,
+              "in_loop": false,
+              "line": 29,
+              "target": "tensorflow.random.stateless_normal"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 13,
+              "in_loop": false,
+              "line": 30,
+              "target": "tensorflow.random.stateless_normal"
+            },
+            {
+              "arg_types": [
+                null,
+                "float",
+                "int"
+              ],
+              "column": 11,
+              "in_loop": false,
+              "line": 31,
+              "target": "tensorflow.linspace"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/tensorflow-cpu/benchmark_case.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": false,
+          "line": 6,
+          "marker_kind": "none",
+          "module_name": "benchmark_case",
+          "name": "make_arguments",
+          "name_range": {
+            "end": {
+              "column": 18,
+              "line": 6
+            },
+            "start": {
+              "column": 4,
+              "line": 6
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "not-candidate",
+          "native_target_language": null,
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [
+              "RXT003",
+              "RXT010"
+            ],
+            "diagnostics": [
+              {
+                "code": "RXT003",
+                "column": 0,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 6,
+                "message": "unsupported return type: tuple[object, ...]",
+                "suggestion": "Use a supported 0.1.7 scalar or collection type."
+              },
+              {
+                "code": "RXT010",
+                "column": 12,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 11,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 42,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 11,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 15,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 14,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 45,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 14,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 23,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 15,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 53,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 15,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 12,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 17,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 58,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 17,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 20,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 20,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 50,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 20,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 12,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 22,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 56,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 22,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 17,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 25,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 45,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 25,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 4,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 28,
+                "message": "expression statements are supported only for list.append, print, and logging calls in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 8,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 29,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 67,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 29,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 13,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 30,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 70,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 30,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              }
+            ],
+            "provenance": "auto",
+            "skip_reason": null,
+            "status": "ineligible"
+          },
+          "qualname": "benchmark_case.make_arguments",
+          "rejection_codes": [],
+          "route": "fallback-python",
+          "source_range": {
+            "end": {
+              "column": 33,
+              "line": 32
+            },
+            "start": {
+              "column": 0,
+              "line": 6
+            }
+          }
+        },
+        {
+          "accepted": false,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                null,
+                null
+              ],
+              "column": 11,
+              "in_loop": false,
+              "line": 36,
+              "target": "isinstance"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 14,
+              "in_loop": false,
+              "line": 37,
+              "target": "TypeError"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 48,
+              "in_loop": false,
+              "line": 37,
+              "target": "type"
+            },
+            {
+              "arg_types": [],
+              "column": 12,
+              "in_loop": false,
+              "line": 38,
+              "target": "value.numpy"
+            },
+            {
+              "arg_types": [],
+              "column": 11,
+              "in_loop": false,
+              "line": 39,
+              "target": "rextio_benchmark.canonical.exact_sequence"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 14,
+              "in_loop": false,
+              "line": 42,
+              "target": "str"
+            },
+            {
+              "arg_types": [],
+              "column": 15,
+              "in_loop": false,
+              "line": 43,
+              "target": "<dynamic>"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 15,
+              "in_loop": false,
+              "line": 43,
+              "target": "array.reshape"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/tensorflow-cpu/benchmark_case.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": false,
+          "line": 35,
+          "marker_kind": "none",
+          "module_name": "benchmark_case",
+          "name": "normalize",
+          "name_range": {
+            "end": {
+              "column": 13,
+              "line": 35
+            },
+            "start": {
+              "column": 4,
+              "line": 35
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "not-candidate",
+          "native_target_language": null,
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [
+              "RXT002",
+              "RXT003",
+              "RXT010"
+            ],
+            "diagnostics": [
+              {
+                "code": "RXT003",
+                "column": 0,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 35,
+                "message": "unsupported return type: object",
+                "suggestion": "Use a supported 0.1.7 scalar or collection type."
+              },
+              {
+                "code": "RXT002",
+                "column": 34,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 35,
+                "message": "unsupported argument type for value: object",
+                "suggestion": "Use a supported 0.1.7 scalar or collection type."
+              },
+              {
+                "code": "RXT010",
+                "column": 22,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 36,
+                "message": "name 'value' is not defined in this scope of the native function (module globals, closures, and names first bound inside a nested block then read after it are unsupported)",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 29,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 36,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 8,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 37,
+                "message": "explicit exception flow is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 24,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 37,
+                "message": "f-strings are not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 11,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 39,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 14,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 41,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 18,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 42,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              }
+            ],
+            "provenance": "auto",
+            "skip_reason": null,
+            "status": "ineligible"
+          },
+          "qualname": "benchmark_case.normalize",
+          "rejection_codes": [],
+          "route": "fallback-python",
+          "source_range": {
+            "end": {
+              "column": 5,
+              "line": 44
+            },
+            "start": {
+              "column": 0,
+              "line": 35
+            }
+          }
+        }
+      ],
+      "import_policies": [
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external",
+          "package": "rextio_benchmark",
+          "plugin": null,
+          "policy": "fallback",
+          "reason": "external package without an active plugin uses the default external import policy",
+          "target": "rextio_benchmark.canonical.exact_sequence",
+          "version": null,
+          "visible_name": "exact_sequence"
+        },
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external-plugin",
+          "package": "tensorflow",
+          "plugin": "rextio-tensorflow",
+          "policy": "plugin",
+          "reason": "active plugin 'rextio-tensorflow' declares support for this package",
+          "target": "tensorflow",
+          "version": null,
+          "visible_name": "tf"
+        }
+      ],
+      "imports": {
+        "exact_sequence": "rextio_benchmark.canonical.exact_sequence",
+        "tf": "tensorflow"
+      },
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "benchmark_case",
+      "top_level": null
+    },
+    {
+      "diagnostics": [],
+      "file_path": "cases/tensorflow-cpu/src/tensorflow_case/__init__.py",
+      "functions": [],
+      "import_policies": [],
+      "imports": {},
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "tensorflow_case",
+      "top_level": null
+    },
+    {
+      "diagnostics": [],
+      "file_path": "cases/tensorflow-cpu/src/tensorflow_case/workload.py",
+      "functions": [
+        {
+          "accepted": true,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                null,
+                null
+              ],
+              "column": 13,
+              "in_loop": false,
+              "line": 15,
+              "target": "tensorflow.matmul"
+            },
+            {
+              "arg_types": [
+                "int"
+              ],
+              "column": 21,
+              "in_loop": false,
+              "line": 16,
+              "target": "range"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 21,
+              "in_loop": true,
+              "line": 18,
+              "target": "tensorflow.nn.relu"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 21,
+              "in_loop": true,
+              "line": 20,
+              "target": "tensorflow.nn.tanh"
+            },
+            {
+              "arg_types": [
+                null,
+                null
+              ],
+              "column": 13,
+              "in_loop": false,
+              "line": 21,
+              "target": "tensorflow.matmul"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 20,
+              "in_loop": false,
+              "line": 22,
+              "target": "tensorflow.nn.softmax"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 11,
+              "in_loop": false,
+              "line": 23,
+              "target": "tensorflow.argmax"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/tensorflow-cpu/src/tensorflow_case/workload.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": true,
+          "line": 5,
+          "marker_kind": "none",
+          "module_name": "tensorflow_case.workload",
+          "name": "small_batch_prepost",
+          "name_range": {
+            "end": {
+              "column": 23,
+              "line": 5
+            },
+            "start": {
+              "column": 4,
+              "line": 5
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "accepted",
+          "native_target_language": "rust",
+          "plugin_claims": [
+            {
+              "column": 17,
+              "end_column": 35,
+              "end_line": 14,
+              "expression": {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 0,
+                        "leaf_kind": "name",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                        "target": ""
+                      },
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 1,
+                        "leaf_kind": "name",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": "rextio-tensorflow/tensor-f32-cpu-1d",
+                        "target": ""
+                      }
+                    ],
+                    "keywords": [],
+                    "kind": "binop",
+                    "leaf_index": null,
+                    "leaf_kind": null,
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": "-"
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 2,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-1d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "binop",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "/"
+              },
+              "kind": "binop",
+              "line": 14,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d",
+                "rextio-tensorflow/tensor-f32-cpu-1d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/div-binop-f32-cpu",
+              "target": "/"
+            },
+            {
+              "column": 18,
+              "end_column": 26,
+              "end_line": 14,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 1,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-1d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "binop",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "-"
+              },
+              "kind": "binop",
+              "line": 14,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d",
+                "rextio-tensorflow/tensor-f32-cpu-1d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/sub-binop-f32-cpu",
+              "target": "-"
+            },
+            {
+              "column": 13,
+              "end_column": 45,
+              "end_line": 15,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 1,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "tensorflow.matmul"
+              },
+              "kind": "call",
+              "line": 15,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d",
+                "rextio-tensorflow/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/matmul-f32-cpu-2d",
+              "target": "tensorflow.matmul"
+            },
+            {
+              "column": 13,
+              "end_column": 57,
+              "end_line": 15,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "opaque",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 1,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-1d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "binop",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "+"
+              },
+              "kind": "binop",
+              "line": 15,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d",
+                "rextio-tensorflow/tensor-f32-cpu-1d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/add-binop-f32-cpu",
+              "target": "+"
+            },
+            {
+              "column": 21,
+              "end_column": 39,
+              "end_line": 18,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "tensorflow.nn.relu"
+              },
+              "kind": "call",
+              "line": 18,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/relu-f32-cpu-2d",
+              "target": "tensorflow.nn.relu"
+            },
+            {
+              "column": 21,
+              "end_column": 39,
+              "end_line": 20,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "tensorflow.nn.tanh"
+              },
+              "kind": "call",
+              "line": 20,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/tanh-f32-cpu-2d",
+              "target": "tensorflow.nn.tanh"
+            },
+            {
+              "column": 13,
+              "end_column": 38,
+              "end_line": 21,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 1,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "tensorflow.matmul"
+              },
+              "kind": "call",
+              "line": 21,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d",
+                "rextio-tensorflow/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/matmul-f32-cpu-2d",
+              "target": "tensorflow.matmul"
+            },
+            {
+              "column": 13,
+              "end_column": 47,
+              "end_line": 21,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "opaque",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 1,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-1d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "binop",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "+"
+              },
+              "kind": "binop",
+              "line": 21,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d",
+                "rextio-tensorflow/tensor-f32-cpu-1d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/add-binop-f32-cpu",
+              "target": "+"
+            },
+            {
+              "column": 20,
+              "end_column": 49,
+              "end_line": 22,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [
+                  {
+                    "arg_type": "int",
+                    "literal": {
+                      "is_literal": true,
+                      "value": 1,
+                      "value_kind": "int"
+                    },
+                    "name": "axis"
+                  }
+                ],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "tensorflow.nn.softmax"
+              },
+              "keywords": [
+                {
+                  "arg_type": "int",
+                  "literal": {
+                    "is_literal": true,
+                    "value": 1,
+                    "value_kind": "int"
+                  },
+                  "name": "axis"
+                }
+              ],
+              "kind": "call",
+              "line": 22,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/softmax-axis1-f32-cpu-2d",
+              "target": "tensorflow.nn.softmax"
+            },
+            {
+              "column": 11,
+              "end_column": 43,
+              "end_line": 23,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [
+                  {
+                    "arg_type": "int",
+                    "literal": {
+                      "is_literal": true,
+                      "value": 1,
+                      "value_kind": "int"
+                    },
+                    "name": "axis"
+                  }
+                ],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-i64-cpu-1d",
+                "target": "tensorflow.argmax"
+              },
+              "keywords": [
+                {
+                  "arg_type": "int",
+                  "literal": {
+                    "is_literal": true,
+                    "value": 1,
+                    "value_kind": "int"
+                  },
+                  "name": "axis"
+                }
+              ],
+              "kind": "call",
+              "line": 23,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-i64-cpu-1d",
+              "rule_id": "rextio-tensorflow/argmax-axis1-i64-cpu-2d",
+              "target": "tensorflow.argmax"
+            }
+          ],
+          "plugin_type_keys": [
+            "rextio-tensorflow/tensor-f32-cpu-1d",
+            "rextio-tensorflow/tensor-f32-cpu-2d",
+            "rextio-tensorflow/tensor-i64-cpu-1d"
+          ],
+          "promotion_assessment": {
+            "diagnostic_codes": [],
+            "diagnostics": [],
+            "provenance": "plugin-managed",
+            "skip_reason": null,
+            "status": "eligible"
+          },
+          "qualname": "tensorflow_case.workload.small_batch_prepost",
+          "rejection_codes": [],
+          "route": "native-plugin:rextio-tensorflow",
+          "source_range": {
+            "end": {
+              "column": 43,
+              "line": 23
+            },
+            "start": {
+              "column": 0,
+              "line": 5
+            }
+          }
+        },
+        {
+          "accepted": true,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 17,
+              "in_loop": false,
+              "line": 34,
+              "target": "tensorflow.transpose"
+            },
+            {
+              "arg_types": [
+                null,
+                null
+              ],
+              "column": 13,
+              "in_loop": false,
+              "line": 35,
+              "target": "tensorflow.matmul"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 13,
+              "in_loop": false,
+              "line": 36,
+              "target": "tensorflow.nn.relu"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 17,
+              "in_loop": false,
+              "line": 37,
+              "target": "range"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 21,
+              "in_loop": true,
+              "line": 39,
+              "target": "tensorflow.nn.sigmoid"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 21,
+              "in_loop": true,
+              "line": 41,
+              "target": "tensorflow.nn.relu"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 17,
+              "in_loop": true,
+              "line": 42,
+              "target": "tensorflow.nn.tanh"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 20,
+              "in_loop": false,
+              "line": 43,
+              "target": "tensorflow.nn.softmax"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 11,
+              "in_loop": false,
+              "line": 44,
+              "target": "tensorflow.argmax"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/tensorflow-cpu/src/tensorflow_case/workload.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": true,
+          "line": 26,
+          "marker_kind": "none",
+          "module_name": "tensorflow_case.workload",
+          "name": "inference",
+          "name_range": {
+            "end": {
+              "column": 13,
+              "line": 26
+            },
+            "start": {
+              "column": 4,
+              "line": 26
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "accepted",
+          "native_target_language": "rust",
+          "plugin_claims": [
+            {
+              "column": 17,
+              "end_column": 37,
+              "end_line": 34,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "tensorflow.transpose"
+              },
+              "kind": "call",
+              "line": 34,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/transpose-f32-cpu-2d",
+              "target": "tensorflow.transpose"
+            },
+            {
+              "column": 13,
+              "end_column": 37,
+              "end_line": 35,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 1,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "tensorflow.matmul"
+              },
+              "kind": "call",
+              "line": 35,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d",
+                "rextio-tensorflow/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/matmul-f32-cpu-2d",
+              "target": "tensorflow.matmul"
+            },
+            {
+              "column": 13,
+              "end_column": 31,
+              "end_line": 36,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "tensorflow.nn.relu"
+              },
+              "kind": "call",
+              "line": 36,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/relu-f32-cpu-2d",
+              "target": "tensorflow.nn.relu"
+            },
+            {
+              "column": 21,
+              "end_column": 42,
+              "end_line": 39,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "tensorflow.nn.sigmoid"
+              },
+              "kind": "call",
+              "line": 39,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/sigmoid-f32-cpu-2d",
+              "target": "tensorflow.nn.sigmoid"
+            },
+            {
+              "column": 21,
+              "end_column": 39,
+              "end_line": 41,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "tensorflow.nn.relu"
+              },
+              "kind": "call",
+              "line": 41,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/relu-f32-cpu-2d",
+              "target": "tensorflow.nn.relu"
+            },
+            {
+              "column": 17,
+              "end_column": 35,
+              "end_line": 42,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "tensorflow.nn.tanh"
+              },
+              "kind": "call",
+              "line": 42,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/tanh-f32-cpu-2d",
+              "target": "tensorflow.nn.tanh"
+            },
+            {
+              "column": 20,
+              "end_column": 56,
+              "end_line": 43,
+              "expression": {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 0,
+                        "leaf_kind": "name",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                        "target": ""
+                      },
+                      {
+                        "children": [],
+                        "keywords": [],
+                        "kind": "leaf",
+                        "leaf_index": 1,
+                        "leaf_kind": "name",
+                        "literal": {
+                          "is_literal": false
+                        },
+                        "result_type": "rextio-tensorflow/tensor-f32-cpu-1d",
+                        "target": ""
+                      }
+                    ],
+                    "keywords": [],
+                    "kind": "binop",
+                    "leaf_index": null,
+                    "leaf_kind": null,
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": "+"
+                  }
+                ],
+                "keywords": [
+                  {
+                    "arg_type": "int",
+                    "literal": {
+                      "is_literal": true,
+                      "value": 1,
+                      "value_kind": "int"
+                    },
+                    "name": "axis"
+                  }
+                ],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "tensorflow.nn.softmax"
+              },
+              "keywords": [
+                {
+                  "arg_type": "int",
+                  "literal": {
+                    "is_literal": true,
+                    "value": 1,
+                    "value_kind": "int"
+                  },
+                  "name": "axis"
+                }
+              ],
+              "kind": "call",
+              "line": 43,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/softmax-axis1-f32-cpu-2d",
+              "target": "tensorflow.nn.softmax"
+            },
+            {
+              "column": 34,
+              "end_column": 47,
+              "end_line": 43,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  },
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 1,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-1d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "binop",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                "target": "+"
+              },
+              "kind": "binop",
+              "line": 43,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                },
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d",
+                "rextio-tensorflow/tensor-f32-cpu-1d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+              "rule_id": "rextio-tensorflow/add-binop-f32-cpu",
+              "target": "+"
+            },
+            {
+              "column": 11,
+              "end_column": 43,
+              "end_line": 44,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": "rextio-tensorflow/tensor-f32-cpu-2d",
+                    "target": ""
+                  }
+                ],
+                "keywords": [
+                  {
+                    "arg_type": "int",
+                    "literal": {
+                      "is_literal": true,
+                      "value": 1,
+                      "value_kind": "int"
+                    },
+                    "name": "axis"
+                  }
+                ],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-tensorflow/tensor-i64-cpu-1d",
+                "target": "tensorflow.argmax"
+              },
+              "keywords": [
+                {
+                  "arg_type": "int",
+                  "literal": {
+                    "is_literal": true,
+                    "value": 1,
+                    "value_kind": "int"
+                  },
+                  "name": "axis"
+                }
+              ],
+              "kind": "call",
+              "line": 44,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                "rextio-tensorflow/tensor-f32-cpu-2d"
+              ],
+              "plugin_id": "rextio-tensorflow",
+              "result_type": "rextio-tensorflow/tensor-i64-cpu-1d",
+              "rule_id": "rextio-tensorflow/argmax-axis1-i64-cpu-2d",
+              "target": "tensorflow.argmax"
+            }
+          ],
+          "plugin_type_keys": [
+            "rextio-tensorflow/tensor-f32-cpu-1d",
+            "rextio-tensorflow/tensor-f32-cpu-2d",
+            "rextio-tensorflow/tensor-i64-cpu-1d"
+          ],
+          "promotion_assessment": {
+            "diagnostic_codes": [],
+            "diagnostics": [],
+            "provenance": "plugin-managed",
+            "skip_reason": null,
+            "status": "eligible"
+          },
+          "qualname": "tensorflow_case.workload.inference",
+          "rejection_codes": [],
+          "route": "native-plugin:rextio-tensorflow",
+          "source_range": {
+            "end": {
+              "column": 43,
+              "line": 44
+            },
+            "start": {
+              "column": 0,
+              "line": 26
+            }
+          }
+        }
+      ],
+      "import_policies": [
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external",
+          "package": "rextio_tensorflow",
+          "plugin": null,
+          "policy": "fallback",
+          "reason": "external package without an active plugin uses the default external import policy",
+          "target": "rextio_tensorflow.types.TensorF32Cpu1D",
+          "version": null,
+          "visible_name": "TensorF32Cpu1D"
+        },
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external",
+          "package": "rextio_tensorflow",
+          "plugin": null,
+          "policy": "fallback",
+          "reason": "external package without an active plugin uses the default external import policy",
+          "target": "rextio_tensorflow.types.TensorF32Cpu2D",
+          "version": null,
+          "visible_name": "TensorF32Cpu2D"
+        },
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external",
+          "package": "rextio_tensorflow",
+          "plugin": null,
+          "policy": "fallback",
+          "reason": "external package without an active plugin uses the default external import policy",
+          "target": "rextio_tensorflow.types.TensorI64Cpu1D",
+          "version": null,
+          "visible_name": "TensorI64Cpu1D"
+        },
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external-plugin",
+          "package": "tensorflow",
+          "plugin": "rextio-tensorflow",
+          "policy": "plugin",
+          "reason": "active plugin 'rextio-tensorflow' declares support for this package",
+          "target": "tensorflow",
+          "version": null,
+          "visible_name": "tf"
+        }
+      ],
+      "imports": {
+        "TensorF32Cpu1D": "rextio_tensorflow.types.TensorF32Cpu1D",
+        "TensorF32Cpu2D": "rextio_tensorflow.types.TensorF32Cpu2D",
+        "TensorI64Cpu1D": "rextio_tensorflow.types.TensorI64Cpu1D",
+        "tf": "tensorflow"
+      },
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "tensorflow_case.workload",
+      "top_level": null
+    }
+  ],
+  "native_candidates": [
+    "tensorflow_case.workload.inference",
+    "tensorflow_case.workload.small_batch_prepost"
+  ],
+  "native_top_levels": [],
+  "project_root": "cases/tensorflow-cpu",
+  "rejected_native": [],
+  "rejected_native_top_levels": []
+}

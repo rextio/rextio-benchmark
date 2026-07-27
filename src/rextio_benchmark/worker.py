@@ -52,6 +52,13 @@ def package_versions() -> dict[str, str]:
     return versions
 
 
+def package_vcs_provenance() -> dict[str, dict[str, str]]:
+    """Capture PEP 610 Git direct_url provenance for candidate-relevant packages."""
+    from .provenance import package_vcs_provenance as _capture
+
+    return _capture()
+
+
 def _time_batch(function: Any, arguments: tuple[object, ...], batch_size: int) -> tuple[int, Any]:
     result: Any = None
     started = time.perf_counter_ns()
@@ -282,6 +289,7 @@ def execute(arguments: argparse.Namespace) -> dict[str, Any]:
         "python": sys.version,
         "implementation": platform.python_implementation(),
         "packages": package_versions(),
+        "package_provenance": package_vcs_provenance(),
         "environment": {
             **{
                 name: os.environ.get(name)
