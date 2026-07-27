@@ -1,0 +1,1934 @@
+{
+  "accepted_native": [
+    "pandas_case.workload.map_pipeline",
+    "pandas_case.workload.predicate",
+    "pandas_case.workload.scale",
+    "pandas_case.workload.shift"
+  ],
+  "accepted_native_top_levels": [],
+  "contract_version": "2.28.0",
+  "diagnostics": [],
+  "embedding_candidates": [],
+  "host_source_plan": {
+    "availability": "available",
+    "execution_authority": "descriptive-only",
+    "graph": {
+      "cycles": [],
+      "external_references": [
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 0,
+          "imported": "numpy",
+          "importer": "benchmark_case",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 18,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          },
+          "version": null
+        },
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 1,
+          "imported": "pandas",
+          "importer": "benchmark_case",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 19,
+              "line": 2
+            },
+            "start": {
+              "column": 0,
+              "line": 2
+            }
+          },
+          "version": null
+        },
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 2,
+          "imported": "rextio_benchmark.canonical",
+          "importer": "benchmark_case",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 53,
+              "line": 3
+            },
+            "start": {
+              "column": 0,
+              "line": 3
+            }
+          },
+          "version": null
+        },
+        {
+          "deferred": false,
+          "distribution": null,
+          "import_ordinal": 0,
+          "imported": "rextio_pandas.types",
+          "importer": "pandas_case.workload",
+          "license": null,
+          "ownership": "external",
+          "resolution_error": null,
+          "source_range": {
+            "end": {
+              "column": 53,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          },
+          "version": null
+        }
+      ],
+      "local_edges": [],
+      "modules": [
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [
+            {
+              "deferred": false,
+              "kind": "import",
+              "module": null,
+              "names": [
+                {
+                  "asname": "np",
+                  "name": "numpy"
+                }
+              ],
+              "ordinal": 0,
+              "relative_level": 0,
+              "resolved_targets": [
+                "numpy"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 18,
+                  "line": 1
+                },
+                "start": {
+                  "column": 0,
+                  "line": 1
+                }
+              }
+            },
+            {
+              "deferred": false,
+              "kind": "import",
+              "module": null,
+              "names": [
+                {
+                  "asname": "pd",
+                  "name": "pandas"
+                }
+              ],
+              "ordinal": 1,
+              "relative_level": 0,
+              "resolved_targets": [
+                "pandas"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 19,
+                  "line": 2
+                },
+                "start": {
+                  "column": 0,
+                  "line": 2
+                }
+              }
+            },
+            {
+              "deferred": false,
+              "kind": "from-import",
+              "module": "rextio_benchmark.canonical",
+              "names": [
+                {
+                  "asname": null,
+                  "name": "exact_sequence"
+                }
+              ],
+              "ordinal": 2,
+              "relative_level": 0,
+              "resolved_targets": [
+                "rextio_benchmark.canonical.exact_sequence"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 53,
+                  "line": 3
+                },
+                "start": {
+                  "column": 0,
+                  "line": 3
+                }
+              }
+            }
+          ],
+          "is_package_init": false,
+          "license": null,
+          "module_name": "benchmark_case",
+          "path": "benchmark_case.py",
+          "provenance": {
+            "evidence": [
+              "sha256:ba7a8372a126baf2e56fcb41fb4034a0333d8f435da562a7bb3a1c1ce0f701b0"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "benchmark_case.py"
+            ]
+          },
+          "sha256": "ba7a8372a126baf2e56fcb41fb4034a0333d8f435da562a7bb3a1c1ce0f701b0",
+          "source_origin": "project",
+          "version": null
+        },
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [],
+          "is_package_init": true,
+          "license": null,
+          "module_name": "pandas_case",
+          "path": "src/pandas_case/__init__.py",
+          "provenance": {
+            "evidence": [
+              "sha256:b6504ac7c326913f81f4ce6d8195e159827dba0d55b7497fe7a67cee4c1a68d3"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "src/pandas_case/__init__.py"
+            ]
+          },
+          "sha256": "b6504ac7c326913f81f4ce6d8195e159827dba0d55b7497fe7a67cee4c1a68d3",
+          "source_origin": "project",
+          "version": null
+        },
+        {
+          "dependency_depth": 0,
+          "distribution": null,
+          "imports": [
+            {
+              "deferred": false,
+              "kind": "from-import",
+              "module": "rextio_pandas.types",
+              "names": [
+                {
+                  "asname": null,
+                  "name": "SeriesBool"
+                },
+                {
+                  "asname": null,
+                  "name": "SeriesF64"
+                }
+              ],
+              "ordinal": 0,
+              "relative_level": 0,
+              "resolved_targets": [
+                "rextio_pandas.types.SeriesBool",
+                "rextio_pandas.types.SeriesF64"
+              ],
+              "source_range": {
+                "end": {
+                  "column": 53,
+                  "line": 1
+                },
+                "start": {
+                  "column": 0,
+                  "line": 1
+                }
+              }
+            }
+          ],
+          "is_package_init": false,
+          "license": null,
+          "module_name": "pandas_case.workload",
+          "path": "src/pandas_case/workload.py",
+          "provenance": {
+            "evidence": [
+              "sha256:4909d0cf981aff5cbc2f059be79f30722328c76271e643b6acaa54c2fa9713f3"
+            ],
+            "producer": "rextio",
+            "source_references": [
+              "src/pandas_case/workload.py"
+            ]
+          },
+          "sha256": "4909d0cf981aff5cbc2f059be79f30722328c76271e643b6acaa54c2fa9713f3",
+          "source_origin": "project",
+          "version": null
+        }
+      ],
+      "scc_membership": {
+        "benchmark_case": [
+          "benchmark_case"
+        ],
+        "pandas_case": [
+          "pandas_case"
+        ],
+        "pandas_case.workload": [
+          "pandas_case.workload"
+        ]
+      },
+      "strongly_connected_components": [
+        {
+          "cyclic": false,
+          "members": [
+            "benchmark_case"
+          ]
+        },
+        {
+          "cyclic": false,
+          "members": [
+            "pandas_case"
+          ]
+        },
+        {
+          "cyclic": false,
+          "members": [
+            "pandas_case.workload"
+          ]
+        }
+      ]
+    },
+    "module_initializers": [
+      {
+        "availability": "available",
+        "metadata_ranges": [],
+        "module_name": "benchmark_case",
+        "path": "benchmark_case.py",
+        "provenance": {
+          "evidence": [
+            "sha256:ba7a8372a126baf2e56fcb41fb4034a0333d8f435da562a7bb3a1c1ce0f701b0"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "benchmark_case.py"
+          ]
+        },
+        "segments": [
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "np"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "numpy"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "np"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "np"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "np"
+            ],
+            "must_bindings": [
+              "np"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "np"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 0,
+            "source_range": {
+              "end": {
+                "column": 18,
+                "line": 1
+              },
+              "start": {
+                "column": 0,
+                "line": 1
+              }
+            },
+            "statement_indexes": [
+              0
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "pd"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "pandas"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "pd"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "pd"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "pd"
+            ],
+            "must_bindings": [
+              "pd"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "pd"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 1,
+            "source_range": {
+              "end": {
+                "column": 19,
+                "line": 2
+              },
+              "start": {
+                "column": 0,
+                "line": 2
+              }
+            },
+            "statement_indexes": [
+              1
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "exact_sequence"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "rextio_benchmark.canonical"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "exact_sequence"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "exact_sequence"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "exact_sequence"
+            ],
+            "must_bindings": [
+              "exact_sequence"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "exact_sequence"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 2,
+            "source_range": {
+              "end": {
+                "column": 53,
+                "line": 3
+              },
+              "start": {
+                "column": 0,
+                "line": 3
+              }
+            },
+            "statement_indexes": [
+              2
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "make_arguments"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "object",
+              "str",
+              "tuple"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "make_arguments"
+            ],
+            "kind": "definition-publication",
+            "may_bindings": [
+              "make_arguments"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "make_arguments"
+            ],
+            "must_bindings": [
+              "make_arguments"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "make_arguments"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 3,
+            "source_range": {
+              "end": {
+                "column": 48,
+                "line": 8
+              },
+              "start": {
+                "column": 0,
+                "line": 6
+              }
+            },
+            "statement_indexes": [
+              3
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "normalize"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "object",
+              "str"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "normalize"
+            ],
+            "kind": "definition-publication",
+            "may_bindings": [
+              "normalize"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "normalize"
+            ],
+            "must_bindings": [
+              "normalize"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "normalize"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 4,
+            "source_range": {
+              "end": {
+                "column": 5,
+                "line": 20
+              },
+              "start": {
+                "column": 0,
+                "line": 11
+              }
+            },
+            "statement_indexes": [
+              4
+            ]
+          }
+        ],
+        "source_sha256": "ba7a8372a126baf2e56fcb41fb4034a0333d8f435da562a7bb3a1c1ce0f701b0",
+        "unavailable_reason": null
+      },
+      {
+        "availability": "available",
+        "metadata_ranges": [
+          {
+            "end": {
+              "column": 38,
+              "line": 1
+            },
+            "start": {
+              "column": 0,
+              "line": 1
+            }
+          }
+        ],
+        "module_name": "pandas_case",
+        "path": "src/pandas_case/__init__.py",
+        "provenance": {
+          "evidence": [
+            "sha256:b6504ac7c326913f81f4ce6d8195e159827dba0d55b7497fe7a67cee4c1a68d3"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "src/pandas_case/__init__.py"
+          ]
+        },
+        "segments": [],
+        "source_sha256": "b6504ac7c326913f81f4ce6d8195e159827dba0d55b7497fe7a67cee4c1a68d3",
+        "unavailable_reason": null
+      },
+      {
+        "availability": "available",
+        "metadata_ranges": [],
+        "module_name": "pandas_case.workload",
+        "path": "src/pandas_case/workload.py",
+        "provenance": {
+          "evidence": [
+            "sha256:4909d0cf981aff5cbc2f059be79f30722328c76271e643b6acaa54c2fa9713f3"
+          ],
+          "producer": "rextio",
+          "source_references": [
+            "src/pandas_case/workload.py"
+          ]
+        },
+        "segments": [
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "SeriesBool",
+              "SeriesF64"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "rextio_pandas.types"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "SeriesBool",
+              "SeriesF64"
+            ],
+            "kind": "import",
+            "may_bindings": [
+              "SeriesBool",
+              "SeriesF64"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "SeriesBool",
+              "SeriesF64"
+            ],
+            "must_bindings": [
+              "SeriesBool",
+              "SeriesF64"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "SeriesBool",
+              "SeriesF64"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 0,
+            "source_range": {
+              "end": {
+                "column": 53,
+                "line": 1
+              },
+              "start": {
+                "column": 0,
+                "line": 1
+              }
+            },
+            "statement_indexes": [
+              0
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "scale"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "float"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "scale"
+            ],
+            "kind": "definition-publication",
+            "may_bindings": [
+              "scale"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "scale"
+            ],
+            "must_bindings": [
+              "scale"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "scale"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 1,
+            "source_range": {
+              "end": {
+                "column": 23,
+                "line": 5
+              },
+              "start": {
+                "column": 0,
+                "line": 4
+              }
+            },
+            "statement_indexes": [
+              1
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "shift"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "float"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "shift"
+            ],
+            "kind": "definition-publication",
+            "may_bindings": [
+              "shift"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "shift"
+            ],
+            "must_bindings": [
+              "shift"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "shift"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 2,
+            "source_range": {
+              "end": {
+                "column": 23,
+                "line": 9
+              },
+              "start": {
+                "column": 0,
+                "line": 8
+              }
+            },
+            "statement_indexes": [
+              2
+            ]
+          },
+          {
+            "barrier_reason": null,
+            "bindings": [
+              "predicate"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "bool",
+              "float"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "predicate"
+            ],
+            "kind": "definition-publication",
+            "may_bindings": [
+              "predicate"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "predicate"
+            ],
+            "must_bindings": [
+              "predicate"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "predicate"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 3,
+            "source_range": {
+              "end": {
+                "column": 50,
+                "line": 13
+              },
+              "start": {
+                "column": 0,
+                "line": 12
+              }
+            },
+            "statement_indexes": [
+              3
+            ]
+          },
+          {
+            "barrier_reason": "function definition annotations require preserved Python source-order evaluation",
+            "bindings": [
+              "map_pipeline"
+            ],
+            "deleted_bindings": [],
+            "dependencies": [
+              "SeriesBool",
+              "SeriesF64"
+            ],
+            "disposition": "python-preserved",
+            "exports": [
+              "map_pipeline"
+            ],
+            "kind": "fallback-barrier",
+            "may_bindings": [
+              "map_pipeline"
+            ],
+            "may_deletions": [],
+            "may_exports": [
+              "map_pipeline"
+            ],
+            "must_bindings": [
+              "map_pipeline"
+            ],
+            "must_deletions": [],
+            "must_exports": [
+              "map_pipeline"
+            ],
+            "namespace_unknown": false,
+            "ordinal": 4,
+            "source_range": {
+              "end": {
+                "column": 33,
+                "line": 19
+              },
+              "start": {
+                "column": 0,
+                "line": 16
+              }
+            },
+            "statement_indexes": [
+              4
+            ]
+          }
+        ],
+        "source_sha256": "4909d0cf981aff5cbc2f059be79f30722328c76271e643b6acaa54c2fa9713f3",
+        "unavailable_reason": null
+      }
+    ],
+    "unavailable_reason": null
+  },
+  "modules": [
+    {
+      "diagnostics": [],
+      "file_path": "cases/pandas/benchmark_case.py",
+      "functions": [
+        {
+          "accepted": false,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                null,
+                "float",
+                "int"
+              ],
+              "column": 13,
+              "in_loop": false,
+              "line": 7,
+              "target": "numpy.linspace"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 12,
+              "in_loop": false,
+              "line": 8,
+              "target": "pandas.Series"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/pandas/benchmark_case.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": false,
+          "line": 6,
+          "marker_kind": "none",
+          "module_name": "benchmark_case",
+          "name": "make_arguments",
+          "name_range": {
+            "end": {
+              "column": 18,
+              "line": 6
+            },
+            "start": {
+              "column": 4,
+              "line": 6
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "not-candidate",
+          "native_target_language": null,
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [
+              "RXT003",
+              "RXT010"
+            ],
+            "diagnostics": [
+              {
+                "code": "RXT003",
+                "column": 0,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 6,
+                "message": "unsupported return type: tuple[object, ...]",
+                "suggestion": "Use a supported 0.1.7 scalar or collection type."
+              },
+              {
+                "code": "RXT010",
+                "column": 13,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 7,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 53,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 7,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 12,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 8,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              }
+            ],
+            "provenance": "auto",
+            "skip_reason": null,
+            "status": "ineligible"
+          },
+          "qualname": "benchmark_case.make_arguments",
+          "rejection_codes": [],
+          "route": "fallback-python",
+          "source_range": {
+            "end": {
+              "column": 48,
+              "line": 8
+            },
+            "start": {
+              "column": 0,
+              "line": 6
+            }
+          }
+        },
+        {
+          "accepted": false,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                null,
+                null
+              ],
+              "column": 11,
+              "in_loop": false,
+              "line": 12,
+              "target": "isinstance"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 14,
+              "in_loop": false,
+              "line": 13,
+              "target": "TypeError"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 48,
+              "in_loop": false,
+              "line": 13,
+              "target": "type"
+            },
+            {
+              "arg_types": [],
+              "column": 12,
+              "in_loop": false,
+              "line": 14,
+              "target": "value.to_numpy"
+            },
+            {
+              "arg_types": [],
+              "column": 11,
+              "in_loop": false,
+              "line": 15,
+              "target": "rextio_benchmark.canonical.exact_sequence"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 14,
+              "in_loop": false,
+              "line": 18,
+              "target": "str"
+            },
+            {
+              "arg_types": [],
+              "column": 15,
+              "in_loop": false,
+              "line": 19,
+              "target": "<dynamic>"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 15,
+              "in_loop": false,
+              "line": 19,
+              "target": "array.reshape"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/pandas/benchmark_case.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": false,
+          "line": 11,
+          "marker_kind": "none",
+          "module_name": "benchmark_case",
+          "name": "normalize",
+          "name_range": {
+            "end": {
+              "column": 13,
+              "line": 11
+            },
+            "start": {
+              "column": 4,
+              "line": 11
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "not-candidate",
+          "native_target_language": null,
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [
+              "RXT002",
+              "RXT003",
+              "RXT010"
+            ],
+            "diagnostics": [
+              {
+                "code": "RXT003",
+                "column": 0,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 11,
+                "message": "unsupported return type: object",
+                "suggestion": "Use a supported 0.1.7 scalar or collection type."
+              },
+              {
+                "code": "RXT002",
+                "column": 34,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 11,
+                "message": "unsupported argument type for value: object",
+                "suggestion": "Use a supported 0.1.7 scalar or collection type."
+              },
+              {
+                "code": "RXT010",
+                "column": 22,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 12,
+                "message": "name 'value' is not defined in this scope of the native function (module globals, closures, and names first bound inside a nested block then read after it are unsupported)",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 29,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 12,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 8,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 13,
+                "message": "explicit exception flow is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 24,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 13,
+                "message": "f-strings are not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 11,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 15,
+                "message": "keyword call arguments are not supported",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 14,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 17,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              },
+              {
+                "code": "RXT010",
+                "column": 18,
+                "end_column": null,
+                "end_line": null,
+                "kind": "blocker",
+                "line": 18,
+                "message": "dynamic attribute access is not supported in native functions",
+                "suggestion": "Keep native candidates inside the supported 0.1.7 subset."
+              }
+            ],
+            "provenance": "auto",
+            "skip_reason": null,
+            "status": "ineligible"
+          },
+          "qualname": "benchmark_case.normalize",
+          "rejection_codes": [],
+          "route": "fallback-python",
+          "source_range": {
+            "end": {
+              "column": 5,
+              "line": 20
+            },
+            "start": {
+              "column": 0,
+              "line": 11
+            }
+          }
+        }
+      ],
+      "import_policies": [
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external",
+          "package": "rextio_benchmark",
+          "plugin": null,
+          "policy": "fallback",
+          "reason": "external package without an active plugin uses the default external import policy",
+          "target": "rextio_benchmark.canonical.exact_sequence",
+          "version": null,
+          "visible_name": "exact_sequence"
+        },
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external",
+          "package": "numpy",
+          "plugin": null,
+          "policy": "fallback",
+          "reason": "external package without an active plugin uses the default external import policy",
+          "target": "numpy",
+          "version": null,
+          "visible_name": "np"
+        },
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external-plugin",
+          "package": "pandas",
+          "plugin": "rextio-pandas",
+          "policy": "plugin",
+          "reason": "active plugin 'rextio-pandas' declares support for this package",
+          "target": "pandas",
+          "version": null,
+          "visible_name": "pd"
+        }
+      ],
+      "imports": {
+        "exact_sequence": "rextio_benchmark.canonical.exact_sequence",
+        "np": "numpy",
+        "pd": "pandas"
+      },
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "benchmark_case",
+      "top_level": null
+    },
+    {
+      "diagnostics": [],
+      "file_path": "cases/pandas/src/pandas_case/__init__.py",
+      "functions": [],
+      "import_policies": [],
+      "imports": {},
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "pandas_case",
+      "top_level": null
+    },
+    {
+      "diagnostics": [],
+      "file_path": "cases/pandas/src/pandas_case/workload.py",
+      "functions": [
+        {
+          "accepted": true,
+          "boundary_call_targets": [],
+          "calls": [],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/pandas/src/pandas_case/workload.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": true,
+          "line": 4,
+          "marker_kind": "none",
+          "module_name": "pandas_case.workload",
+          "name": "scale",
+          "name_range": {
+            "end": {
+              "column": 9,
+              "line": 4
+            },
+            "start": {
+              "column": 4,
+              "line": 4
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "accepted",
+          "native_target_language": "rust",
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [],
+            "diagnostics": [],
+            "provenance": "auto",
+            "skip_reason": null,
+            "status": "eligible"
+          },
+          "qualname": "pandas_case.workload.scale",
+          "rejection_codes": [],
+          "route": "native-direct",
+          "source_range": {
+            "end": {
+              "column": 23,
+              "line": 5
+            },
+            "start": {
+              "column": 0,
+              "line": 4
+            }
+          }
+        },
+        {
+          "accepted": true,
+          "boundary_call_targets": [],
+          "calls": [],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/pandas/src/pandas_case/workload.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": true,
+          "line": 8,
+          "marker_kind": "none",
+          "module_name": "pandas_case.workload",
+          "name": "shift",
+          "name_range": {
+            "end": {
+              "column": 9,
+              "line": 8
+            },
+            "start": {
+              "column": 4,
+              "line": 8
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "accepted",
+          "native_target_language": "rust",
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [],
+            "diagnostics": [],
+            "provenance": "auto",
+            "skip_reason": null,
+            "status": "eligible"
+          },
+          "qualname": "pandas_case.workload.shift",
+          "rejection_codes": [],
+          "route": "native-direct",
+          "source_range": {
+            "end": {
+              "column": 23,
+              "line": 9
+            },
+            "start": {
+              "column": 0,
+              "line": 8
+            }
+          }
+        },
+        {
+          "accepted": true,
+          "boundary_call_targets": [],
+          "calls": [],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/pandas/src/pandas_case/workload.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": true,
+          "line": 12,
+          "marker_kind": "none",
+          "module_name": "pandas_case.workload",
+          "name": "predicate",
+          "name_range": {
+            "end": {
+              "column": 13,
+              "line": 12
+            },
+            "start": {
+              "column": 4,
+              "line": 12
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "accepted",
+          "native_target_language": "rust",
+          "plugin_claims": [],
+          "plugin_type_keys": [],
+          "promotion_assessment": {
+            "diagnostic_codes": [],
+            "diagnostics": [],
+            "provenance": "auto",
+            "skip_reason": null,
+            "status": "eligible"
+          },
+          "qualname": "pandas_case.workload.predicate",
+          "rejection_codes": [],
+          "route": "native-direct",
+          "source_range": {
+            "end": {
+              "column": 50,
+              "line": 13
+            },
+            "start": {
+              "column": 0,
+              "line": 12
+            }
+          }
+        },
+        {
+          "accepted": true,
+          "boundary_call_targets": [],
+          "calls": [
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 13,
+              "in_loop": false,
+              "line": 17,
+              "target": "series.map"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 14,
+              "in_loop": false,
+              "line": 18,
+              "target": "scaled.map"
+            },
+            {
+              "arg_types": [
+                null
+              ],
+              "column": 11,
+              "in_loop": false,
+              "line": 19,
+              "target": "shifted.map"
+            }
+          ],
+          "column": 0,
+          "diagnostics": [],
+          "embedding_reason": null,
+          "explicitly_marked": false,
+          "external_accelerator": null,
+          "file_path": "cases/pandas/src/pandas_case/workload.py",
+          "inferred_arg_types": {},
+          "inferred_return_type": null,
+          "is_embedding_candidate": false,
+          "is_native_candidate": true,
+          "line": 16,
+          "marker_kind": "none",
+          "module_name": "pandas_case.workload",
+          "name": "map_pipeline",
+          "name_range": {
+            "end": {
+              "column": 16,
+              "line": 16
+            },
+            "start": {
+              "column": 4,
+              "line": 16
+            }
+          },
+          "native_runtime_semantics": false,
+          "native_status": "accepted",
+          "native_target_language": "rust",
+          "plugin_claims": [
+            {
+              "callables": [
+                {
+                  "accepts_native": true,
+                  "arg_index": 0,
+                  "body": {
+                    "available": true,
+                    "expression": {
+                      "children": [
+                        {
+                          "children": [],
+                          "kind": "param",
+                          "literal": null,
+                          "name": "value",
+                          "op": "",
+                          "ops": [],
+                          "param_index": 0,
+                          "result_type": "float",
+                          "target": ""
+                        },
+                        {
+                          "children": [],
+                          "kind": "literal",
+                          "literal": {
+                            "kind": "float",
+                            "value": 1.75
+                          },
+                          "name": "",
+                          "op": "",
+                          "ops": [],
+                          "param_index": null,
+                          "result_type": "float",
+                          "target": ""
+                        }
+                      ],
+                      "kind": "binop",
+                      "literal": null,
+                      "name": "",
+                      "op": "*",
+                      "ops": [],
+                      "param_index": null,
+                      "result_type": "float",
+                      "target": ""
+                    },
+                    "unavailable_reason": null
+                  },
+                  "native_symbol": null,
+                  "params": [
+                    {
+                      "name": "value",
+                      "param_type": "float"
+                    }
+                  ],
+                  "qualname": "pandas_case.workload.scale",
+                  "return_type": "float",
+                  "runtime_semantics": false
+                }
+              ],
+              "column": 13,
+              "end_column": 30,
+              "end_line": 17,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": null,
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-pandas/series-f64",
+                "target": "series.map"
+              },
+              "kind": "call",
+              "line": 17,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                null
+              ],
+              "plugin_id": "rextio-pandas",
+              "receiver": {
+                "arg_type": "rextio-pandas/series-f64",
+                "expr_kind": "name",
+                "is_safe": true,
+                "schema": null
+              },
+              "result_type": "rextio-pandas/series-f64",
+              "rule_id": "rextio-pandas/series-map",
+              "target": "series.map"
+            },
+            {
+              "callables": [
+                {
+                  "accepts_native": true,
+                  "arg_index": 0,
+                  "body": {
+                    "available": true,
+                    "expression": {
+                      "children": [
+                        {
+                          "children": [],
+                          "kind": "param",
+                          "literal": null,
+                          "name": "value",
+                          "op": "",
+                          "ops": [],
+                          "param_index": 0,
+                          "result_type": "float",
+                          "target": ""
+                        },
+                        {
+                          "children": [],
+                          "kind": "literal",
+                          "literal": {
+                            "kind": "float",
+                            "value": 0.25
+                          },
+                          "name": "",
+                          "op": "",
+                          "ops": [],
+                          "param_index": null,
+                          "result_type": "float",
+                          "target": ""
+                        }
+                      ],
+                      "kind": "binop",
+                      "literal": null,
+                      "name": "",
+                      "op": "+",
+                      "ops": [],
+                      "param_index": null,
+                      "result_type": "float",
+                      "target": ""
+                    },
+                    "unavailable_reason": null
+                  },
+                  "native_symbol": null,
+                  "params": [
+                    {
+                      "name": "value",
+                      "param_type": "float"
+                    }
+                  ],
+                  "qualname": "pandas_case.workload.shift",
+                  "return_type": "float",
+                  "runtime_semantics": false
+                }
+              ],
+              "column": 14,
+              "end_column": 31,
+              "end_line": 18,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": null,
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-pandas/series-f64",
+                "target": "scaled.map"
+              },
+              "kind": "call",
+              "line": 18,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                null
+              ],
+              "plugin_id": "rextio-pandas",
+              "receiver": {
+                "arg_type": "rextio-pandas/series-f64",
+                "expr_kind": "name",
+                "is_safe": true,
+                "schema": null
+              },
+              "result_type": "rextio-pandas/series-f64",
+              "rule_id": "rextio-pandas/series-map",
+              "target": "scaled.map"
+            },
+            {
+              "callables": [
+                {
+                  "accepts_native": true,
+                  "arg_index": 0,
+                  "body": {
+                    "available": true,
+                    "expression": {
+                      "children": [
+                        {
+                          "children": [
+                            {
+                              "children": [
+                                {
+                                  "children": [],
+                                  "kind": "param",
+                                  "literal": null,
+                                  "name": "value",
+                                  "op": "",
+                                  "ops": [],
+                                  "param_index": 0,
+                                  "result_type": "float",
+                                  "target": ""
+                                },
+                                {
+                                  "children": [],
+                                  "kind": "literal",
+                                  "literal": {
+                                    "kind": "float",
+                                    "value": 0.0
+                                  },
+                                  "name": "",
+                                  "op": "",
+                                  "ops": [],
+                                  "param_index": null,
+                                  "result_type": "float",
+                                  "target": ""
+                                }
+                              ],
+                              "kind": "compare",
+                              "literal": null,
+                              "name": "",
+                              "op": "",
+                              "ops": [
+                                ">"
+                              ],
+                              "param_index": null,
+                              "result_type": "bool",
+                              "target": ""
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [],
+                                  "kind": "param",
+                                  "literal": null,
+                                  "name": "value",
+                                  "op": "",
+                                  "ops": [],
+                                  "param_index": 0,
+                                  "result_type": "float",
+                                  "target": ""
+                                },
+                                {
+                                  "children": [],
+                                  "kind": "literal",
+                                  "literal": {
+                                    "kind": "float",
+                                    "value": 7.0
+                                  },
+                                  "name": "",
+                                  "op": "",
+                                  "ops": [],
+                                  "param_index": null,
+                                  "result_type": "float",
+                                  "target": ""
+                                }
+                              ],
+                              "kind": "compare",
+                              "literal": null,
+                              "name": "",
+                              "op": "",
+                              "ops": [
+                                "!="
+                              ],
+                              "param_index": null,
+                              "result_type": "bool",
+                              "target": ""
+                            }
+                          ],
+                          "kind": "boolop",
+                          "literal": null,
+                          "name": "",
+                          "op": "and",
+                          "ops": [],
+                          "param_index": null,
+                          "result_type": "bool",
+                          "target": ""
+                        },
+                        {
+                          "children": [],
+                          "kind": "literal",
+                          "literal": {
+                            "kind": "bool",
+                            "value": false
+                          },
+                          "name": "",
+                          "op": "",
+                          "ops": [],
+                          "param_index": null,
+                          "result_type": "bool",
+                          "target": ""
+                        }
+                      ],
+                      "kind": "boolop",
+                      "literal": null,
+                      "name": "",
+                      "op": "or",
+                      "ops": [],
+                      "param_index": null,
+                      "result_type": "bool",
+                      "target": ""
+                    },
+                    "unavailable_reason": null
+                  },
+                  "native_symbol": null,
+                  "params": [
+                    {
+                      "name": "value",
+                      "param_type": "float"
+                    }
+                  ],
+                  "qualname": "pandas_case.workload.predicate",
+                  "return_type": "bool",
+                  "runtime_semantics": false
+                }
+              ],
+              "column": 11,
+              "end_column": 33,
+              "end_line": 19,
+              "expression": {
+                "children": [
+                  {
+                    "children": [],
+                    "keywords": [],
+                    "kind": "leaf",
+                    "leaf_index": 0,
+                    "leaf_kind": "name",
+                    "literal": {
+                      "is_literal": false
+                    },
+                    "result_type": null,
+                    "target": ""
+                  }
+                ],
+                "keywords": [],
+                "kind": "call",
+                "leaf_index": null,
+                "leaf_kind": null,
+                "literal": {
+                  "is_literal": false
+                },
+                "result_type": "rextio-pandas/series-bool",
+                "target": "shifted.map"
+              },
+              "kind": "call",
+              "line": 19,
+              "operand_literals": [
+                {
+                  "is_literal": false
+                }
+              ],
+              "operand_types": [
+                null
+              ],
+              "plugin_id": "rextio-pandas",
+              "receiver": {
+                "arg_type": "rextio-pandas/series-f64",
+                "expr_kind": "name",
+                "is_safe": true,
+                "schema": null
+              },
+              "result_type": "rextio-pandas/series-bool",
+              "rule_id": "rextio-pandas/series-map",
+              "target": "shifted.map"
+            }
+          ],
+          "plugin_type_keys": [
+            "rextio-pandas/series-bool",
+            "rextio-pandas/series-f64"
+          ],
+          "promotion_assessment": {
+            "diagnostic_codes": [],
+            "diagnostics": [],
+            "provenance": "plugin-managed",
+            "skip_reason": null,
+            "status": "eligible"
+          },
+          "qualname": "pandas_case.workload.map_pipeline",
+          "rejection_codes": [],
+          "route": "native-plugin:rextio-pandas",
+          "source_range": {
+            "end": {
+              "column": 33,
+              "line": 19
+            },
+            "start": {
+              "column": 0,
+              "line": 16
+            }
+          }
+        }
+      ],
+      "import_policies": [
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external",
+          "package": "rextio_pandas",
+          "plugin": null,
+          "policy": "fallback",
+          "reason": "external package without an active plugin uses the default external import policy",
+          "target": "rextio_pandas.types.SeriesBool",
+          "version": null,
+          "visible_name": "SeriesBool"
+        },
+        {
+          "distribution": null,
+          "max_depth": 0,
+          "origin": "external",
+          "package": "rextio_pandas",
+          "plugin": null,
+          "policy": "fallback",
+          "reason": "external package without an active plugin uses the default external import policy",
+          "target": "rextio_pandas.types.SeriesF64",
+          "version": null,
+          "visible_name": "SeriesF64"
+        }
+      ],
+      "imports": {
+        "SeriesBool": "rextio_pandas.types.SeriesBool",
+        "SeriesF64": "rextio_pandas.types.SeriesF64"
+      },
+      "logger_group_targets": {},
+      "logger_names": [],
+      "module_name": "pandas_case.workload",
+      "top_level": null
+    }
+  ],
+  "native_candidates": [
+    "pandas_case.workload.map_pipeline",
+    "pandas_case.workload.predicate",
+    "pandas_case.workload.scale",
+    "pandas_case.workload.shift"
+  ],
+  "native_top_levels": [],
+  "project_root": "cases/pandas",
+  "rejected_native": [],
+  "rejected_native_top_levels": []
+}

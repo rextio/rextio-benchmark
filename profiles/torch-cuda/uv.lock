@@ -359,12 +359,8 @@ wheels = [
 
 [[package]]
 name = "rextio"
-version = "0.1.6"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/48/59/1b50e0c7bea9ef4a957cbc02c014e899d7ebb188220da19942a5e31ae9cd/rextio-0.1.6.tar.gz", hash = "sha256:ca2ee4fe26aa308bbea5fb2a0fc201da1dc18787a32710f2f48665d41181daf7", size = 1049138, upload-time = "2026-07-25T15:42:22.105Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/16/e8/d9de006d30d15f0e701d09fc109066e74d808a35c1d96c5d30d14df5757c/rextio-0.1.6-py3-none-any.whl", hash = "sha256:797abc92e2ed5e84dc900290c7d0012070d0e798632d8afe9a20e15f789859a0", size = 1108019, upload-time = "2026-07-25T15:42:20.233Z" },
-]
+version = "0.1.7"
+source = { git = "https://github.com/rextio/rextio?rev=b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97#b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97" }
 
 [[package]]
 name = "rextio-benchmark-torch-cuda-profile"
@@ -383,9 +379,9 @@ dependencies = [
 requires-dist = [
     { name = "jsonschema", specifier = "==4.25.1" },
     { name = "numpy", specifier = "==2.4.6" },
-    { name = "rextio", specifier = "==0.1.6" },
+    { name = "rextio", git = "https://github.com/rextio/rextio?rev=b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97" },
     { name = "rextio-device-cuda", specifier = "==0.1.0" },
-    { name = "rextio-torch", specifier = "==0.1.2" },
+    { name = "rextio-torch", git = "https://github.com/rextio/rextio-torch?rev=1e92b24b154c7266dc37d19533fc3e17a8b05f9a" },
     { name = "torch", specifier = "==2.11.0" },
 ]
 
@@ -403,15 +399,11 @@ wheels = [
 
 [[package]]
 name = "rextio-torch"
-version = "0.1.2"
-source = { registry = "https://pypi.org/simple" }
+version = "0.1.3"
+source = { git = "https://github.com/rextio/rextio-torch?rev=1e92b24b154c7266dc37d19533fc3e17a8b05f9a#1e92b24b154c7266dc37d19533fc3e17a8b05f9a" }
 dependencies = [
     { name = "rextio" },
     { name = "torch" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/83/00/9451fc4a87028a9fd7b8155a11c72dbcc69472e6afdb62daf1a87f77d44f/rextio_torch-0.1.2.tar.gz", hash = "sha256:40b60cbcde5f1f3452cdc80328e37068d80e7f3f70918554ef1204d6b5847fc3", size = 245649, upload-time = "2026-07-25T16:00:32.862Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/d6/d2/c8813e481c5899e4d0cb05c27f441464d86efffec439da1884dd9a903be8/rextio_torch-0.1.2-py3-none-any.whl", hash = "sha256:ee634a49b55bfb0bc05c0e80db282d01eda71e647e0fe1429d1b1c99f89832de", size = 66585, upload-time = "2026-07-25T16:00:30.664Z" },
 ]
 
 [[package]]

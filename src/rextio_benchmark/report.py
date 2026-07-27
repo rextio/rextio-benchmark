@@ -8,8 +8,16 @@ from pathlib import Path
 from typing import Any
 
 from .case_runner import MODE_SETTINGS, run_executable_case, run_module_case
+from .integration_targets import (
+    cases_require_integration_targets,
+    integration_policy_binding,
+    require_integration_targets_ready,
+    validate_integration_provenance,
+)
 from .models import load_cases, profile_python
 from .portability import portable_value, require_portable
+from .provenance import assemble_candidate_policy_binding, report_package_versions
+from .verification import GateError
 
 
 def _command_text(command: list[str], cwd: Path) -> str | None:
@@ -56,8 +64,14 @@ def run_suite(repository_root: Path, mode: str) -> tuple[dict[str, Any], Path]:
     if mode not in MODE_SETTINGS:
         raise ValueError(f"unknown mode {mode!r}")
     repository = _repository_state(repository_root)
+    loaded_cases = load_cases(repository_root)
+    uses_next_targets = cases_require_integration_targets(
+        frozenset(case.benchmark_id for case in loaded_cases)
+    )
+    if uses_next_targets:
+        require_integration_targets_ready(repository_root)
     cases = []
-    for case in load_cases(repository_root):
+    for case in loaded_cases:
         python = profile_python(repository_root, case.profile)
         try:
             if not python.is_file():
@@ -95,6 +109,23 @@ def run_suite(repository_root: Path, mode: str) -> tuple[dict[str, Any], Path]:
             }
         cases.append(result)
 
+    merged_provenance: dict[str, dict[str, str]] = {}
+    for case in cases:
+        # Measurement-only capture: strip so case schema stays version-string packages.
+        # Per-case packages remain untouched (may differ across isolated profiles).
+        for name, record in (case.pop("package_provenance", None) or {}).items():
+            prior_record = merged_provenance.get(name)
+            if prior_record is not None and prior_record != record:
+                raise RuntimeError(f"package provenance conflict for {name}")
+            merged_provenance[name] = record
+
+    candidate_versions: dict[str, str] | None = None
+    if not uses_next_targets:
+        try:
+            candidate_versions = report_package_versions({"cases": cases})
+        except GateError as error:
+            raise RuntimeError(str(error)) from error
+
     blockers = []
     if mode == "quick":
         blockers.append("quick-mode-is-never-publishable")
@@ -103,12 +134,27 @@ def run_suite(repository_root: Path, mode: str) -> tuple[dict[str, Any], Path]:
     if repository["dirty"]:
         blockers.append("repository-worktree-is-dirty")
     blockers.extend(
-        f"{case['id']}: {blocker}"
-        for case in cases
-        for blocker in case.get("blockers", [])
+        f"{case['id']}: {blocker}" for case in cases for blocker in case.get("blockers", [])
     )
+    policy = None
+    package_provenance = None
+    try:
+        if uses_next_targets:
+            policy = integration_policy_binding(repository_root)
+            package_provenance = validate_integration_provenance(
+                repository_root,
+                merged_provenance,
+            )
+        else:
+            assert candidate_versions is not None
+            policy, package_provenance = assemble_candidate_policy_binding(
+                candidate_versions,
+                merged_provenance,
+            )
+    except Exception as error:
+        blockers.append(f"candidate-provenance: {error}")
     publishable = mode == "publish" and not blockers and all(case["eligible"] for case in cases)
-    report = {
+    report: dict[str, Any] = {
         "schema_version": 1,
         "generated_at": datetime.now(UTC).isoformat(),
         "mode": mode,
@@ -130,6 +176,9 @@ def run_suite(repository_root: Path, mode: str) -> tuple[dict[str, Any], Path]:
         "build": _build_receipt(repository_root),
         "cases": cases,
     }
+    if policy is not None and package_provenance is not None:
+        report["policy"] = policy
+        report["package_provenance"] = package_provenance
     require_portable(report, repository_root)
     timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     path = repository_root / "results" / "local" / f"benchmark-{mode}-{timestamp}.json"

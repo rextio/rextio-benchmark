@@ -3,6 +3,89 @@
   "profile": "torch-cpu",
   "benchmarks": [
     {
+      "id": "torch-cpu-small-batch-prepost",
+      "kind": "python-module",
+      "module": "torch_case.workload",
+      "function": "small_batch_prepost",
+      "qualname": "torch_case.workload.small_batch_prepost",
+      "expected_route": "native-plugin:rextio-torch",
+      "tolerance": {"absolute": 0.0, "relative": 0.0},
+      "description": "Diagnostic batch-1 scoring path where normalization, scalar control, tensor boundaries, softmax, and exact label postprocessing dominate small kernels.",
+      "generated_expectations": {
+        "plugin_rules": [
+          {
+            "rule_id": "rextio-torch/tensor-sub-f32-cpu-2d-1d-broadcast"
+          },
+          {
+            "rule_id": "rextio-torch/tensor-div-f32-cpu-2d-1d-broadcast"
+          },
+          {
+            "rule_id": "rextio-torch/functional-linear-f32-cpu-2d"
+          },
+          {
+            "rule_id": "rextio-torch/tensor-softmax-dim1-f32-cpu-2d"
+          },
+          {
+            "rule_id": "rextio-torch/tensor-argmax-dim1-keepfalse-i64-cpu-1d"
+          }
+        ],
+        "generated_rust_source_substrings": [
+          "for layer in 0..rounds",
+          "__rxttorch_softmax_dim1_function_scoped",
+          "__rxttorch_argmax_dim1_keepdim_false_function_scoped"
+        ],
+        "rust_functions": [
+          {
+            "name": "torch_case__workload__small_batch_prepost",
+            "required_substrings": [
+              "let __rextio_plugin_scope_guard_0 = tch::no_grad_guard();",
+              "__rxttorch_sub_function_scoped(",
+              "__rxttorch_div_function_scoped(",
+              "__rxttorch_linear_function_scoped(",
+              "__rxttorch_softmax_dim1_function_scoped(",
+              "__rxttorch_argmax_dim1_keepdim_false_function_scoped(",
+              "std::mem::drop(__rextio_plugin_scope_guard_0);",
+              "__rxttorch_materialize_tensor(py,"
+            ],
+            "forbidden_substrings": [
+              "let _guard = tch::no_grad_guard();"
+            ],
+            "substring_counts": {
+              "tch::no_grad_guard()": 1
+            },
+            "ordered_substrings": [
+              "__rxttorch_extract_f32_cpu_2d(py, &x)?",
+              "let __rextio_plugin_scope_guard_0 = tch::no_grad_guard();",
+              "__rxttorch_sub_function_scoped(",
+              "__rxttorch_argmax_dim1_keepdim_false_function_scoped(",
+              "std::mem::drop(__rextio_plugin_scope_guard_0);",
+              "__rxttorch_materialize_tensor(py,"
+            ]
+          },
+          {
+            "name": "__rxttorch_sub_function_scoped",
+            "forbidden_substrings": ["tch::no_grad_guard()"]
+          },
+          {
+            "name": "__rxttorch_div_function_scoped",
+            "forbidden_substrings": ["tch::no_grad_guard()"]
+          },
+          {
+            "name": "__rxttorch_linear_function_scoped",
+            "forbidden_substrings": ["tch::no_grad_guard()"]
+          },
+          {
+            "name": "__rxttorch_softmax_dim1_function_scoped",
+            "forbidden_substrings": ["tch::no_grad_guard()"]
+          },
+          {
+            "name": "__rxttorch_argmax_dim1_keepdim_false_function_scoped",
+            "forbidden_substrings": ["tch::no_grad_guard()"]
+          }
+        ]
+      }
+    },
+    {
       "id": "torch-cpu-deep-mlp",
       "kind": "python-module",
       "module": "torch_case.workload",
@@ -14,4 +97,3 @@
     }
   ]
 }
-

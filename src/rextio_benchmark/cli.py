@@ -90,6 +90,7 @@ def main(argv: list[str] | None = None) -> int:
                 measurement_commit=arguments.measurement_commit,
                 evidence_commit=arguments.evidence_commit,
                 github_url=arguments.github_url,
+                repository_root=root,
             ),
         )
         for path in paths:

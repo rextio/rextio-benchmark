@@ -2,9 +2,9 @@ name: quality
 
 on:
   push:
-    branches: [main]
+    branches: [main, "0.1.1"]
   pull_request:
-    branches: [main]
+    branches: [main, "0.1.1"]
 
 permissions:
   contents: read
@@ -14,6 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history so verify_report can resolve run-input blobs at the
+          # frozen measurement commit (not only the shallow tip).
+          fetch-depth: 0
       - uses: astral-sh/setup-uv@v6
         with:
           version: "0.8.22"
@@ -35,4 +39,21 @@ jobs:
         env:
           PYTHONPATH: src
         run: profiles/base/.venv/bin/python -m pytest
-
+      - name: Verify frozen released canonical report
+        env:
+          PYTHONPATH: src
+        run: >
+          profiles/base/.venv/bin/python -m rextio_benchmark verify
+          results/canonical/cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8/report.json
+      - name: Verify measured candidate plugin 0.1.3 canonical report
+        env:
+          PYTHONPATH: src
+        run: >
+          profiles/base/.venv/bin/python -m rextio_benchmark verify
+          results/canonical/cohort-becd31f91c54dcf398f7b3c48abdbb353c16665cacf5d102af7a03072d2b170a/report.json
+      - name: Verify measured boundary and pre/post canonical report
+        env:
+          PYTHONPATH: src
+        run: >
+          profiles/base/.venv/bin/python -m rextio_benchmark verify
+          results/canonical/cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec/report.json

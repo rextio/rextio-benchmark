@@ -1,0 +1,283 @@
+{
+  "candidate_packages": {
+    "rextio": {
+      "git_url": "https://github.com/rextio/rextio",
+      "rev": "b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97",
+      "version": "0.1.7"
+    },
+    "rextio-numpy": {
+      "git_url": "https://github.com/rextio/rextio-numpy",
+      "rev": "cf461e6775780a598517980c555a1aec079285d8",
+      "version": "0.1.3"
+    },
+    "rextio-tensorflow": {
+      "git_url": "https://github.com/rextio/rextio-tensorflow",
+      "rev": "1fdb2e1cd91d058a056db76c2e0a15d52c855053",
+      "version": "0.1.3"
+    },
+    "rextio-torch": {
+      "git_url": "https://github.com/rextio/rextio-torch",
+      "rev": "1e92b24b154c7266dc37d19533fc3e17a8b05f9a",
+      "version": "0.1.3"
+    }
+  },
+  "cases": {
+    "core-hybrid": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.013077995440303527,
+      "median_speedups": [
+        57.72907803430414,
+        58.189394241319235,
+        56.97409741499858
+      ],
+      "relative_deviations": [
+        0.0,
+        0.007973732176037269,
+        0.013077995440303527
+      ],
+      "three_run_median": 57.72907803430414,
+      "within_threshold": true
+    },
+    "core-native-executable": {
+      "headline_gate": false,
+      "maximum_relative_deviation": 0.1506797903116264,
+      "median_speedups": [
+        15.977255685728952,
+        18.38470522220983,
+        15.944810550123002
+      ],
+      "relative_deviations": [
+        0.0,
+        0.1506797903116264,
+        0.0020307076662064594
+      ],
+      "three_run_median": 15.977255685728952,
+      "within_threshold": false
+    },
+    "networkx-dijkstra": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.010888723834829146,
+      "median_speedups": [
+        3.7186818639868284,
+        3.678626317919469,
+        3.6561308487068187
+      ],
+      "relative_deviations": [
+        0.010888723834829146,
+        0.0,
+        0.0061151819370914105
+      ],
+      "three_run_median": 3.678626317919469,
+      "within_threshold": true
+    },
+    "numpy-blas-dot-negative-control": {
+      "headline_gate": false,
+      "maximum_relative_deviation": 0.009132311152308637,
+      "median_speedups": [
+        0.5866535301413158,
+        0.582401947254391,
+        0.5920110327171666
+      ],
+      "relative_deviations": [
+        0.0,
+        0.007247178561937064,
+        0.009132311152308637
+      ],
+      "three_run_median": 0.5866535301413158,
+      "within_threshold": true
+    },
+    "numpy-f64-1d-boundary-direct-sink": {
+      "headline_gate": false,
+      "maximum_relative_deviation": 0.08794226332660256,
+      "median_speedups": [
+        0.30484519244430597,
+        0.29943436605948126,
+        0.33165396863209196
+      ],
+      "relative_deviations": [
+        0.0,
+        0.017749423375975477,
+        0.08794226332660256
+      ],
+      "three_run_median": 0.30484519244430597,
+      "within_threshold": true
+    },
+    "numpy-mixed-fusion": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.03884682013440287,
+      "median_speedups": [
+        2.424980252175369,
+        2.5352306856036124,
+        2.522990406705481
+      ],
+      "relative_deviations": [
+        0.03884682013440287,
+        0.004851496409023154,
+        0.0
+      ],
+      "three_run_median": 2.522990406705481,
+      "within_threshold": true
+    },
+    "numpy-mixed-nonfused-phase1": {
+      "headline_gate": false,
+      "maximum_relative_deviation": 0.05598305432844779,
+      "median_speedups": [
+        0.24779343905821755,
+        0.23465664343998563,
+        0.23463597383138077
+      ],
+      "relative_deviations": [
+        0.05598305432844779,
+        0.0,
+        8.808448080502874e-05
+      ],
+      "three_run_median": 0.23465664343998563,
+      "within_threshold": true
+    },
+    "pandas-series-map": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.009183315047754161,
+      "median_speedups": [
+        66.14303164075318,
+        66.17968164017742,
+        65.53561934298257
+      ],
+      "relative_deviations": [
+        0.0,
+        0.0005541022011706568,
+        0.009183315047754161
+      ],
+      "three_run_median": 66.14303164075318,
+      "within_threshold": true
+    },
+    "tensorflow-cpu-eager-chain": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.003834551253591201,
+      "median_speedups": [
+        1.0401165361253732,
+        1.0400886943840548,
+        1.0441049162928537
+      ],
+      "relative_deviations": [
+        0.0,
+        2.6767905663859195e-05,
+        0.003834551253591201
+      ],
+      "three_run_median": 1.0401165361253732,
+      "within_threshold": true
+    },
+    "tensorflow-cpu-small-batch-prepost": {
+      "headline_gate": false,
+      "maximum_relative_deviation": 0.006929126002454725,
+      "median_speedups": [
+        0.4937420377881262,
+        0.49502910213094403,
+        0.49845922115449137
+      ],
+      "relative_deviations": [
+        0.0025999771271576324,
+        0.0,
+        0.006929126002454725
+      ],
+      "three_run_median": 0.49502910213094403,
+      "within_threshold": true
+    },
+    "torch-cpu-deep-mlp": {
+      "headline_gate": true,
+      "maximum_relative_deviation": 0.004094998299319364,
+      "median_speedups": [
+        1.0181235761530854,
+        1.0167512438295945,
+        1.0125876492152814
+      ],
+      "relative_deviations": [
+        0.001349722787967277,
+        0.0,
+        0.004094998299319364
+      ],
+      "three_run_median": 1.0167512438295945,
+      "within_threshold": true
+    },
+    "torch-cpu-small-batch-prepost": {
+      "headline_gate": false,
+      "maximum_relative_deviation": 0.006247329684716941,
+      "median_speedups": [
+        1.1579931943106017,
+        1.1488350340493683,
+        1.1560573051691856
+      ],
+      "relative_deviations": [
+        0.0016745615747246697,
+        0.006247329684716941,
+        0.0
+      ],
+      "three_run_median": 1.1560573051691856,
+      "within_threshold": true
+    }
+  },
+  "cohort_id": "15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec",
+  "measurement_commit": "92ef027cea25f9d6bf1d730de4c226d40016ba6e",
+  "package_provenance": {
+    "rextio": {
+      "commit_id": "b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97",
+      "requested_revision": "b8b8ed11f6b7b7aae4c7ae5205d88529608e8e97",
+      "url": "https://github.com/rextio/rextio",
+      "vcs": "git",
+      "version": "0.1.7"
+    },
+    "rextio-numpy": {
+      "commit_id": "cf461e6775780a598517980c555a1aec079285d8",
+      "requested_revision": "cf461e6775780a598517980c555a1aec079285d8",
+      "url": "https://github.com/rextio/rextio-numpy",
+      "vcs": "git",
+      "version": "0.1.3"
+    },
+    "rextio-tensorflow": {
+      "commit_id": "1fdb2e1cd91d058a056db76c2e0a15d52c855053",
+      "requested_revision": "1fdb2e1cd91d058a056db76c2e0a15d52c855053",
+      "url": "https://github.com/rextio/rextio-tensorflow",
+      "vcs": "git",
+      "version": "0.1.3"
+    },
+    "rextio-torch": {
+      "commit_id": "1e92b24b154c7266dc37d19533fc3e17a8b05f9a",
+      "requested_revision": "1e92b24b154c7266dc37d19533fc3e17a8b05f9a",
+      "url": "https://github.com/rextio/rextio-torch",
+      "vcs": "git",
+      "version": "0.1.3"
+    }
+  },
+  "policy_id": "candidate-boundary-prepost-0.1.1",
+  "policy_version": 1,
+  "report_count": 3,
+  "reports": [
+    {
+      "bundle_path": "results/canonical/cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec/reports/01-154542781d2d4d6e8bab88d8c629884ff2885337e395aba2c1e707147edbd092.json",
+      "generated_at": "2026-07-26T20:25:48.681081+00:00",
+      "index": 0,
+      "selected": true,
+      "sha256": "154542781d2d4d6e8bab88d8c629884ff2885337e395aba2c1e707147edbd092",
+      "source_path": "results/local/benchmark-publish-20260726T202548Z.json"
+    },
+    {
+      "bundle_path": "results/canonical/cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec/reports/02-67dafffb67a4c6bf6fec441f5ea4172294f4b7d0798f90a2b1ad522795f83aae.json",
+      "generated_at": "2026-07-26T20:49:59.648068+00:00",
+      "index": 1,
+      "selected": false,
+      "sha256": "67dafffb67a4c6bf6fec441f5ea4172294f4b7d0798f90a2b1ad522795f83aae",
+      "source_path": "results/local/benchmark-publish-20260726T204959Z.json"
+    },
+    {
+      "bundle_path": "results/canonical/cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec/reports/03-5f9b2d766e15afc913648e4428bf6ac4da02f8464d023b2d7ac6f6b13128659d.json",
+      "generated_at": "2026-07-26T21:14:26.705441+00:00",
+      "index": 2,
+      "selected": false,
+      "sha256": "5f9b2d766e15afc913648e4428bf6ac4da02f8464d023b2d7ac6f6b13128659d",
+      "source_path": "results/local/benchmark-publish-20260726T211426Z.json"
+    }
+  ],
+  "schema_version": 1,
+  "selected_report_index": 0,
+  "selection": "chronological-first",
+  "stability_threshold_fraction": 0.1
+}
