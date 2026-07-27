@@ -5,7 +5,7 @@ import json
 import math
 import re
 import statistics
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
@@ -163,6 +163,11 @@ class VerifiedStabilitySummary:
     document: dict[str, Any]
     logical_path: str
     sha256: str
+    raw_bytes: bytes
+    _attestation: object = field(repr=False, compare=False)
+
+
+_SUMMARY_ATTESTATION = object()
 
 
 def load_verified_stability_summary(
@@ -229,6 +234,7 @@ def load_verified_stability_summary(
         or document.get("selection") != "chronological-first"
         or document.get("selected_report_index") != 0
         or document.get("report_count") != 3
+        or isinstance(document.get("stability_threshold_fraction"), bool)
         or document.get("stability_threshold_fraction") != 0.10
     ):
         raise GateError("canonical stability summary identity differs")
@@ -253,19 +259,31 @@ def load_verified_stability_summary(
             or not isinstance(speedups, list)
             or len(speedups) != 3
             or not all(
-                isinstance(value, (int, float)) and math.isfinite(value) and value > 0
+                isinstance(value, (int, float))
+                and not isinstance(value, bool)
+                and math.isfinite(value)
+                and value > 0
                 for value in speedups
             )
             or not isinstance(median, (int, float))
+            or isinstance(median, bool)
             or not math.isfinite(median)
             or median <= 0
             or not isinstance(deviation, (int, float))
+            or isinstance(deviation, bool)
             or not math.isfinite(deviation)
+            or deviation < 0
             or deviation > 0.10
             or not math.isclose(median, statistics.median(speedups), rel_tol=0.0, abs_tol=1e-12)
         ):
             raise GateError(f"canonical stability summary rejects headline {case_id}")
-    return VerifiedStabilitySummary(document=document, logical_path=logical, sha256=actual_sha)
+    return VerifiedStabilitySummary(
+        document=document,
+        logical_path=logical,
+        sha256=actual_sha,
+        raw_bytes=raw,
+        _attestation=_SUMMARY_ATTESTATION,
+    )
 
 
 def _format_versions(
@@ -372,6 +390,23 @@ def generate_blocks(
             raise GateError("README candidate policy pins do not match the full candidate set")
     if not isinstance(stability_summary, VerifiedStabilitySummary):
         raise GateError("README blocks require a verified stability summary")
+    if stability_summary._attestation is not _SUMMARY_ATTESTATION:
+        raise GateError("README blocks reject an unverified stability wrapper")
+    metadata = report.get("canonical_bundle")
+    if not isinstance(metadata, dict):
+        raise GateError("README blocks require canonical bundle metadata")
+    if (
+        stability_summary.logical_path != metadata.get("stability_summary_path")
+        or stability_summary.sha256 != metadata.get("stability_summary_sha256")
+        or hashlib.sha256(stability_summary.raw_bytes).hexdigest() != stability_summary.sha256
+    ):
+        raise GateError("README stability summary binding differs")
+    try:
+        parsed_summary = json.loads(stability_summary.raw_bytes)
+    except json.JSONDecodeError as error:
+        raise GateError("README stability summary bytes are not JSON") from error
+    if parsed_summary != stability_summary.document:
+        raise GateError("README stability summary document differs from raw bytes")
     summary = stability_summary.document
     if summary.get("measurement_commit") != measurement_commit:
         raise GateError("stability summary measurement commit differs")

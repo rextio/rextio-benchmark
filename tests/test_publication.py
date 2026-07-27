@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from copy import deepcopy
 from pathlib import Path
@@ -18,6 +19,7 @@ from rextio_benchmark.integration_targets import (
 )
 from rextio_benchmark.portability import portable_value, require_portable
 from rextio_benchmark.readme_blocks import (
+    _SUMMARY_ATTESTATION,
     HEADLINE_ROWS,
     VerifiedStabilitySummary,
     generate_blocks,
@@ -33,22 +35,28 @@ DIAGNOSTIC_CASES = (
 
 
 def _verified_summary(report: dict) -> VerifiedStabilitySummary:
-    return VerifiedStabilitySummary(
-        document={
-            "measurement_commit": report["repository"]["commit"],
-            "cases": {
-                case_id: {
-                    "headline_gate": True,
-                    "within_threshold": True,
-                    "three_run_median": next(
-                        case for case in report["cases"] if case["id"] == case_id
-                    )["paired"]["median_speedup"],
-                }
-                for _, case_id in HEADLINE_ROWS
-            },
+    document = {
+        "measurement_commit": report["repository"]["commit"],
+        "cases": {
+            case_id: {
+                "headline_gate": True,
+                "within_threshold": True,
+                "three_run_median": next(case for case in report["cases"] if case["id"] == case_id)[
+                    "paired"
+                ]["median_speedup"],
+            }
+            for _, case_id in HEADLINE_ROWS
         },
-        logical_path="results/canonical/fixture/stability.json",
-        sha256="0" * 64,
+    }
+    raw = json.dumps(document, sort_keys=True, separators=(",", ":")).encode()
+    report["canonical_bundle"]["stability_summary_path"] = "results/canonical/cohort/stability.json"
+    report["canonical_bundle"]["stability_summary_sha256"] = hashlib.sha256(raw).hexdigest()
+    return VerifiedStabilitySummary(
+        document,
+        "results/canonical/cohort/stability.json",
+        hashlib.sha256(raw).hexdigest(),
+        raw,
+        _SUMMARY_ATTESTATION,
     )
 
 
