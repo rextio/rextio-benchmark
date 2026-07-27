@@ -3,14 +3,14 @@
 `rextio-benchmark` is an auditable CPU-first showcase for the Rextio ecosystem.
 The suite covers **Rextio Core plus five first-party plugins** (NumPy,
 NetworkX, pandas, Torch, and TensorFlow); each workload exercises its relevant
-component. Package version **0.1.1 (Unreleased)** publishes the measured
-unreleased plugin **0.1.3** candidate Mac CPU cohort while preserving the
-complete **0.1.0** release history and its frozen published evidence. It
-compares the exact original Python source with the generated fallback package
-and the same generated package forced onto its verified native route. It never
-invents or pre-populates benchmark numbers, discards slower results, or implies
-that Rust makes BLAS, libtorch, TensorFlow, or CUDA kernels intrinsically
-faster.
+component. GitHub repository version **0.1.1** (not published to PyPI)
+publishes the measured pre-release plugin **0.1.3** candidate Mac CPU cohort
+while preserving the complete **0.1.0** release history and its frozen
+published evidence. It compares the exact original Python source with the
+generated fallback package and the same generated package forced onto its
+verified native route. It never invents or pre-populates benchmark numbers,
+discards slower results, or implies that Rust makes BLAS, libtorch, TensorFlow,
+or CUDA kernels intrinsically faster.
 
 ## Requirements
 
@@ -19,11 +19,12 @@ faster.
 - a stable Rust toolchain with `cargo` and `rustc`
 - enough disk space for isolated Torch and TensorFlow environments
 
-The locks use **unreleased commit-pinned candidate** builds of Core 0.1.7,
+The locks use **pre-release commit-pinned candidate** builds of Core 0.1.7,
 NumPy 0.1.3, Torch 0.1.3, and TensorFlow 0.1.3 at the exact Git revisions
-declared in `profiles/next-candidate.toml`. They are not corresponding PyPI
-releases. NetworkX 0.1.1 and pandas 0.1.2 remain released pins; optional CUDA
-locks also include released `rextio-device-cuda==0.1.0`. See
+declared in `profiles/next-candidate.toml`. Those pins describe the revisions
+measured at pre-release candidate time, not later PyPI artifacts of those
+versions. NetworkX 0.1.1 and pandas 0.1.2 remain released PyPI pins; optional
+CUDA locks also include released `rextio-device-cuda==0.1.0`. See
 [CHANGELOG.md](CHANGELOG.md) and [PUBLICATION.md](PUBLICATION.md).
 
 ### Measured package provenance (0.1.1 suite)
@@ -31,8 +32,8 @@ locks also include released `rextio-device-cuda==0.1.0`. See
 The published boundary/pre-post Mac CPU cohort measures exactly these six
 packages. NetworkX and pandas were installed as **released PyPI artifacts**;
 their commit values identify the corresponding release tags. The other four
-packages are **exact Git-pinned candidates** (not PyPI releases of those
-versions).
+packages are **exact Git-pinned pre-release candidates at measurement time**
+(not later PyPI artifacts of those versions).
 
 | PyPI package | Measured version / status | Git commit (40-char) | Repository |
 | --- | --- | --- | --- |
@@ -54,7 +55,8 @@ Canonical evidence directories under `results/canonical/` remain byte-immutable.
 > NumPy `dot`, and the phase1 non-fused diagnostic remain fully published
 > diagnostics. The released **0.1.0** canonical figures remain historical; the
 > measured **0.1.3** candidate cohort below is an additional qualified
-> publication under package **0.1.1 (Unreleased)**, not a replacement of 0.1.0.
+> publication under GitHub repository version **0.1.1** (not published to
+> PyPI), not a replacement of 0.1.0.
 
 ## Verified CPU benchmark snapshots
 
@@ -63,7 +65,7 @@ Ratios below 1× mean Rextio was slower on that workload; values near 1× indica
 parity, not a material speedup. Neutral and slower headline rows are retained
 with no cherry-picking.
 
-### Unreleased plugin 0.1.3 candidate (measured)
+### Pre-release plugin 0.1.3 candidate (measured)
 
 Three-run chronological-first cohort
 [`cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec`](results/canonical/cohort-15e2f2527664ea2ed5c36e0c03b054ea6da69d1e476c07934727c252b947ccec/)
@@ -73,8 +75,9 @@ from clean commit
 The immutable policy id is `candidate-boundary-prepost-0.1.1` (a frozen
 pre-measurement name); this is its subsequently measured candidate cohort.
 Measured package provenance for Core plus the five first-party plugins is the
-table above: four exact Git-pinned candidates and two released PyPI pins
-(NetworkX 0.1.1, pandas 0.1.2) whose commits identify the release tags.
+table above: four exact Git-pinned pre-release candidates at measurement time
+and two released PyPI pins (NetworkX 0.1.1, pandas 0.1.2) whose commits
+identify the release tags.
 
 **Three-run medians** (headline rows; maximum relative deviation from the
 three-run median; 10% stability gate):

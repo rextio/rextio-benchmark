@@ -55,9 +55,9 @@ A second cohort policy was frozen **before** any candidate three-run
 measurement under policy id `candidate-plugin-0.1.3-pre-measurement` (that id
 is the immutable policy name bound into reports; it is not rewritten after
 measurement). The qualifying three-run candidate cohort has since been
-measured and is published as a **measured candidate** under package
-**0.1.1 (Unreleased)**. The released **0.1.0** cohort and figures remain
-historical and are not replaced.
+measured and is published as a **measured candidate** under GitHub repository
+version **0.1.1** (`rextio-benchmark` is not published to PyPI). The released
+**0.1.0** cohort and figures remain historical and are not replaced.
 
 | Field | Value |
 | --- | --- |
@@ -72,9 +72,10 @@ historical and are not replaced.
 | `rextio-numpy` | version `0.1.3` from Git rev `7316c47393a86f1c701049b878d01e8d8f561cdb` |
 | `rextio-tensorflow` | version `0.1.3` from Git rev `346ca58148ed2563d4c7547dd8443d60cd4f905b` |
 
-These pins are **unreleased commit-pinned candidate builds**. They are **not**
-PyPI `rextio-numpy` 0.1.3 or `rextio-tensorflow` 0.1.3 releases. All other
-plugin, core, and framework versions remain on their existing released pins.
+These pins are **pre-release commit-pinned candidate builds at measurement
+time**. They are **not** later PyPI `rextio-numpy` 0.1.3 or `rextio-tensorflow`
+0.1.3 artifacts. All other plugin, core, and framework versions remain on
+their existing released pins.
 
 Headline proof before timing:
 
@@ -156,7 +157,8 @@ pandas 0.1.2 remain released PyPI installs on the base profile.
 This cohort exercises Rextio Core and all five first-party plugins. NetworkX
 and pandas were installed as **released PyPI artifacts**; their commit values
 identify the corresponding release tags. The other four packages are **exact
-Git-pinned candidates**.
+Git-pinned pre-release candidates at measurement time** (not later PyPI
+artifacts of those versions).
 
 | PyPI package | Measured version / status | Git commit (40-char) | Repository |
 | --- | --- | --- | --- |
@@ -278,10 +280,12 @@ Generate Core README blocks only from that verified canonical report with
 `rextio_benchmark readme-blocks`. The generator fixes the six rows above,
 retains ratios below 1×, and emits identical numbers and commit-pinned report
 links in all five localized blocks. Core marker blocks list the six measured
-package names with versions and GitHub repository links, and point readers to
+package names with versions and GitHub repository links, state that
+**candidate** labels mean pre-release revisions at measurement time (not later
+PyPI artifacts), and point readers to
 https://github.com/rextio/rextio-benchmark for exact revisions and full
 provenance; they **never** expose commit hashes or `candidate@` labels (those
-details stay in this package's documentation and verified report bindings).
+details stay in this repository's documentation and verified report bindings).
 Candidate package presence still comes only from verified bound report policy
 and package provenance (never from version strings alone). The generator
 additionally reads the sibling hash-bound `stability.json` and requires its

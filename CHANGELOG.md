@@ -3,17 +3,20 @@
 All notable changes to `rextio-benchmark` are documented here following Keep a
 Changelog and Semantic Versioning conventions.
 
-## [0.1.1] — Unreleased
+## [0.1.1] — 2026-07-27
 
-Measured publication of the unreleased plugin **0.1.3** candidate Mac CPU
-cohort under package **0.1.1 (Unreleased)**. The suite covers **Rextio Core
-plus five first-party plugins**, and each workload exercises its relevant
-component. This cut does **not** replace the released **0.1.0** complete-case
-cohort or its historical figures. `rextio`, `rextio-numpy`, `rextio-torch`,
-and `rextio-tensorflow` remain **unreleased commit-pinned candidate builds**
-for the boundary/pre-post cohort; `rextio-networkx==0.1.1` and
-`rextio-pandas==0.1.2` were installed as **released PyPI artifacts** whose
-commits identify the corresponding release tags.
+Measured publication of the pre-release plugin **0.1.3** candidate Mac CPU
+cohort under GitHub repository version **0.1.1**. `rextio-benchmark` is **not**
+published to PyPI; distribution is the GitHub repository only. The suite
+covers **Rextio Core plus five first-party plugins**, and each workload
+exercises its relevant component. This cut does **not** replace the released
+**0.1.0** complete-case cohort or its historical figures. `rextio`,
+`rextio-numpy`, `rextio-torch`, and `rextio-tensorflow` remain **pre-release
+commit-pinned candidate builds at measurement time** for the boundary/pre-post
+cohort (exact Git revisions, not later PyPI artifacts of those versions);
+`rextio-networkx==0.1.1` and `rextio-pandas==0.1.2` were installed as
+**released PyPI artifacts** whose commits identify the corresponding release
+tags.
 
 ### Added
 
@@ -51,20 +54,24 @@ commits identify the corresponding release tags.
 
 ### Changed
 
-- Bump the harness package to **0.1.1** (Unreleased) while preserving the
-  complete **0.1.0** release history and the byte-frozen canonical cohort
+- Bump the GitHub repository / harness version to **0.1.1** (not published to
+  PyPI) while preserving the complete **0.1.0** release history and the
+  byte-frozen canonical cohort
   `cohort-15fa2645c757b4a23541587f7d0757107952f7c6ade3386bcaacdbdd9cce12d8`.
 - Correct headline `numpy-mixed-fusion` to pass `phase=0` so the timed path is
   the fused expression `(left + right) * (left - right)`.
 - README block generator and all five locales list the six measured packages
   (names, versions, GitHub links) and link to `rextio-benchmark` for exact
-  revisions; Core marker blocks never expose commit hashes or `candidate@`
-  labels. Candidate package presence still comes only from verified bound
-  report policy/provenance (never from version strings alone).
+  revisions; Core marker blocks state that **candidate** labels mean
+  pre-release revisions at measurement time (not later PyPI artifacts), never
+  expose commit hashes or `candidate@` labels, and point readers to this
+  repository for exact provenance. Candidate package presence still comes only
+  from verified bound report policy/provenance (never from version strings
+  alone).
 - Document explicit package provenance for the 0.1.1 suite in README and
   PUBLICATION: Core 0.1.7 / NumPy 0.1.3 / Torch 0.1.3 / TensorFlow 0.1.3 as
-  Git-pinned candidates, and NetworkX 0.1.1 / pandas 0.1.2 as released PyPI
-  pins with release-tag commits.
+  pre-release Git-pinned candidates at measurement time, and NetworkX 0.1.1 /
+  pandas 0.1.2 as released PyPI pins with release-tag commits.
 - Historical canonical verification accepts the frozen 0.1.0 complete-case set
   so old reports remain verifiable after the diagnostic case is added.
 - Canonical verification treats bundled run-output evidence as authoritative
@@ -116,8 +123,12 @@ support, or individual-change causal A/B claims.
 
 ### Non-claims
 
-- This is **not** a new PyPI release of `rextio-numpy` 0.1.3 or
-  `rextio-tensorflow` 0.1.3; pins are exact unreleased Git revisions only.
+- `rextio-benchmark` is **not** published to PyPI; **0.1.1** is the GitHub
+  repository version only.
+- Measured pins for `rextio-numpy` 0.1.3, `rextio-tensorflow` 0.1.3,
+  `rextio-torch` 0.1.3, and Core 0.1.7 are exact **pre-release Git revisions at
+  measurement time**, not later PyPI artifacts of those versions (matching
+  version strings may be released later without rewriting this evidence).
 - Existing published **0.1.0** figures remain historical and are not replaced
   by the candidate cohort.
 - Phase-1 is never described as a fusion claim.

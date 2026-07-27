@@ -611,6 +611,9 @@ def test_readme_labels_candidate_only_from_bound_provenance(tmp_path: Path) -> N
     assert NUMPY_PIN["rev"] not in english
     assert TF_PIN["rev"] not in english
     assert "PyPI" in english
+    assert "pre-release candidate revisions" in english
+    assert "not later PyPI artifacts" in english
+    assert "unreleased versions" not in english
 
 
 def test_readme_labels_all_four_next_candidate_packages_in_every_locale(tmp_path: Path) -> None:
@@ -672,12 +675,18 @@ def test_readme_labels_all_four_next_candidate_packages_in_every_locale(tmp_path
             assert bullet in block
         assert BENCHMARK_PROVENANCE_URL in block
         assert "candidate@" not in block
+        assert "pre-release" in block
+        assert "PyPI" in block
         assert re.search(r"\b[0-9a-f]{40}\b", block) is None
         assert "/blob/" not in block
         assert "/commit/" not in block
         for pin in pins.values():
             assert pin["rev"] not in block
             assert pin["rev"][:12] not in block
+    english = blocks["README.md"]
+    assert "pre-release candidate revisions" in english
+    assert "not later PyPI artifacts" in english
+    assert "unreleased versions" not in english
 
 
 def test_readme_fails_for_candidate_versions_without_binding() -> None:

@@ -601,6 +601,9 @@ def test_readme_blocks_state_candidate_commit_caveats(tmp_path: Path) -> None:
         assert pin["rev"] not in english
         assert pin["rev"][:12] not in english
     assert "PyPI" in english
+    assert "pre-release candidate revisions" in english
+    assert "not later PyPI artifacts" in english
+    assert "unreleased versions" not in english
     assert (
         blocks["README.md"]
         == generate_blocks(
@@ -614,6 +617,8 @@ def test_readme_blocks_state_candidate_commit_caveats(tmp_path: Path) -> None:
     )
     for block in blocks.values():
         assert "candidate" in block.lower() or "Candidate" in block
+        assert "pre-release" in block
+        assert "PyPI" in block
         assert "candidate@" not in block
         assert BENCHMARK_PROVENANCE_URL in block
         assert re.search(r"\b[0-9a-f]{40}\b", block) is None

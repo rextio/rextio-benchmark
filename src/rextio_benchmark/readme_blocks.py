@@ -52,9 +52,10 @@ LOCALES = {
         ),
         "candidate_caveat": (
             "Packages marked **candidate** (Core 0.1.7, rextio-numpy 0.1.3, "
-            "rextio-torch 0.1.3, and rextio-tensorflow 0.1.3) are unreleased versions, "
-            "not PyPI releases. rextio-networkx 0.1.1 and rextio-pandas 0.1.2 are "
-            "released packages."
+            "rextio-torch 0.1.3, and rextio-tensorflow 0.1.3) were measured as "
+            "pre-release candidate revisions, not later PyPI artifacts of those "
+            "versions. rextio-networkx 0.1.1 and rextio-pandas 0.1.2 are released "
+            "packages."
         ),
         "selection": "Selection: the chronologically first report (index 0) of exactly three qualifying publish reports; never selected by speedup.",  # noqa: E501
         "stability": "Stability: all six frozen headline rows passed the 10% stability veto.",
@@ -86,9 +87,9 @@ LOCALES = {
         ),
         "candidate_caveat": (
             "**candidate**로 표시된 패키지(Core 0.1.7, rextio-numpy 0.1.3, "
-            "rextio-torch 0.1.3, rextio-tensorflow 0.1.3)는 미배포 버전이며 PyPI "
-            "릴리스가 아닙니다. rextio-networkx 0.1.1과 rextio-pandas 0.1.2는 "
-            "릴리스된 패키지입니다."
+            "rextio-torch 0.1.3, rextio-tensorflow 0.1.3)는 측정 시점의 "
+            "pre-release 후보 리비전이며, 이후 PyPI 아티팩트가 아닙니다. "
+            "rextio-networkx 0.1.1과 rextio-pandas 0.1.2는 릴리스된 패키지입니다."
         ),
         "selection": "선택: 정확히 세 개의 적격 publish 보고서 중 시간순 첫 번째 보고서(index 0)를 사용하며, 속도비로 선택하지 않습니다.",  # noqa: E501
         "stability": "안정성: 고정된 여섯 headline 행은 모두 10% 안정성 veto를 통과했습니다.",
@@ -119,9 +120,9 @@ LOCALES = {
         ),
         "candidate_caveat": (
             "**candidate** と記したパッケージ（Core 0.1.7、rextio-numpy 0.1.3、"
-            "rextio-torch 0.1.3、rextio-tensorflow 0.1.3）は未公開バージョンであり、"
-            "PyPI リリースではありません。rextio-networkx 0.1.1 と rextio-pandas "
-            "0.1.2 はリリース済みパッケージです。"
+            "rextio-torch 0.1.3、rextio-tensorflow 0.1.3）は測定時点の pre-release "
+            "候補リビジョンであり、後から出た PyPI 成果物ではありません。"
+            "rextio-networkx 0.1.1 と rextio-pandas 0.1.2 はリリース済みパッケージです。"
         ),
         "selection": "選択: 正確に 3 件の適格な publish レポートのうち時系列で最初のレポート（index 0）を使い、速度比では選択しません。",  # noqa: E501
         "stability": "安定性: 固定された 6 つの headline 行はすべて 10% の安定性 veto を通過しました。",  # noqa: E501
@@ -151,8 +152,8 @@ LOCALES = {
         ),
         "candidate_caveat": (
             "标为 **candidate** 的包（Core 0.1.7、rextio-numpy 0.1.3、rextio-torch "
-            "0.1.3、rextio-tensorflow 0.1.3）为未发布版本，不是 PyPI 发行版。"
-            "rextio-networkx 0.1.1 与 rextio-pandas 0.1.2 为已发布包。"
+            "0.1.3、rextio-tensorflow 0.1.3）为测量时的 pre-release 候选修订，不是"
+            "之后的 PyPI 产物。rextio-networkx 0.1.1 与 rextio-pandas 0.1.2 为已发布包。"
         ),
         "selection": "选择：恰好三份合格 publish 报告中按时间顺序第一份（index 0）；绝不按加速比选择。",  # noqa: E501
         "stability": "稳定性：六个固定 headline 行全部通过了 10% 稳定性 veto。",
@@ -181,8 +182,8 @@ LOCALES = {
         ),
         "candidate_caveat": (
             "標為 **candidate** 的套件（Core 0.1.7、rextio-numpy 0.1.3、rextio-torch "
-            "0.1.3、rextio-tensorflow 0.1.3）為未發佈版本，不是 PyPI 發行版。"
-            "rextio-networkx 0.1.1 與 rextio-pandas 0.1.2 為已發佈套件。"
+            "0.1.3、rextio-tensorflow 0.1.3）為測量時的 pre-release 候選修訂，不是"
+            "之後的 PyPI 產物。rextio-networkx 0.1.1 與 rextio-pandas 0.1.2 為已發佈套件。"
         ),
         "selection": "選擇：恰好三份合格 publish 報告中按時間順序第一份（index 0）；絕不按加速比選擇。",  # noqa: E501
         "stability": "穩定性：六個固定 headline 行全部通過了 10% 穩定性 veto。",
