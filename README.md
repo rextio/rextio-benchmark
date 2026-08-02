@@ -57,7 +57,7 @@ rextio-fallback  → generated package with REXTIO_NATIVE_MODE=fallback
 rextio-native    → same package with native mode forced and threshold disabled
 ```
 
-Before timing, the controller requires the exact `native-direct` or `native-plugin:*` route, `native_status=accepted`, a built native artifact, expected generated-source proof, and correct outputs. It rejects stale imports, hashes the source/build evidence, sanitizes the environment, builds deterministic inputs outside timed regions, and records import/first-call time separately from steady-state samples.
+Before timing, the controller requires the exact `native-direct` or `native-plugin:*` route, `native_status=accepted`, a built native artifact, expected generated-source proof, and correct outputs. It rejects stale imports, hashes the source/build evidence, runs each command in a sanitized environment, resolves dependencies only from the profile's site-packages, requires artifacts under the exact case build root, captures full-output diagnostics, records effective framework thread counts, builds deterministic inputs outside timed regions, and records import/first-call time separately from steady-state samples.
 
 The harness never invents or pre-populates numbers, drops an unfavorable result, uses a sliding window, or treats performance as a test threshold. Original source, generated fallback, and native outputs must agree under each case's declared exact or numeric comparison.
 
@@ -122,7 +122,7 @@ Exact source declarations live in [`profiles/next-candidate.toml`](profiles/next
 | NumPy fusion | `(left + right) * (left - right)` | Requires fusion rule and generated helper proof. |
 | NumPy phase 1 / direct sink / `dot` | Non-fused branch, boundary allocation, and BLAS-owned negative control | Diagnostics only; phase 1 is never a fusion claim and no speedup is presumed. |
 | NetworkX | Typed-adapter Dijkstra on a deterministic graph | Unsupported raw NetworkX spellings are not compiled. |
-| pandas | Exact numeric/boolean `Series.map` UDF pipeline | A manual vectorized rewrite may be faster. |
+| pandas | Exact numeric/boolean `Series.map` UDF pipeline | A manually vectorized pandas/NumPy rewrite may be faster. |
 | Torch CPU | Bounded float32 inference and small-batch pre/post | Inference only; no training or unsupported device/dtype. |
 | TensorFlow CPU | Eager matmul/activation/classification and small-batch pre/post | No `tf.function`; no result is presumed. |
 

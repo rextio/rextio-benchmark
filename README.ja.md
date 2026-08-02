@@ -48,7 +48,7 @@ rextio-fallback  → REXTIO_NATIVE_MODE=fallback の生成 package
 rextio-native    → native mode を強制し threshold を無効にした同一 package
 ```
 
-計測前に controller は正確な `native-direct` または `native-plugin:*` route、`native_status=accepted`、build 済み native artifact、期待する generated-source 証拠、正しい出力を要求します。stale import を拒否し、source/build 証拠を hash、環境を sanitize し、deterministic input を timed region 外で構築し、import/first-call 時間を steady-state sample と分けて記録します。
+計測前に controller は正確な `native-direct` または `native-plugin:*` route、`native_status=accepted`、build 済み native artifact、期待する generated-source 証拠、正しい出力を要求します。stale import を拒否し、source/build 証拠を hash し、各 command を sanitize 済み環境で実行して、依存関係をその profile の site-packages からだけ読み込みます。さらに artifact が対象 case の正確な build root 配下にあることを確認し、full-output diagnostics と実際の framework thread count を記録してから、deterministic input を timed region 外で構築し、import/first-call 時間を steady-state sample と分けて記録します。
 
 Harness は数値を捏造・事前投入せず、不利な結果を捨てず、sliding window を使わず、性能を test threshold にしません。元の source、generated fallback、native 出力は各 case の exact/numeric 比較を通過する必要があります。
 

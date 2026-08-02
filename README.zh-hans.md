@@ -48,7 +48,7 @@ rextio-fallback  → 使用 REXTIO_NATIVE_MODE=fallback 的生成 package
 rextio-native    → 强制 native mode 并禁用 threshold 的同一 package
 ```
 
-计时前，controller 要求精确的 `native-direct` 或 `native-plugin:*` route、`native_status=accepted`、已构建 native artifact、预期 generated-source 证明以及正确输出。它拒绝 stale import，对 source/build 证据做 hash，清理环境，在 timed region 外构造 deterministic input，并把 import/first-call 时间与 steady-state sample 分开记录。
+计时前，controller 要求精确的 `native-direct` 或 `native-plugin:*` route、`native_status=accepted`、已构建 native artifact、预期 generated-source 证明以及正确输出。它拒绝 stale import，对 source/build 证据做 hash，在清理后的环境中执行每条命令，并且只从该 profile 的 site-packages 加载依赖。它还要求 artifact 位于该 case 的精确 build root，记录 full-output diagnostics 和实际 framework thread count，在 timed region 外构造 deterministic input，并把 import/first-call 时间与 steady-state sample 分开记录。
 
 Harness 不会编造或预填数字、丢弃不利结果、使用 sliding window，或把性能当作测试阈值。原始 source、generated fallback、native 输出必须通过每个 case 声明的精确或数值比较。
 

@@ -49,7 +49,7 @@ rextio-fallback  → REXTIO_NATIVE_MODE=fallback인 생성 package
 rextio-native    → native mode를 강제하고 threshold를 끈 동일 package
 ```
 
-측정 전 controller는 정확한 `native-direct` 또는 `native-plugin:*` route, `native_status=accepted`, 빌드된 native artifact, 예상 generated-source 증거, 올바른 출력을 요구합니다. stale import를 거부하고 source/build 증거를 hash하며 환경을 sanitize하고, deterministic input은 timed region 밖에서 만들고, import/first-call 시간을 steady-state sample과 별도로 기록합니다.
+측정 전 controller는 정확한 `native-direct` 또는 `native-plugin:*` route, `native_status=accepted`, 빌드된 native artifact, 예상 generated-source 증거, 올바른 출력을 요구합니다. stale import를 거부하고 source/build 증거를 hash하며, 각 명령을 정제된 환경에서 실행하고 해당 profile의 site-packages에서만 의존성을 가져옵니다. Artifact가 해당 case의 정확한 build root 아래에 있는지 확인하고 full-output diagnostics와 실제 framework thread count를 기록하며, deterministic input은 timed region 밖에서 만들고 import/first-call 시간을 steady-state sample과 별도로 기록합니다.
 
 Harness는 숫자를 만들어 넣거나 불리한 결과를 버리거나 sliding window를 쓰거나 성능을 test threshold로 다루지 않습니다. 원본 source, generated fallback, native 출력은 각 case의 exact 또는 numeric 비교 조건을 통과해야 합니다.
 
